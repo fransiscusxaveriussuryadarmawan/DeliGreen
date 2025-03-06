@@ -13,6 +13,10 @@ return new class extends Migration
     {
         Schema::create('payments', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('transaction_id')->constrained()->onDelete('cascade');
+            $table->decimal('amount', 15, 2);
+            $table->enum('method', ['dompet-digital', 'kartu-kredit-debit', 'QRIS'])->default('dompet-digital');
+            $table->enum('order_status', ['Pending', 'Paid', 'Failed'])->default('Pending');
             $table->timestamps();
         });
     }
