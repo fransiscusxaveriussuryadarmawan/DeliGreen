@@ -5,8 +5,8 @@
     <!-- Header -->
     <div class="row mb-4">
         <div class="col-12">
-            <h1 class="display-4 text-success">Dashboard DeliGreen</h1>
-            <p class="lead">Selamat datang di sistem pemesanan makanan sehat.</p>
+            <h1 class="display-4 text-success fw-bold">Dashboard DeliGreen</h1>
+            <p class="lead text-muted">Selamat datang di sistem pemesanan makanan sehat.</p>
         </div>
     </div>
 
@@ -14,37 +14,41 @@
     <div class="row g-4 mb-5">
         <!-- Total Omzet -->
         <div class="col-12 col-md-6 col-lg-4">
-            <div class="card shadow-sm border-0">
+            <div class="card shadow-sm border-0 h-100">
                 <div class="card-body">
-                    <h5 class="card-title text-muted">Total Omzet</h5>
+                    <h5 class="card-title text-muted mb-3">Total Omzet</h5>
                     <div class="d-flex align-items-center justify-content-between">
                         <h2 class="text-success mb-0">Rp {{ number_format($totalOmzet, 0, ',', '.') }}</h2>
                         <i class="bi bi-currency-dollar fs-1 text-success"></i>
                     </div>
-                    <span class="badge bg-success mt-3">+15% dari kemarin</span>
+                    <div class="mt-3">
+                        <span class="badge bg-success">+15% dari kemarin</span>
+                    </div>
                 </div>
             </div>
         </div>
 
         <!-- Pesanan Aktif -->
         <div class="col-12 col-md-6 col-lg-4">
-            <div class="card shadow-sm border-0">
+            <div class="card shadow-sm border-0 h-100">
                 <div class="card-body">
-                    <h5 class="card-title text-muted">Pesanan Aktif</h5>
+                    <h5 class="card-title text-muted mb-3">Pesanan Aktif</h5>
                     <div class="d-flex align-items-center justify-content-between">
                         <h2 class="text-primary mb-0">{{ $activeOrders }}</h2>
                         <i class="bi bi-cart-check fs-1 text-primary"></i>
                     </div>
-                    <span class="badge bg-primary mt-3">3 pesanan baru</span>
+                    <div class="mt-3">
+                        <span class="badge bg-primary">3 pesanan baru</span>
+                    </div>
                 </div>
             </div>
         </div>
 
         <!-- Produk Terlaris -->
         <div class="col-12 col-lg-4">
-            <div class="card shadow-sm border-0">
+            <div class="card shadow-sm border-0 h-100">
                 <div class="card-body">
-                    <h5 class="card-title text-muted">Produk Terlaris</h5>
+                    <h5 class="card-title text-muted mb-3">Produk Terlaris</h5>
                     <ul class="list-group list-group-flush">
                         @foreach ($bestSellers as $item)
                         <li class="list-group-item d-flex justify-content-between align-items-center">
@@ -58,13 +62,38 @@
         </div>
     </div>
 
-    <!-- Grafik Omzet (Contoh) -->
+    <!-- Grafik Omzet -->
     <div class="row mb-5">
-        <div class="col-12">
+        <div class="col-12 col-lg-8">
             <div class="card shadow-sm border-0">
                 <div class="card-body">
-                    <h5 class="card-title text-muted">Omzet Bulanan</h5>
-                    <canvas id="omzetChart" style="height: 300px;"></canvas>
+                    <h5 class="card-title text-muted mb-4">Omzet Bulanan</h5>
+                    <div style="height: 300px;">
+                        <canvas id="omzetChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Aktivitas Terbaru -->
+        <div class="col-12 col-lg-4">
+            <div class="card shadow-sm border-0">
+                <div class="card-body">
+                    <h5 class="card-title text-muted mb-4">Aktivitas Terbaru</h5>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <span>Pesanan #1234</span>
+                            <span class="badge bg-success">Selesai</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <span>Pesanan #1235</span>
+                            <span class="badge bg-warning">Diproses</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <span>Pesanan #1236</span>
+                            <span class="badge bg-danger">Dibatalkan</span>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </div>
@@ -90,12 +119,22 @@
         },
         options: {
             responsive: true,
+            maintainAspectRatio: false, // Nonaktifkan aspect ratio default
             scales: {
                 y: {
                     beginAtZero: true,
                     ticks: {
                         callback: function(value) {
                             return 'Rp ' + value.toLocaleString();
+                        }
+                    }
+                }
+            },
+            plugins: {
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            return 'Omzet: Rp ' + context.raw.toLocaleString();
                         }
                     }
                 }
