@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 
 class DashboardController extends Controller
 {
-    public function index()
+    public function indexAdmin()
     {
         $data = [
             'totalOmzet' => 245000000,
@@ -18,6 +18,17 @@ class DashboardController extends Controller
             ],
         ];
 
-        return view('dashboard', $data);
+        return view('admin.dashboard', $data);
+    }
+
+    public function indexCustomer()
+    {
+        $data = [
+            'totalOmzet' => 0,
+            'activeOrders' => 0,
+            'bestSellers' => [],
+        ];
+
+        return view('customer.dashboard', $data);
     }
 }
