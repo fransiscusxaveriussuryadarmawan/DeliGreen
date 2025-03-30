@@ -13,7 +13,9 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        //
+        $categories = Category::paginate(10);
+
+        return view('admin.categories.index', compact('categories'));
     }
 
     /**
@@ -62,5 +64,17 @@ class CategoryController extends Controller
     public function destroy(Category $category)
     {
         //
+    }
+
+    public function report()
+    {
+        $topCategory = Category::getTopCategory();
+
+        if (!$topCategory)
+        {
+            return redirect()->route('admin.categories.index')->with('error', 'No categories found.');
+        }
+
+        return view('admin.categories.report', compact('topCategory'));
     }
 }
