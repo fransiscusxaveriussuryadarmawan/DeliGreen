@@ -2,6 +2,14 @@
 
 @section('content')
 <div class="container-fluid py-4">
+    <!-- Success Message -->
+    @if(session('success'))
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ session('success') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
+
     <div class="row mb-4">
         <div class="col-12">
             <h1 class="display-4 text-success fw-bold">Master Orders</h1>
@@ -40,19 +48,18 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @for($i = 1; $i <= 10; $i++)
+                        @forelse($orders as $order)
                         <tr>
-                            <td>#ORD{{ str_pad($i, 3, '0', STR_PAD_LEFT) }}</td>
-                            <td>Pelanggan {{ $i }}</td>
-                            <td>{{ now()->subDays(rand(1, 30))->format('d M Y H:i') }}</td>
-                            <td>Rp {{ number_format(rand(50, 200) * 1000, 0, ',', '.') }}</td>
+                            <td>#ORD{{ str_pad($order->id, 3, '0', STR_PAD_LEFT) }}</td>
+                            <td>{{ $order->customer->name }}</td>
+                            <td>{{ $order->created_at->format('d M Y H:i') }}</td>
+                            <td>$ {{ number_format($order->total_price, 2, ',', '.') }}</td>
                             <td>
-                                @php $status = ['Diproses', 'Selesai', 'Dibatalkan'][rand(0,2)] @endphp
                                 <span class="badge 
-                                    @if($status == 'Selesai') bg-success 
-                                    @elseif($status == 'Diproses') bg-warning 
+                                    @if($order->status == 'completed') bg-success 
+                                    @elseif($order->status == 'pending') bg-warning 
                                     @else bg-danger @endif">
-                                    {{ $status }}
+                                    {{ $order->status }}
                                 </span>
                             </td>
                             <td>
@@ -61,7 +68,13 @@
                                 </button>
                             </td>
                         </tr>
-                        @endfor
+                        @empty
+                        <tr>
+                            <td colspan="5" class="text-center text-muted py-4">
+                                No orders found. <a href="{{ route('admin.orders.create') }}">Create one</a>.
+                            </td>
+                        </tr>
+                        @endforelse
                     </tbody>
                 </table>
             </div>
