@@ -23,6 +23,7 @@ Route::get('/', [DashboardController::class, 'indexAdmin'])->name('dashboard');
 
 Route::resource('food', FoodController::class);
 Route::resource('category', CategoryController::class);
+Route::resource('customers', CustomerController::class);
 
 // Make sure you have these routes defined with EXACTLY these names
 Route::prefix('admin')->group(function () {

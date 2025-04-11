@@ -109,4 +109,6 @@ class FoodController extends Controller
         return redirect()->route('admin.foods.index')
                          ->with('success', 'Food item deleted successfully');
     }
+
+    
 }
