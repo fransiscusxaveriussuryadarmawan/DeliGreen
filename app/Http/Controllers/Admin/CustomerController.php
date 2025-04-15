@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Models\Customer;
 use Illuminate\Http\Request;
 
 class CustomerController extends Controller
@@ -13,7 +14,8 @@ class CustomerController extends Controller
      */
     public function index()
     {
-        return view('admin.customers.index');
+        $customers = Customer::withCount('orders')->paginate(10);
+        return view('admin.customers.index', compact('customers'));
     }
 
     /**
@@ -35,9 +37,11 @@ class CustomerController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(User $user)
+    public function show(Customer $customer)
     {
-        //
+        $orders = $customer->orders()->latest()->get();
+
+        return view('admin.customers.show', compact('customer', 'orders'));
     }
 
     /**

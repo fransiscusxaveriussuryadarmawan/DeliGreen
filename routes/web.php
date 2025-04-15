@@ -32,6 +32,7 @@ Route::prefix('admin')->group(function () {
     Route::resource('categories', CategoryController::class)->names('admin.categories');
     Route::get('categories/report', [CategoryController::class, 'report'])->name('admin.categories.report');
     Route::resource('customers', CustomerController::class)->names('admin.customers');
+    Route::get('customers/{customer}/detail', [CustomerController::class, 'show'])->name('admin.customers.detail');
     Route::resource('orders', OrderController::class)->names('admin.orders');
 });
 

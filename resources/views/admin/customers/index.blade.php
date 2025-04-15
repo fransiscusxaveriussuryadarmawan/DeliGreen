@@ -25,22 +25,27 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @for($i = 1; $i <= 8; $i++)
+                        @forelse($customers as $customer)
                         <tr>
-                            <td>C{{ str_pad($i, 3, '0', STR_PAD_LEFT) }}</td>
-                            <td>Pelanggan {{ $i }}</td>
-                            <td>customer{{ $i }}@example.com</td>
-                            <td>0812-3456-789{{ $i }}</td>
-                            <td>{{ rand(1, 20) }}x</td>
-                            <td>{{ now()->subDays(rand(1, 90))->format('d M Y') }}</td>
+                            <td>C{{ str_pad($customer->id, 3, '0', STR_PAD_LEFT) }}</td>
+                            <td>{{ $customer->name }}</td>
+                            <td>{{ $customer->email }}</td>
+                            <td>{{ $customer->phone }}</td>
+                            <td>{{ $customer->orders_count }}x</td>
+                            <td>{{ $customer->created_at->format('d M Y') }}</td>
                             <td>
-                                <button class="btn btn-sm btn-outline-success">
+                                <a href="{{ route('admin.customers.detail', $customer->id) }}" class="btn btn-sm btn-outline-success">
                                     <i class="bi bi-eye"></i> Detail
-                                </button>
+                                </a>                                
                             </td>
                         </tr>
-                        @endfor
+                        @empty
+                        <tr>
+                            <td colspan="7" class="text-center">Tidak ada data pelanggan.</td>
+                        </tr>
+                        @endforelse
                     </tbody>
+                    
                 </table>
             </div>
         </div>
