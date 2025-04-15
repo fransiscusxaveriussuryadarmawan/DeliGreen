@@ -19,20 +19,22 @@
 
     <div class="card shadow-sm border-0">
         <div class="card-body">
-            <!-- Filter -->
-            <div class="row mb-4">
-                <div class="col-md-3">
-                    <select class="form-select">
-                        <option>All</option>
-                        <option>Pending</option>
-                        <option>Completed</option>
-                        <option>Canceled</option>
-                    </select>
+            <form method="GET" action="{{ route('admin.orders.index') }}">
+                <div class="row mb-4">
+                    <div class="col-md-3">
+                        <select class="form-select" name="status" onchange="this.form.submit()">
+                            <option value="">All</option>
+                            <option value="pending" {{ request('status') == 'pending' ? 'selected' : '' }}>Pending</option>
+                            <option value="completed" {{ request('status') == 'completed' ? 'selected' : '' }}>Completed</option>
+                            <option value="canceled" {{ request('status') == 'canceled' ? 'selected' : '' }}>Canceled</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <input type="date" class="form-control" name="date" value="{{ request('date') }}" onchange="this.form.submit()">
+                    </div>
                 </div>
-                <div class="col-md-3">
-                    <input type="date" class="form-control">
-                </div>
-            </div>
+            </form>
+
 
             <!-- Table -->
             <div class="table-responsive">
@@ -74,11 +76,7 @@
                             </td>
                         </tr>
                         @empty
-                        <tr>
-                            <td colspan="5" class="text-center text-muted py-4">
-                                No orders found. <a href="{{ route('admin.orders.create') }}">Create one</a>.
-                            </td>
-                        </tr>
+
                         @endforelse
                     </tbody>
                 </table>

@@ -13,10 +13,21 @@ class OrderController extends Controller
      */
     public function index()
     {
-        $orders = Order::paginate(10);
-        // You can pass the orders to the view if needed
+        $orders = Order::query();
+
+        if (request('status')) {
+            $orders->where('status', request('status'));
+        }
+
+        if (request('date')) {
+            $orders->whereDate('created_at', request('date'));
+        }
+
+        $orders = $orders->with('customer')->latest()->paginate(10);
+
         return view('admin.orders.index', compact('orders'));
     }
+
 
     /**
      * Show the form for creating a new resource.
