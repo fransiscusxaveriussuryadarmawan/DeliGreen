@@ -4,10 +4,10 @@
 <div class="container-fluid py-4">
     <!-- Success Message -->
     @if(session('success'))
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-            {{ session('success') }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        {{ session('success') }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
     @endif
 
     <div class="row mb-4">
@@ -63,9 +63,14 @@
                                 </span>
                             </td>
                             <td>
-                                <button class="btn btn-sm btn-outline-success">
+                                <!-- <button class="btn btn-sm btn-outline-success">
                                     <i class="bi bi-eye"></i> Detail
-                                </button>
+                                </button> -->
+
+                                <a href="{{ route('admin.orders.show', $order->id) }}" class="btn btn-sm btn-outline-success">
+                                    <i class="bi bi-eye"></i> Detail
+                                </a>
+
                             </td>
                         </tr>
                         @empty

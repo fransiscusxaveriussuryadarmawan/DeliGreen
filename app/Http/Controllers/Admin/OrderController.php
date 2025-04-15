@@ -39,8 +39,10 @@ class OrderController extends Controller
      */
     public function show(Order $order)
     {
-        //
+        $order->load(['customer', 'items.food']); // eager loading
+        return view('admin.orders.show', compact('order'));
     }
+
 
     /**
      * Show the form for editing the specified resource.
@@ -55,8 +57,16 @@ class OrderController extends Controller
      */
     public function update(Request $request, Order $order)
     {
-        //
+        $request->validate([
+            'status' => 'required|in:pending,completed,canceled',
+        ]);
+
+        $order->update(['status' => $request->status]);
+
+        return redirect()->back()->with('success', 'Status pesanan berhasil diperbarui');
     }
+
+
 
     /**
      * Remove the specified resource from storage.

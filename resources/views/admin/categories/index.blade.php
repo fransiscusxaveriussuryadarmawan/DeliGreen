@@ -1,17 +1,22 @@
 @extends('components.app')
-
 @section('title', 'Categories')
-
 @section('content')
 <div class="container mt-4">
     <!-- Success Message -->
     @if(session('success'))
-        <div class="alert alert-success alert-dismissible fade show">
-            {{ session('success') }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-        </div>
-    
+    <div class="alert alert-success alert-dismissible fade show">
+        {{ session('success') }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+
     @endif
+
+    <div class="row mb-4">
+        <div class="col-12">
+            <h1 class="display-4 text-success fw-bold">Master Categories</h1>
+            <p class="lead text-muted">Kelola data kategori makanan</p>
+        </div>
+    </div>
 
     <div class="card shadow-sm">
         <div class="card-header bg-white d-flex justify-content-between align-items-center">
@@ -51,20 +56,20 @@
                             <td>{{ $category->created_at->format('d M Y') }}</td>
                             <td class="text-center">
                                 <div class="d-flex justify-content-center gap-2">
-                                    <a href="{{ route('admin.categories.edit', $category->id) }}" 
-                                       class="btn btn-sm btn-warning d-flex align-items-center"
-                                       title="Edit">
+                                    <a href="{{ route('admin.categories.edit', $category->id) }}"
+                                        class="btn btn-sm btn-warning d-flex align-items-center"
+                                        title="Edit">
                                         <i class="fas fa-edit">Edit</i>
                                     </a>
 
-                                    <form action="{{ route('admin.categories.destroy', $category->id) }}" 
-                                          method="POST" 
-                                          onsubmit="return confirm('Delete this category?')">
+                                    <form action="{{ route('admin.categories.destroy', $category->id) }}"
+                                        method="POST"
+                                        onsubmit="return confirm('Delete this category?')">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" 
-                                                class="btn btn-sm btn-danger d-flex align-items-center"
-                                                title="Delete">
+                                        <button type="submit"
+                                            class="btn btn-sm btn-danger d-flex align-items-center"
+                                            title="Delete">
                                             <i class="fas fa-trash-alt">Delete</i>
                                         </button>
                                     </form>
@@ -84,40 +89,40 @@
 
             <!-- Pagination -->
             @if($categories->hasPages())
-                <div class="d-flex justify-content-center mt-4">
-                    <nav aria-label="Page navigation">
-                        <ul class="pagination">
-                            {{-- Previous Page Link --}}
-                            @if ($categories->onFirstPage())
-                                <li class="page-item disabled">
-                                    <span class="page-link">&laquo;</span>
-                                </li>
-                            @else
-                                <li class="page-item">
-                                    <a class="page-link" href="{{ $categories->previousPageUrl() }}" rel="prev">&laquo;</a>
-                                </li>
-                            @endif
+            <div class="d-flex justify-content-center mt-4">
+                <nav aria-label="Page navigation">
+                    <ul class="pagination">
+                        {{-- Previous Page Link --}}
+                        @if ($categories->onFirstPage())
+                        <li class="page-item disabled">
+                            <span class="page-link">&laquo;</span>
+                        </li>
+                        @else
+                        <li class="page-item">
+                            <a class="page-link" href="{{ $categories->previousPageUrl() }}" rel="prev">&laquo;</a>
+                        </li>
+                        @endif
 
-                            {{-- Pagination Elements --}}
-                            @foreach ($categories->links()->elements[0] as $page => $url)
-                                <li class="page-item {{ $page == $categories->currentPage() ? 'active' : '' }}">
-                                    <a class="page-link" href="{{ $url }}">{{ $page }}</a>
-                                </li>
-                            @endforeach
+                        {{-- Pagination Elements --}}
+                        @foreach ($categories->links()->elements[0] as $page => $url)
+                        <li class="page-item {{ $page == $categories->currentPage() ? 'active' : '' }}">
+                            <a class="page-link" href="{{ $url }}">{{ $page }}</a>
+                        </li>
+                        @endforeach
 
-                            {{-- Next Page Link --}}
-                            @if ($categories->hasMorePages())
-                                <li class="page-item">
-                                    <a class="page-link" href="{{ $categories->nextPageUrl() }}" rel="next">&raquo;</a>
-                                </li>
-                            @else
-                                <li class="page-item disabled">
-                                    <span class="page-link">&raquo;</span>
-                                </li>
-                            @endif
-                        </ul>
-                    </nav>
-                </div>
+                        {{-- Next Page Link --}}
+                        @if ($categories->hasMorePages())
+                        <li class="page-item">
+                            <a class="page-link" href="{{ $categories->nextPageUrl() }}" rel="next">&raquo;</a>
+                        </li>
+                        @else
+                        <li class="page-item disabled">
+                            <span class="page-link">&raquo;</span>
+                        </li>
+                        @endif
+                    </ul>
+                </nav>
+            </div>
             @endif
         </div>
     </div>

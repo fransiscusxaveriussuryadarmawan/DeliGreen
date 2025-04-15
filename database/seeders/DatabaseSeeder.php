@@ -10,6 +10,7 @@ use App\Models\Food;
 use App\Models\Order;
 use App\Models\User;
 use Illuminate\Database\Seeder;
+use App\Models\OrderItem;
 
 class DatabaseSeeder extends Seeder
 {
@@ -23,7 +24,7 @@ class DatabaseSeeder extends Seeder
         Food::factory(10)->create();
         Order::factory(10)->create();
         Customer::factory(10)->create();
-
+        OrderItem::factory()->count(10)->create();
         // \App\Models\User::factory()->create([
         //     'name' => 'Test User',
         //     'email' => 'test@example.com',

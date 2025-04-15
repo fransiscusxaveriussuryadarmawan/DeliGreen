@@ -1,7 +1,14 @@
 @extends('components.app')
 @section('title', 'Food List')
 @section('content')
-<div class="container py-4">
+<div class="container mt-4">
+
+    <div class="row mb-4">
+        <div class="col-12">
+            <h1 class="display-4 text-success fw-bold">Master Food</h1>
+            <p class="lead text-muted">Kelola data makanan</p>
+        </div>
+    </div>
     <div class="card shadow-sm border-0">
         <div class="card-header bg-white d-flex justify-content-between align-items-center py-3">
             <h4 class="mb-0">

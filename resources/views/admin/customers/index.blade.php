@@ -5,7 +5,7 @@
     <div class="row mb-4">
         <div class="col-12">
             <h1 class="display-4 text-success fw-bold">Master Customers</h1>
-            <p class="lead text-muted">Kelola data pelanggan DeliGreen</p>
+            <p class="lead text-muted">Kelola data pelanggan</p>
         </div>
     </div>
 
@@ -36,7 +36,7 @@
                             <td>
                                 <a href="{{ route('admin.customers.detail', $customer->id) }}" class="btn btn-sm btn-outline-success">
                                     <i class="bi bi-eye"></i> Detail
-                                </a>                                
+                                </a>
                             </td>
                         </tr>
                         @empty
@@ -45,7 +45,7 @@
                         </tr>
                         @endforelse
                     </tbody>
-                    
+
                 </table>
             </div>
         </div>
