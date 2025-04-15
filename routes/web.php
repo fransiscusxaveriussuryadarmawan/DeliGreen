@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\CustomerController;
 use App\Http\Controllers\Admin\FoodController;
 use App\Http\Controllers\Admin\OrderController;
+use App\Http\Controllers\Admin\ReportController;
 use App\Http\Controllers\DashboardController;
 use Illuminate\Support\Facades\Route;
 
@@ -34,6 +35,7 @@ Route::prefix('admin')->group(function () {
     Route::resource('customers', CustomerController::class)->names('admin.customers');
     Route::get('customers/{customer}/detail', [CustomerController::class, 'show'])->name('admin.customers.detail');
     Route::resource('orders', OrderController::class)->names('admin.orders');
+    Route::resource('reports', ReportController::class)->names('admin.reports');
 });
 
 Route::prefix('customer')->group(function () {
