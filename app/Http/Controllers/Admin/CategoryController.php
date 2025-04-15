@@ -14,10 +14,10 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $categories = Category::paginate(10);
-
+        $categories = Category::withCount('foods')->paginate(10);
         return view('admin.categories.index', compact('categories'));
     }
+
 
     /**
      * Show the form for creating a new resource.
@@ -38,11 +38,11 @@ class CategoryController extends Controller
         ]);
 
         $validated['slug'] = Str::slug($validated['name']);
-    
+
         Category::create($validated);
-    
+
         return redirect()->route('admin.categories.index')
-                         ->with('success', 'Category created successfully');
+            ->with('success', 'Category created successfully');
     }
 
     /**
@@ -76,7 +76,7 @@ class CategoryController extends Controller
         $category->update($validated);
 
         return redirect()->route('admin.categories.index')
-                        ->with('success', 'Category updated successfully');
+            ->with('success', 'Category updated successfully');
     }
 
 
@@ -88,7 +88,7 @@ class CategoryController extends Controller
         $category->delete();
 
         return redirect()->route('admin.categories.index')
-                        ->with('success', 'Category deleted successfully');
+            ->with('success', 'Category deleted successfully');
     }
 
 
@@ -96,8 +96,7 @@ class CategoryController extends Controller
     {
         $topCategory = Category::getTopCategory();
 
-        if (!$topCategory)
-        {
+        if (!$topCategory) {
             return redirect()->route('admin.categories.index')->with('error', 'No categories found.');
         }
 
