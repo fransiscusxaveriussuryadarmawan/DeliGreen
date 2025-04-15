@@ -39,11 +39,11 @@
                         <tr>
                             <td>#ORD{{ str_pad($order->id, 3, '0', STR_PAD_LEFT) }}</td>
                             <td>{{ $order->created_at->format('d M Y H:i') }}</td>
-                            <td>Rp {{ number_format($order->total, 0, ',', '.') }}</td>
+                            <td>$ {{ number_format($order->total_price, 2, ',', '.') }}</td>
                             <td>
                                 <span class="badge 
-                                    @if($order->status == 'Selesai') bg-success 
-                                    @elseif($order->status == 'Diproses') bg-warning 
+                                    @if($order->status == 'completed') bg-success 
+                                    @elseif($order->status == 'pending') bg-warning 
                                     @else bg-danger @endif">
                                     {{ $order->status }}
                                 </span>

@@ -23,10 +23,10 @@
             <div class="row mb-4">
                 <div class="col-md-3">
                     <select class="form-select">
-                        <option>Semua Status</option>
-                        <option>Diproses</option>
-                        <option>Selesai</option>
-                        <option>Dibatalkan</option>
+                        <option>All</option>
+                        <option>Pending</option>
+                        <option>Completed</option>
+                        <option>Canceled</option>
                     </select>
                 </div>
                 <div class="col-md-3">
