@@ -13,17 +13,18 @@
         <div class="card-body">
             {{-- Menampilkan error validasi --}}
             @if ($errors->any())
-                <div class="alert alert-danger">
-                    <ul class="mb-0">
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
+            <div class="alert alert-danger">
+                <ul class="mb-0">
+                    @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
             @endif
 
             {{-- Form tambah makanan --}}
-            <form action="{{ route('food.store') }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('admin.foods.store') }}" method="POST" enctype="multipart/form-data">
+
                 @csrf
 
                 <div class="mb-3">
@@ -36,9 +37,9 @@
                     <select name="category_id" class="form-select" required>
                         <option value="">-- Select Category --</option>
                         @foreach($categories as $category)
-                            <option value="{{ $category->id }}" {{ old('category_id') == $category->id ? 'selected' : '' }}>
-                                {{ $category->name }}
-                            </option>
+                        <option value="{{ $category->id }}" {{ old('category_id') == $category->id ? 'selected' : '' }}>
+                            {{ $category->name }}
+                        </option>
                         @endforeach
                     </select>
                 </div>
@@ -49,7 +50,7 @@
                 </div>
 
                 <div class="mb-3">
-                     <label for="description" class="form-label">Description (optional)</label>
+                    <label for="description" class="form-label">Description (optional)</label>
                     <textarea name="description" class="form-control" rows="3">{{ old('description') }}</textarea>
                 </div>
 

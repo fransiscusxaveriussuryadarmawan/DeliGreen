@@ -33,23 +33,25 @@ class FoodController extends Controller
      */
     public function store(Request $request)
     {
-         $validated = $request->validate([
+        $validated = $request->validate([
             'name' => 'required|string|max:255',
             'category_id' => 'required|exists:categories,id',
             'price' => 'required|numeric|min:0',
             'image' => 'nullable|image|max:2048',
-            'description' => 'nullable|string'
+            'description' => 'nullable|string',
         ]);
 
         if ($request->hasFile('image')) {
-            $validated['image'] = $request->file('image')->store('foods', 'public');
+            $imagePath = $request->file('image')->store('foods', 'public');
+            $validated['image'] = $imagePath; // simpan 'foods/namafile.jpg'
         }
 
         Food::create($validated);
 
         return redirect()->route('admin.foods.index')
-                         ->with('success', 'Food item created successfully');
+            ->with('success', 'Food item created successfully');
     }
+
 
     /**
      * Display the specified resource.
@@ -78,22 +80,24 @@ class FoodController extends Controller
             'category_id' => 'required|exists:categories,id',
             'price' => 'required|numeric|min:0',
             'image' => 'nullable|image|max:2048',
-            'description' => 'nullable|string'
+            'description' => 'nullable|string',
         ]);
 
         if ($request->hasFile('image')) {
-            // Delete old image if exists
-            if ($food->image) {
+            // 🔥 Hapus file lama jika ada
+            if ($food->image && Storage::disk('public')->exists($food->image)) {
                 Storage::disk('public')->delete($food->image);
             }
+
             $validated['image'] = $request->file('image')->store('foods', 'public');
         }
 
         $food->update($validated);
 
         return redirect()->route('admin.foods.index')
-                         ->with('success', 'Food item updated successfully');
+            ->with('success', 'Food item updated successfully');
     }
+
 
     /**
      * Remove the specified resource from storage.
@@ -103,12 +107,10 @@ class FoodController extends Controller
         if ($food->image) {
             Storage::disk('public')->delete($food->image);
         }
-        
-        $food->delete();
-        
-        return redirect()->route('admin.foods.index')
-                         ->with('success', 'Food item deleted successfully');
-    }
 
-    
+        $food->delete();
+
+        return redirect()->route('admin.foods.index')
+            ->with('success', 'Food item deleted successfully');
+    }
 }

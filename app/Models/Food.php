@@ -16,6 +16,7 @@ class Food extends Model
         'category_id',
         'price',
         'description',
+        'image',
     ];
 
     public function category()
