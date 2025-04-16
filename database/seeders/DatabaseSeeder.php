@@ -20,12 +20,12 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         User::factory(10)->create();
-        Category::factory(10)->create();
-        Food::factory(10)->create();
-        Customer::factory(10)->create();
+        Category::factory(25)->create();
+        Food::factory(25)->create();
+        Customer::factory(25)->create();
 
         Order::factory()
-            ->count(10)
+            ->count(25)
             ->has(OrderItem::factory()->count(3), 'items')
             ->create()
             ->each(function ($order) {

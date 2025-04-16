@@ -49,6 +49,41 @@
                 </table>
             </div>
         </div>
+        @if($customers->hasPages())
+        <div class="d-flex justify-content-center mt-4">
+            <nav aria-label="Page navigation">
+                <ul class="pagination">
+
+                    @if ($customers->onFirstPage())
+                    <li class="page-item disabled">
+                        <span class="page-link">&laquo;</span>
+                    </li>
+                    @else
+                    <li class="page-item">
+                        <a class="page-link" href="{{ $customers->previousPageUrl() }}" rel="prev">&laquo;</a>
+                    </li>
+                    @endif
+
+                    @foreach ($customers->links()->elements[0] as $page => $url)
+                    <li class="page-item {{ $page == $customers->currentPage() ? 'active' : '' }}">
+                        <a class="page-link" href="{{ $url }}">{{ $page }}</a>
+                    </li>
+                    @endforeach
+
+                    @if ($customers->hasMorePages())
+                    <li class="page-item">
+                        <a class="page-link" href="{{ $customers->nextPageUrl() }}" rel="next">&raquo;</a>
+                    </li>
+                    @else
+                    <li class="page-item disabled">
+                        <span class="page-link">&raquo;</span>
+                    </li>
+                    @endif
+                </ul>
+            </nav>
+        </div>
+        @endif
     </div>
+
 </div>
 @endsection
