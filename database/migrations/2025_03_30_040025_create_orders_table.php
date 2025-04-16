@@ -13,17 +13,14 @@ return new class extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('customer_id');
-            $table->foreign('customer_id')->references('id')->on('customers')->onDelete('cascade');
-            $table->unsignedBigInteger('food_id');
-            $table->foreign('food_id')->references('id')->on('foods')->onDelete('cascade');
-            $table->integer('quantity')->default(1);
+            $table->foreignId('customer_id')->constrained()->onDelete('cascade');
             $table->dateTime('order_date')->default(now());
-            $table->decimal('total_price', 10, 2);
+            $table->decimal('total_price', 10, 2)->default(0);
             $table->enum('status', ['pending', 'completed', 'canceled'])->default('pending');
             $table->timestamps();
         });
     }
+
 
     /**
      * Reverse the migrations.

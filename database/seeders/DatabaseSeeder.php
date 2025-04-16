@@ -22,12 +22,16 @@ class DatabaseSeeder extends Seeder
         User::factory(10)->create();
         Category::factory(10)->create();
         Food::factory(10)->create();
-        Order::factory(10)->create();
         Customer::factory(10)->create();
-        OrderItem::factory()->count(10)->create();
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
+
+        Order::factory()
+            ->count(10)
+            ->has(OrderItem::factory()->count(3), 'items')
+            ->create()
+            ->each(function ($order) {
+                $order->update([
+                    'total_price' => $order->items->sum(fn($i) => $i->price * $i->quantity),
+                ]);
+            });
     }
 }

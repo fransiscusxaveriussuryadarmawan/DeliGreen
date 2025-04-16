@@ -20,11 +20,9 @@ class OrderFactory extends Factory
     {
         return [
             'customer_id' => Customer::factory(),
-            'food_id' => Food::factory(),
-            'quantity' => $this->faker->numberBetween(1, 10),
-            'total_price' => $this->faker->randomFloat(2, 1, 100),
-            'status' => $this->faker->randomElement(['pending', 'completed', 'canceled']),
             'order_date' => $this->faker->dateTime(),
+            'total_price' => 0,
+            'status' => $this->faker->randomElement(['pending', 'completed', 'canceled']),
             'created_at' => now(),
             'updated_at' => now(),
         ];
