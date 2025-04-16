@@ -25,9 +25,6 @@
                 <a href="{{ route('admin.categories.create') }}" class="btn btn-primary btn-sm">
                     <i class="fas fa-plus"></i> Add Category
                 </a>
-                <a href="{{ route('admin.categories.report') }}" class="btn btn-info btn-sm ms-2">
-                    <i class="fas fa-chart-bar"></i> View Report
-                </a>
             </div>
         </div>
 

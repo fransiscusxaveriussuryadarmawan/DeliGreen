@@ -31,11 +31,10 @@ Route::prefix('admin')->group(function () {
     Route::get('/', [DashboardController::class, 'indexAdmin'])->name('admin.dashboard');
     Route::resource('foods', FoodController::class)->names('admin.foods');
     Route::resource('categories', CategoryController::class)->names('admin.categories');
-    Route::get('categories/report', [CategoryController::class, 'report'])->name('admin.categories.report');
     Route::resource('customers', CustomerController::class)->names('admin.customers');
     Route::get('customers/{customer}/detail', [CustomerController::class, 'show'])->name('admin.customers.detail');
     Route::resource('orders', OrderController::class)->names('admin.orders');
-    Route::resource('reports', ReportController::class)->names('admin.reports');
+    Route::resource('reports', ReportController::class)->only(['index'])->names('admin.reports');
 });
 
 Route::prefix('customer')->group(function () {
