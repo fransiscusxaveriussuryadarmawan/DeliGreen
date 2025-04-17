@@ -64,28 +64,53 @@ class ReportController extends Controller
 
         $data = $this->getReportData($type);
 
-        return view("admin.reports.details.$type", $data);
+        return view("admin.reports.details." . str_replace('-', '_', $type), $data);
     }
 
     protected function getReportData($type)
     {
         return match ($type) {
-            'top-customer' => ['customers' => Customer::withCount('orders')->orderByDesc('orders_count')->take(10)->get()],
+            'top-customer' => [
+                'customers' => Customer::withCount('orders')
+                    ->orderByDesc('orders_count')
+                    ->take(10)
+                    ->get()
+            ],
 
-            'top-food' => ['foods' => Food::join('order_items', 'order_items.food_id', '=', 'foods.id')
-                ->select('foods.name', DB::raw('SUM(order_items.quantity) as total_sold'))
-                ->groupBy('foods.name')->orderByDesc('total_sold')->take(10)->get()],
+            'top-food' => [
+                'foods' => Food::select('foods.id', 'foods.name', 'foods.image', DB::raw('SUM(order_items.quantity) as total_sold'))
+                    ->join('order_items', 'order_items.food_id', '=', 'foods.id')
+                    ->groupBy('foods.id', 'foods.name', 'foods.image')
+                    ->orderByDesc('total_sold')
+                    ->take(10)
+                    ->get()
+            ],
 
-            'completion-rate' => ['orders' => Order::with('customer')->whereIn('status', ['completed', 'canceled'])->latest()->get()],
+            'completion-rate' => [
+                'orders' => Order::with('customer')
+                    ->whereIn('status', ['completed', 'canceled'])
+                    ->latest()
+                    ->get()
+            ],
 
-            'top-category' => ['categories' => Category::select('categories.name', DB::raw('SUM(order_items.quantity) as total_orders'))
-                ->join('foods', 'foods.category_id', '=', 'categories.id')
-                ->join('order_items', 'order_items.food_id', '=', 'foods.id')
-                ->groupBy('categories.name')->orderByDesc('total_orders')->take(10)->get()],
+            'top-category' => [
+                'categories' => Category::select('categories.id', 'categories.name', DB::raw('SUM(order_items.quantity) as total_orders'))
+                    ->join('foods', 'foods.category_id', '=', 'categories.id')
+                    ->join('order_items', 'order_items.food_id', '=', 'foods.id')
+                    ->whereMonth('order_items.created_at', now()->month)
+                    ->groupBy('categories.id', 'categories.name')
+                    ->orderByDesc('total_orders')
+                    ->take(10)
+                    ->get()
+            ],
 
-            'monthly-revenue' => ['revenues' => Order::selectRaw('MONTH(created_at) as month, SUM(total_price) as revenue')
-                ->whereYear('created_at', now()->year)
-                ->groupByRaw('MONTH(created_at)')->orderBy('month')->get()],
+            'monthly-revenue' => [
+                'revenues' => Order::selectRaw('MONTH(created_at) as month, SUM(total_price) as revenue')
+                    ->whereYear('created_at', now()->year)
+                    ->groupByRaw('MONTH(created_at)')
+                    ->orderBy('month')
+                    ->get()
+            ]
         };
     }
 }
