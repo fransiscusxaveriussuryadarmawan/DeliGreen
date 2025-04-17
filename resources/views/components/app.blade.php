@@ -5,10 +5,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DeliGreen - {{ $title ?? 'Dashboard' }}</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <style>
-        /* Hapus margin default */
         body,
         html {
             margin: 0;
@@ -16,22 +16,17 @@
             height: 100%;
         }
 
-        /* Navbar sticky */
         .navbar {
             position: sticky;
             top: 0;
             z-index: 1030;
-            /* Pastikan navbar di atas elemen lain */
             width: 100%;
         }
 
-        /* Konten utama */
         .main-content {
             padding-top: 0;
-            /* Hapus padding atas */
         }
 
-        /* Footer */
         .footer {
             background-color: #2c3e50 !important;
         }

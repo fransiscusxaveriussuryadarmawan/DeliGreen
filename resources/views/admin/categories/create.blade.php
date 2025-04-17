@@ -11,18 +11,16 @@
         </div>
 
         <div class="card-body">
-            {{-- Menampilkan error validasi --}}
             @if ($errors->any())
-                <div class="alert alert-danger">
-                    <ul class="mb-0">
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
+            <div class="alert alert-danger">
+                <ul class="mb-0">
+                    @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
             @endif
 
-            {{-- Form tambah kategori --}}
             <form action="{{ route('admin.categories.store') }}" method="POST">
                 @csrf
 

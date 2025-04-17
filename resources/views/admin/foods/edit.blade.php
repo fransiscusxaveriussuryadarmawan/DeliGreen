@@ -11,18 +11,17 @@
         </div>
 
         <div class="card-body">
-            {{-- Menampilkan error validasi --}}
+
             @if ($errors->any())
-                <div class="alert alert-danger">
-                    <ul class="mb-0">
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
+            <div class="alert alert-danger">
+                <ul class="mb-0">
+                    @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
             @endif
 
-            {{-- Form edit makanan --}}
             <form action="{{ route('admin.foods.update', $food->id) }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
@@ -37,9 +36,9 @@
                     <select name="category_id" class="form-select" required>
                         <option value="">-- Select Category --</option>
                         @foreach($categories as $category)
-                            <option value="{{ $category->id }}" {{ old('category_id', $food->category_id) == $category->id ? 'selected' : '' }}>
-                                {{ $category->name }}
-                            </option>
+                        <option value="{{ $category->id }}" {{ old('category_id', $food->category_id) == $category->id ? 'selected' : '' }}>
+                            {{ $category->name }}
+                        </option>
                         @endforeach
                     </select>
                 </div>
@@ -57,9 +56,9 @@
                 <div class="mb-3">
                     <label class="form-label">Current Image</label><br>
                     @if ($food->image)
-                        <img src="{{ asset('storage/' . $food->image) }}" alt="Food Image" class="rounded mb-2" width="100">
+                    <img src="{{ asset('storage/' . $food->image) }}" alt="Food Image" class="rounded mb-2" width="100">
                     @else
-                        <p class="text-muted">No image uploaded</p>
+                    <p class="text-muted">No image uploaded</p>
                     @endif
                 </div>
 

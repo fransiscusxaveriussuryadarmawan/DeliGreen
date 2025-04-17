@@ -7,7 +7,6 @@
             <div class="card-body">
                 <h4 class="mb-4">Keranjang Anda</h4>
 
-                <!-- Item Cart -->
                 <div class="d-flex gap-3 mb-4">
                     <img src="https://via.placeholder.com/100x100" class="rounded" alt="Item">
                     <div class="flex-grow-1">
@@ -27,7 +26,6 @@
         </div>
     </div>
 
-    <!-- Ringkasan Pembayaran -->
     <div class="col-lg-4">
         <div class="card shadow-sm sticky-top">
             <div class="card-body">

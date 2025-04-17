@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="row">
-    <!-- Sidebar Filter -->
+
     <div class="col-md-3 mb-4">
         <div class="card shadow-sm">
             <div class="card-body">
@@ -25,7 +25,6 @@
         </div>
     </div>
 
-    <!-- Daftar Menu -->
     <div class="col-md-9">
         <div class="row g-4">
             @for($i = 0; $i < 8; $i++)
@@ -54,8 +53,5 @@
 </div>
 </div>
 
-<!-- Modal Customisasi -->
-<div class="modal fade" id="customizeModal">
-    <!-- Isi modal di sini -->
 </div>
 @endsection

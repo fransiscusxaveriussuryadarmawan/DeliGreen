@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="container-fluid py-4">
-    <!-- Header -->
+
     <div class="row mb-4">
         <div class="col-12">
             <h1 class="display-4 text-success fw-bold">Dashboard DeliGreen</h1>
@@ -10,9 +10,7 @@
         </div>
     </div>
 
-    <!-- Cards -->
     <div class="row g-4 mb-5">
-        <!-- Total Omzet -->
         <div class="col-12 col-md-6 col-lg-4">
             <div class="card shadow-sm border-0 h-100">
                 <div class="card-body">
@@ -28,7 +26,6 @@
             </div>
         </div>
 
-        <!-- Pesanan Aktif -->
         <div class="col-12 col-md-6 col-lg-4">
             <div class="card shadow-sm border-0 h-100">
                 <div class="card-body">
@@ -44,7 +41,6 @@
             </div>
         </div>
 
-        <!-- Produk Terlaris -->
         <div class="col-12 col-lg-4">
             <div class="card shadow-sm border-0 h-100">
                 <div class="card-body">
@@ -62,7 +58,6 @@
         </div>
     </div>
 
-    <!-- Grafik Omzet -->
     <div class="row mb-5">
         <div class="col-12 col-lg-8">
             <div class="card shadow-sm border-0">
@@ -75,7 +70,6 @@
             </div>
         </div>
 
-        <!-- Aktivitas Terbaru -->
         <div class="col-12 col-lg-4">
             <div class="card shadow-sm border-0">
                 <div class="card-body">
@@ -100,7 +94,6 @@
     </div>
 </div>
 
-<!-- Chart.js Script -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
     const ctx = document.getElementById('omzetChart').getContext('2d');
@@ -119,7 +112,7 @@
         },
         options: {
             responsive: true,
-            maintainAspectRatio: false, // Nonaktifkan aspect ratio default
+            maintainAspectRatio: false,
             scales: {
                 y: {
                     beginAtZero: true,

@@ -2,7 +2,6 @@
 
 @section('content')
 <div class="container-fluid py-4">
-    <!-- Success Message -->
     @if(session('success'))
     <div class="alert alert-success alert-dismissible fade show" role="alert">
         {{ session('success') }}
@@ -35,8 +34,6 @@
                 </div>
             </form>
 
-
-            <!-- Table -->
             <div class="table-responsive">
                 <table class="table table-hover">
                     <thead class="table-light">
@@ -82,7 +79,6 @@
                 </table>
             </div>
 
-            <!-- Pagination -->
             @if($orders->hasPages())
             <div class="d-flex justify-content-center mt-4">
                 <nav aria-label="Page navigation">

@@ -7,6 +7,7 @@ use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Food;
 use App\Models\Category;
+use Illuminate\Support\Facades\DB;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -26,7 +27,6 @@ class ReportController extends Controller
             ->orderByDesc('total_sold')
             ->first();
 
-
         $monthlyRevenue = Order::whereMonth('created_at', now()->month)
             ->whereYear('created_at', now()->year)
             ->sum('total_price');
@@ -40,43 +40,52 @@ class ReportController extends Controller
             ->orderByDesc('total_orders')
             ->first();
 
+        $totalOrders = Order::count();
+        $completedOrders = Order::where('status', 'completed')->count();
+        $canceledOrders = Order::where('status', 'canceled')->count();
+        $completionRate = $totalOrders > 0 ? round(($completedOrders / $totalOrders) * 100, 2) : 0;
+        $cancelRate = $totalOrders > 0 ? round(($canceledOrders / $totalOrders) * 100, 2) : 0;
 
         return view('admin.reports.index', compact(
             'topCustomer',
             'topFood',
             'monthlyRevenue',
-            'topCategory'
+            'topCategory',
+            'completionRate',
+            'cancelRate'
         ));
     }
 
-
-    public function show($id)
+    public function load($type)
     {
-        // Logic to fetch and display a specific report
-        return view('admin.reports.show', compact('id'));
+        if (!in_array($type, ['top-customer', 'top-food', 'completion-rate', 'top-category', 'monthly-revenue'])) {
+            return response('Laporan tidak ditemukan.', 404);
+        }
+
+        $data = $this->getReportData($type);
+
+        return view("admin.reports.details.$type", $data);
     }
 
-    public function generate(Request $request)
+    protected function getReportData($type)
     {
-        // Logic to generate a report based on the request data
-        return response()->json(['message' => 'Report generated successfully']);
-    }
+        return match ($type) {
+            'top-customer' => ['customers' => Customer::withCount('orders')->orderByDesc('orders_count')->take(10)->get()],
 
-    public function download($id)
-    {
-        // Logic to download a specific report
-        return response()->download(storage_path("app/reports/{$id}.pdf"));
-    }
+            'top-food' => ['foods' => Food::join('order_items', 'order_items.food_id', '=', 'foods.id')
+                ->select('foods.name', DB::raw('SUM(order_items.quantity) as total_sold'))
+                ->groupBy('foods.name')->orderByDesc('total_sold')->take(10)->get()],
 
-    public function delete($id)
-    {
-        // Logic to delete a specific report
-        return response()->json(['message' => 'Report deleted successfully']);
-    }
+            'completion-rate' => ['orders' => Order::with('customer')->whereIn('status', ['completed', 'canceled'])->latest()->get()],
 
-    public function filter(Request $request)
-    {
-        // Logic to filter reports based on request data
-        return response()->json(['message' => 'Reports filtered successfully']);
+            'top-category' => ['categories' => Category::select('categories.name', DB::raw('SUM(order_items.quantity) as total_orders'))
+                ->join('foods', 'foods.category_id', '=', 'categories.id')
+                ->join('order_items', 'order_items.food_id', '=', 'foods.id')
+                ->groupBy('categories.name')->orderByDesc('total_orders')->take(10)->get()],
+
+            'monthly-revenue' => ['revenues' => Order::selectRaw('MONTH(created_at) as month, SUM(total_price) as revenue')
+                ->whereYear('created_at', now()->year)
+                ->groupByRaw('MONTH(created_at)')->orderBy('month')->get()],
+        };
     }
 }

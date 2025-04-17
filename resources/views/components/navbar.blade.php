@@ -41,8 +41,6 @@
                         <i class="fas fa-chart-bar me-1"></i> Reports
                     </a>
                 </li>
-
-
             </ul>
 
             <div class="d-flex align-items-center">

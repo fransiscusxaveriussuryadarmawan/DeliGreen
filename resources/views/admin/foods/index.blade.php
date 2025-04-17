@@ -14,7 +14,7 @@
             <h4 class="mb-0">
                 <i class="fas fa-utensils me-2 text-primary"></i>Food Management
             </h4>
-            <a href="{{ route('food.create') }}" class="btn btn-primary">
+            <a href="{{ route('admin.foods.create') }}" class="btn btn-primary">
                 <i class="fas fa-plus me-1"></i> Add Food
             </a>
         </div>
@@ -66,12 +66,12 @@
                             </td>
                             <td class="px-4 text-center">
                                 <div class="d-flex justify-content-center gap-2">
-                                    <a href="{{ route('food.edit', $food->id) }}"
+                                    <a href="{{ route('admin.foods.edit', $food->id) }}"
                                         class="btn btn-sm btn-outline-primary rounded-3 px-3"
                                         title="Edit">
                                         <i class="fas fa-edit me-1"></i> Edit
                                     </a>
-                                    <form action="{{ route('food.destroy', $food->id) }}" method="POST">
+                                    <form action="{{ route('admin.foods.destroy', $food->id) }}" method="POST">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit"
@@ -97,12 +97,11 @@
                 </table>
             </div>
 
-            <!-- Pagination -->
             @if($foods->hasPages())
             <div class="d-flex justify-content-center mt-4">
                 <nav aria-label="Page navigation">
                     <ul class="pagination">
-                        {{-- Previous Page Link --}}
+
                         @if ($foods->onFirstPage())
                         <li class="page-item disabled">
                             <span class="page-link">&laquo;</span>
@@ -112,13 +111,13 @@
                             <a class="page-link" href="{{ $foods->previousPageUrl() }}" rel="prev">&laquo;</a>
                         </li>
                         @endif
-                        {{-- Pagination Elements --}}
+
                         @foreach ($foods->links()->elements[0] as $page => $url)
                         <li class="page-item {{ $page == $foods->currentPage() ? 'active' : '' }}">
                             <a class="page-link" href="{{ $url }}">{{ $page }}</a>
                         </li>
                         @endforeach
-                        {{-- Next Page Link --}}
+
                         @if ($foods->hasMorePages())
                         <li class="page-item">
                             <a class="page-link" href="{{ $foods->nextPageUrl() }}" rel="next">&raquo;</a>

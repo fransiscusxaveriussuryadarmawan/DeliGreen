@@ -2,7 +2,6 @@
 
 @section('content')
 <div class="container-fluid py-4">
-    <!-- Header -->
     <div class="row mb-4">
         <div class="col-12">
             <h1 class="display-4 text-success fw-bold">Selamat Datang, {{ Auth::user()->name }}!</h1>
@@ -10,7 +9,6 @@
         </div>
     </div>
 
-    <!-- Promo Carousel -->
     <div class="row mb-5">
         <div class="col-12">
             <div id="promoCarousel" class="carousel slide" data-bs-ride="carousel">
@@ -37,7 +35,6 @@
         </div>
     </div>
 
-    <!-- Kategori Makanan -->
     <div class="row mb-5">
         <div class="col-12">
             <h3 class="text-success mb-4">Kategori Makanan</h3>
@@ -50,18 +47,16 @@
                         </div>
                     </div>
                 </div>
-                <!-- Tambahkan kategori lainnya -->
             </div>
         </div>
     </div>
 
-    <!-- Rekomendasi Menu -->
     <div class="row mb-5">
         <div class="col-12">
             <h3 class="text-success mb-4">Rekomendasi untuk Anda</h3>
             <div class="row g-4">
                 @for($i = 0; $i < 6; $i++)
-                <div class="col-12 col-md-6 col-lg-4">
+                    <div class="col-12 col-md-6 col-lg-4">
                     <div class="card border-0 shadow-sm">
                         <img src="https://via.placeholder.com/400x300?text=Menu+{{ $i+1 }}" class="card-img-top" alt="Menu">
                         <div class="card-body">
@@ -75,44 +70,42 @@
                             </div>
                         </div>
                     </div>
-                </div>
-                @endfor
             </div>
+            @endfor
         </div>
     </div>
+</div>
 
-    <!-- Riwayat Pesanan -->
-    <div class="row mb-5">
-        <div class="col-12">
-            <h3 class="text-success mb-4">Riwayat Pesanan</h3>
-            <div class="table-responsive">
-                <table class="table table-hover">
-                    <thead>
-                        <tr>
-                            <th>ID Pesanan</th>
-                            <th>Tanggal</th>
-                            <th>Total</th>
-                            <th>Status</th>
-                            <th>Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>#1234</td>
-                            <td>12 Okt 2023</td>
-                            <td>Rp 120.000</td>
-                            <td><span class="badge bg-success">Selesai</span></td>
-                            <td>
-                                <a href="#" class="btn btn-sm btn-outline-success">
-                                    <i class="bi bi-eye"></i> Detail
-                                </a>
-                            </td>
-                        </tr>
-                        <!-- Tambahkan riwayat lainnya -->
-                    </tbody>
-                </table>
-            </div>
+<div class="row mb-5">
+    <div class="col-12">
+        <h3 class="text-success mb-4">Riwayat Pesanan</h3>
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>ID Pesanan</th>
+                        <th>Tanggal</th>
+                        <th>Total</th>
+                        <th>Status</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>#1234</td>
+                        <td>12 Okt 2023</td>
+                        <td>Rp 120.000</td>
+                        <td><span class="badge bg-success">Selesai</span></td>
+                        <td>
+                            <a href="#" class="btn btn-sm btn-outline-success">
+                                <i class="bi bi-eye"></i> Detail
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div>
+</div>
 </div>
 @endsection

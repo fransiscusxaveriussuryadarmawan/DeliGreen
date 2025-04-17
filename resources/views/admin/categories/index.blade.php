@@ -2,7 +2,7 @@
 @section('title', 'Categories')
 @section('content')
 <div class="container mt-4">
-    <!-- Success Message -->
+
     @if(session('success'))
     <div class="alert alert-success alert-dismissible fade show">
         {{ session('success') }}
@@ -84,12 +84,11 @@
                 </table>
             </div>
 
-            <!-- Pagination -->
             @if($categories->hasPages())
             <div class="d-flex justify-content-center mt-4">
                 <nav aria-label="Page navigation">
                     <ul class="pagination">
-                        {{-- Previous Page Link --}}
+
                         @if ($categories->onFirstPage())
                         <li class="page-item disabled">
                             <span class="page-link">&laquo;</span>
@@ -100,14 +99,12 @@
                         </li>
                         @endif
 
-                        {{-- Pagination Elements --}}
                         @foreach ($categories->links()->elements[0] as $page => $url)
                         <li class="page-item {{ $page == $categories->currentPage() ? 'active' : '' }}">
                             <a class="page-link" href="{{ $url }}">{{ $page }}</a>
                         </li>
                         @endforeach
 
-                        {{-- Next Page Link --}}
                         @if ($categories->hasMorePages())
                         <li class="page-item">
                             <a class="page-link" href="{{ $categories->nextPageUrl() }}" rel="next">&raquo;</a>

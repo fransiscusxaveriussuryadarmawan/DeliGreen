@@ -11,7 +11,7 @@
         </div>
 
         <div class="card-body">
-            {{-- Menampilkan error validasi --}}
+
             @if ($errors->any())
             <div class="alert alert-danger">
                 <ul class="mb-0">
@@ -22,7 +22,6 @@
             </div>
             @endif
 
-            {{-- Form tambah makanan --}}
             <form action="{{ route('admin.foods.store') }}" method="POST" enctype="multipart/form-data">
 
                 @csrf
