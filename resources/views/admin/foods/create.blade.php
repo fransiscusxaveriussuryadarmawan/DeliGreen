@@ -59,7 +59,7 @@
                 </div>
 
                 <div class="d-flex justify-content-between">
-                    <a href="{{ route('food.index') }}" class="btn btn-secondary">
+                    <a href="{{ route('admin.foods.index') }}" class="btn btn-secondary">
                         <i class="fas fa-arrow-left me-1"></i> Back
                     </a>
                     <button type="submit" class="btn btn-success">

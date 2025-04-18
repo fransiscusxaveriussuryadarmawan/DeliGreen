@@ -11,13 +11,33 @@
         </div>
     </div>
 
-    <div class="mb-4">
-        <button id="showInfo" class="btn btn-outline-info">
-            📌 Penjelasan Laporan
+    <div class="mb-4 text-end">
+        <button id="btnOpenModal" class="btn btn-primary">
+            ℹ️ Penjelasan
         </button>
-        <div id="infoBox" class="alert alert-secondary d-none mt-3">
-            Halaman ini menyajikan ringkasan data performa restoran seperti pelanggan teraktif,
-            produk terlaris, kategori favorit, serta persentase penyelesaian order.
+    </div>
+
+    <div class="modal fade" id="reportInfoModal" tabindex="-1" aria-labelledby="reportInfoModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content shadow-lg rounded-4">
+                <div class="modal-header text-white" style="background: linear-gradient(to right, #00c6ff, #0072ff); border-top-left-radius: 1rem; border-top-right-radius: 1rem;">
+                    <h5 class="modal-title fw-bold" id="reportInfoModalLabel">📋 Penjelasan Laporan</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Tutup"></button>
+                </div>
+                <div class="modal-body">
+                    <ul class="list-unstyled">
+                        <li class="mb-2">🟢 <strong>Customer Terbanyak:</strong> Menampilkan daftar pelanggan yang paling sering memesan.</li>
+                        <li class="mb-2">🔥 <strong>Produk Populer:</strong> Menampilkan produk yang paling sering dipesan.</li>
+                        <li class="mb-2">📊 <strong>Kategori Favorit:</strong> Statistik bulanan kategori yang paling banyak dipilih.</li>
+                        <li class="mb-2">💰 <strong>Pendapatan:</strong> Total pendapatan yang dihitung berdasarkan pesanan per bulan.</li>
+                        <li class="mb-2">🏆 <strong>Ranking Pelanggan:</strong> Urutan pelanggan berdasarkan jumlah total pemesanan.</li>
+                    </ul>
+                    <p class="text-muted">Klik pada setiap kotak laporan untuk melihat detail datanya dalam bentuk tabel !</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary rounded-pill px-4" data-bs-dismiss="modal">Tutup</button>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -89,7 +109,6 @@
 
         <div id="report-detail" class="mt-5"></div>
 
-
         <script>
             let activeReport = null;
 
@@ -111,13 +130,12 @@
                 });
             }
 
-            $('#showInfo').click(function() {
-                $('#infoBox').toggleClass('d-none');
+            $(document).ready(function() {
+                $('#btnOpenModal').click(function() {
+                    $('#reportInfoModal').modal('show');
+                });
             });
         </script>
-
-
-
 
     </div>
 </div>

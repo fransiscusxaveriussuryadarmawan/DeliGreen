@@ -3,6 +3,22 @@
 
 @section('content')
 <div class="container py-4">
+    @if(session('success'))
+    <div class="modal fade" id="orderSuccessModal" tabindex="-1" aria-labelledby="orderSuccessModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-success shadow">
+                <div class="modal-header bg-success text-white">
+                    <h5 class="modal-title" id="orderSuccessModalLabel">Berhasil!</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Tutup"></button>
+                </div>
+                <div class="modal-body text-center">
+                    {{ session('success') }}
+                </div>
+            </div>
+        </div>
+    </div>
+    @endif
+
     <div class="mb-4">
         <h1 class="display-5 fw-bold text-success">Detail Pesanan #{{ $order->id }}</h1>
         <p class="text-muted">Informasi lengkap pesanan pelanggan</p>
@@ -82,4 +98,12 @@
         </div>
     </div>
 </div>
+@endsection
+
+@section('scripts')
+<script>
+    $(document).ready(function() {
+        $('#orderSuccessModal').modal('show');
+    });
+</script>
 @endsection

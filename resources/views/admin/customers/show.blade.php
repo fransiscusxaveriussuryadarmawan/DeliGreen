@@ -2,6 +2,28 @@
 
 @section('content')
 <div class="container-fluid py-4">
+    <div class="modal fade" id="confirmDeleteCustomerModal" tabindex="-1" aria-labelledby="confirmDeleteCustomerModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-danger">
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title" id="confirmDeleteCustomerModalLabel">Konfirmasi Hapus</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Tutup"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Yakin ingin menghapus customer <strong id="customerName"></strong>?</p>
+                </div>
+                <div class="modal-footer">
+                    <form id="deleteCustomerForm" method="POST" action="">
+                        @csrf
+                        @method('DELETE')
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                        <button type="submit" class="btn btn-danger">Hapus</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="row mb-4">
         <div class="col-12">
             <h1 class="display-4 text-success fw-bold">Detail Pelanggan</h1>
@@ -57,7 +79,39 @@
                     </tbody>
                 </table>
             </div>
+
+            <div class="d-flex justify-content-center">
+                <button type="button" class="btn btn-outline-danger"
+                    data-id="{{ $customer->id }}"
+                    data-name="{{ $customer->name }}"
+                    data-bs-toggle="modal"
+                    data-bs-target="#confirmDeleteCustomerModal">
+                    <i class="fas fa-trash-alt me-1"></i> Hapus Customer
+                </button>
+            </div>
+
+
         </div>
     </div>
 </div>
+@endsection
+
+@section('scripts')
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const deleteButton = document.querySelector('[data-bs-target="#confirmDeleteCustomerModal"]');
+        const customerName = document.getElementById('customerName');
+        const deleteForm = document.getElementById('deleteCustomerForm');
+
+        if (deleteButton) {
+            deleteButton.addEventListener('click', function() {
+                const id = this.getAttribute('data-id');
+                const name = this.getAttribute('data-name');
+
+                customerName.textContent = name;
+                deleteForm.action = `/admin/customers/${id}`;
+            });
+        }
+    });
+</script>
 @endsection

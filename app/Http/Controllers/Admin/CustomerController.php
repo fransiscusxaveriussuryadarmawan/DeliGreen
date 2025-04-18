@@ -21,4 +21,10 @@ class CustomerController extends Controller
 
         return view('admin.customers.show', compact('customer', 'orders'));
     }
+
+    public function destroy(Customer $customer)
+    {
+        $customer->delete();
+        return redirect()->route('admin.customers.index')->with('success', 'Customer berhasil dihapus!');
+    }
 }

@@ -2,6 +2,24 @@
 
 @section('content')
 <div class="container-fluid py-4">
+
+    @if(session('success'))
+
+    <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-success shadow">
+                <div class="modal-header bg-success text-white">
+                    <h5 class="modal-title" id="successModalLabel">✅ Berhasil</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Tutup"></button>
+                </div>
+                <div class="modal-body text-center">
+                    {{ session('success') }}
+                </div>
+            </div>
+        </div>
+    </div>
+    @endif
+
     <div class="row mb-4">
         <div class="col-12">
             <h1 class="display-4 text-success fw-bold">Master Customers</h1>
@@ -86,4 +104,16 @@
     </div>
 
 </div>
+@endsection
+
+@section('scripts')
+@if(session('success'))
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const modal = new bootstrap.Modal(document.getElementById('successModal'));
+        modal.show();
+    });
+</script>
+@endif
+
 @endsection

@@ -4,12 +4,43 @@
 <div class="container mt-4">
 
     @if(session('success'))
-    <div class="alert alert-success alert-dismissible fade show">
-        {{ session('success') }}
-        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-    </div>
 
+    <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-success shadow">
+                <div class="modal-header bg-success text-white">
+                    <h5 class="modal-title" id="successModalLabel">✅ Berhasil</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Tutup"></button>
+                </div>
+                <div class="modal-body text-center">
+                    {{ session('success') }}
+                </div>
+            </div>
+        </div>
+    </div>
     @endif
+
+    <div class="modal fade" id="confirmDeleteCategoryModal" tabindex="-1" aria-labelledby="confirmDeleteCategoryModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-danger">
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title" id="confirmDeleteCategoryModalLabel">Konfirmasi Hapus</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Tutup"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Yakin ingin menghapus kategori <strong id="categoryName"></strong>?</p>
+                </div>
+                <div class="modal-footer">
+                    <form id="deleteCategoryForm" method="POST" action="">
+                        @csrf
+                        @method('DELETE')
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                        <button type="submit" class="btn btn-danger">Hapus</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <div class="row mb-4">
         <div class="col-12">
@@ -59,17 +90,14 @@
                                         <i class="fas fa-edit">Edit</i>
                                     </a>
 
-                                    <form action="{{ route('admin.categories.destroy', $category->id) }}"
-                                        method="POST"
-                                        onsubmit="return confirm('Delete this category?')">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit"
-                                            class="btn btn-sm btn-danger d-flex align-items-center"
-                                            title="Delete">
-                                            <i class="fas fa-trash-alt">Delete</i>
-                                        </button>
-                                    </form>
+                                    <button type="button" class="btn btn-sm btn-outline-danger btn-delete-category"
+                                        data-id="{{ $category->id }}"
+                                        data-name="{{ $category->name }}"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#confirmDeleteCategoryModal">
+                                        <i class="fas fa-trash-alt me-1"></i> Delete
+                                    </button>
+
                                 </div>
                             </td>
                         </tr>
@@ -121,4 +149,34 @@
         </div>
     </div>
 </div>
+@endsection
+
+@section('scripts')
+@if(session('success'))
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const modal = new bootstrap.Modal(document.getElementById('successModal'));
+        modal.show();
+    });
+</script>
+@endif
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const deleteButtons = document.querySelectorAll('.btn-delete-category');
+        const categoryNameSpan = document.getElementById('categoryName');
+        const deleteForm = document.getElementById('deleteCategoryForm');
+
+        deleteButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const categoryId = button.getAttribute('data-id');
+                const categoryName = button.getAttribute('data-name');
+
+                categoryNameSpan.textContent = categoryName;
+                deleteForm.action = `/admin/categories/${categoryId}`;
+            });
+        });
+    });
+</script>
+
 @endsection

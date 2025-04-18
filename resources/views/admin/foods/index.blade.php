@@ -1,7 +1,47 @@
 @extends('components.app')
+
 @section('title', 'Food List')
 @section('content')
 <div class="container mt-4">
+
+    @if(session('success'))
+
+    <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-success shadow">
+                <div class="modal-header bg-success text-white">
+                    <h5 class="modal-title" id="successModalLabel">✅ Berhasil</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Tutup"></button>
+                </div>
+                <div class="modal-body text-center">
+                    {{ session('success') }}
+                </div>
+            </div>
+        </div>
+    </div>
+    @endif
+
+    <div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-danger">
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title" id="confirmDeleteModalLabel">Konfirmasi Hapus</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Tutup"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Yakin ingin menghapus <strong id="foodName"></strong>?</p>
+                </div>
+                <div class="modal-footer">
+                    <form id="deleteForm" method="POST" action="">
+                        @csrf
+                        @method('DELETE')
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                        <button type="submit" class="btn btn-danger">Hapus</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <div class="row mb-4">
         <div class="col-12">
@@ -20,12 +60,6 @@
         </div>
 
         <div class="card-body p-0">
-            @if(session('success'))
-            <div class="alert alert-success alert-dismissible fade show m-3" role="alert">
-                {{ session('success') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-            </div>
-            @endif
 
             <div class="table-responsive">
                 <table class="table table-hover mb-0">
@@ -74,12 +108,15 @@
                                     <form action="{{ route('admin.foods.destroy', $food->id) }}" method="POST">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit"
-                                            class="btn btn-sm btn-outline-danger rounded-3 px-3"
-                                            title="Delete"
-                                            onclick="return confirm('Delete {{ $food->name }}?')">
+                                        <button type="button"
+                                            class="btn btn-sm btn-outline-danger rounded-3 px-3 btn-delete"
+                                            data-id="{{ $food->id }}"
+                                            data-name="{{ $food->name }}"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#confirmDeleteModal">
                                             <i class="fas fa-trash-alt me-1"></i> Delete
                                         </button>
+
                                     </form>
                                 </div>
                             </td>
@@ -134,4 +171,35 @@
         </div>
     </div>
 </div>
+
+@endsection
+
+@section('scripts')
+@if(session('success'))
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const modal = new bootstrap.Modal(document.getElementById('successModal'));
+        modal.show();
+    });
+</script>
+@endif
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const deleteButtons = document.querySelectorAll('.btn-delete');
+        const foodNameSpan = document.getElementById('foodName');
+        const deleteForm = document.getElementById('deleteForm');
+
+        deleteButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const foodId = button.getAttribute('data-id');
+                const foodName = button.getAttribute('data-name');
+
+                foodNameSpan.textContent = foodName;
+
+                deleteForm.action = `/admin/foods/${foodId}`;
+            });
+        });
+    });
+</script>
 @endsection
