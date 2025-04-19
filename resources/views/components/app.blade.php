@@ -68,6 +68,22 @@
     @include('components.footer')
 
     @yield('scripts')
+    @yield('modals')
+    
+    <script>
+        const logoutModal = document.getElementById('logoutModal');
+        if (logoutModal) {
+            logoutModal.addEventListener('hide.bs.modal', function () {
+                requestAnimationFrame(() => {
+                    const safeTarget = document.querySelector('[data-bs-toggle="dropdown"]');
+                    if (safeTarget) {
+                        safeTarget.focus();
+                    } else {
+                        document.body.focus();
+                    }
+                });
+            }); 
+        }
+    </script>
 </body>
-
 </html>

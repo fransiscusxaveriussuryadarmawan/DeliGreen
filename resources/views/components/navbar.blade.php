@@ -43,26 +43,32 @@
                 </li>
             </ul>
 
-            <div class="d-flex align-items-center">
-                <div class="dropdown">
-                    <a href="#" class="text-white dropdown-toggle d-flex align-items-center text-decoration-none"
-                        id="userDropdown" data-bs-toggle="dropdown">
-                        <i class="fas fa-user-circle fs-4 me-1"></i>
-                        <span class="ms-1">Admin</span>
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                <li class="nav-item dropdown">
+                    <a href="#" class="nav-link dropdown-toggle d-flex align-items-center text-white" id="userDropdown"
+                        role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fas fa-user-circle fs-4 me-1"></i>Admin
+                        <span class="d-none d-lg-inline ms-1"></span>
                     </a>
-                    <ul class="dropdown-menu dropdown-menu-end">
-                        <li><a class="dropdown-item" href="#"><i class="fas fa-user me-2"></i> Profile</a></li>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                        <li>
+                            <a class="dropdown-item" href="#"><i class="fas fa-user me-2"></i>Profile</a>
+                        </li>
                         <li>
                             <hr class="dropdown-divider">
                         </li>
                         <li>
-                            <a class="dropdown-item text-danger" href="#">
-                                <i class="fas fa-sign-out-alt me-2"></i> Logout
+                            <a class="dropdown-item text-danger" href="#" data-bs-toggle="modal" data-bs-target="#logoutModal">
+                                <i class="fas fa-sign-out-alt me-2"></i>Logout
                             </a>
                         </li>
                     </ul>
-                </div>
-            </div>
+                </li>
+            </ul>
         </div>
     </div>
 </nav>
+
+@section('modals')
+    @include('components.logout-modal')
+@endsection

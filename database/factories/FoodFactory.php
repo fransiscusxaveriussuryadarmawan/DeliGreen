@@ -18,9 +18,9 @@ class FoodFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => $this->faker->word(),
-            'category_id' => Category::factory(),
-            'price' => $this->faker->randomFloat(2, 1, 100),
+            'name' => $this->faker->word(3, true),
+            'category_id' => Category::inRandomOrder()->first()->id,
+            'price' => $this->faker->numberBetween(5000, 100000),
             'description' => $this->faker->sentence(),
             'created_at' => now(),
             'updated_at' => now(),

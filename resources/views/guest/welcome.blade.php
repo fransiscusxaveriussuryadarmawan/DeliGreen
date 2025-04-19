@@ -31,7 +31,7 @@
             <p class="text-muted">Temukan makanan sesuai kebutuhan dietmu</p>
         </div>
         <div class="row g-4">
-            @foreach(['Vegetarian', 'Vegan', 'Low-Carb', 'Protein Tinggi'] as $category)
+            @foreach(['Appetizer', 'Main Course', 'Snack', 'Dessert', 'Coffee', 'Non Coffee', 'Healthy Juice'] as $category)
             <div class="col-6 col-md-3">
                 <div class="card border-0 shadow-sm h-100 hover-lift">
                     <img src="https://source.unsplash.com/random/300x200/?{{ strtolower($category) }}"

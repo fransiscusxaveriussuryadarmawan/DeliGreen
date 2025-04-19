@@ -96,7 +96,7 @@
                                 </span>
                             </td>
                             <td class="px-4 text-end fw-semibold">
-                                ${{ number_format($food->price, 2) }}
+                                {{ $food->formatted_price }}
                             </td>
                             <td class="px-4 text-center">
                                 <div class="d-flex justify-content-center gap-2">

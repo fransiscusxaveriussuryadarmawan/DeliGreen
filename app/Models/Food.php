@@ -19,6 +19,12 @@ class Food extends Model
         'image',
     ];
 
+    public function getFormattedPriceAttribute()
+    {
+        $symbol = env('APP_CURRENCY_SYMBOL', 'Rp');
+        return $symbol . number_format($this->price, 2, ',', '.');
+    }
+
     public function category()
     {
         return $this->belongsTo(Category::class);
