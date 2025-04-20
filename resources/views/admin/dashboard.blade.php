@@ -35,11 +35,12 @@
                         <i class="bi bi-cart-check fs-1 text-primary"></i>
                     </div>
                     <div class="mt-3">
-                        <span class="badge bg-primary">3 pesanan baru</span>
+                        <span class="badge bg-primary">{{ $todayPendingOrders }} pesanan baru</span>
                     </div>
                 </div>
             </div>
         </div>
+        
 
         <div class="col-12 col-lg-4">
             <div class="card shadow-sm border-0 h-100">
@@ -75,18 +76,18 @@
                 <div class="card-body">
                     <h5 class="card-title text-muted mb-4">Aktivitas Terbaru</h5>
                     <ul class="list-group list-group-flush">
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            <span>Pesanan #1234</span>
-                            <span class="badge bg-success">Selesai</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            <span>Pesanan #1235</span>
-                            <span class="badge bg-warning">Diproses</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            <span>Pesanan #1236</span>
-                            <span class="badge bg-danger">Dibatalkan</span>
-                        </li>
+                        @foreach($recentOrders as $order)
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <span>#ORD{{ str_pad($order->id, 3, '0', STR_PAD_LEFT) }}</span>
+                                <span class="badge 
+                                    @if($order->status == 'completed') bg-success 
+                                    @elseif($order->status == 'pending') bg-warning 
+                                    @elseif($order->status == 'canceled') bg-danger 
+                                    @endif">
+                                    {{ ucfirst($order->status) }}
+                                </span>
+                            </li>
+                        @endforeach
                     </ul>
                 </div>
             </div>

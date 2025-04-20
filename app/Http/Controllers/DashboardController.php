@@ -3,14 +3,30 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Order;
+use Carbon\Carbon;
 
 class DashboardController extends Controller
 {
     public function indexAdmin()
     {
+        $oneHourAgo = Carbon::now()->subHour();
+
+        $recentOrders = Order::whereIn('status', ['completed', 'pending', 'canceled'])
+                            ->where('updated_at', '>=', $oneHourAgo)
+                            ->get();
+
+        $activeOrders = Order::where('status', 'pending')->count();
+
+        $todayPendingOrders = Order::where('status', 'pending')
+                                    ->whereDate('order_date', Carbon::today())
+                                    ->count();
+
         $data = [
             'totalOmzet' => 245000000,
-            'activeOrders' => 15,
+            'activeOrders' => $activeOrders,  
+            'todayPendingOrders' => $todayPendingOrders,  
+            'recentOrders' => $recentOrders,
             'bestSellers' => [
                 ['name' => 'Salad Sayur Organik', 'sold' => 45],
                 ['name' => 'Smoothie Mangga', 'sold' => 30],
