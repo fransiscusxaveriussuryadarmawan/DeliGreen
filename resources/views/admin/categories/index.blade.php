@@ -51,7 +51,7 @@
 
     <div class="card shadow-sm">
         <div class="card-header bg-white d-flex justify-content-between align-items-center">
-            <h5 class="mb-0">Category List</h5>
+            <h5 class="card-title fw-semibold mb-4">Category List</h5>
             <div>
                 <a href="{{ route('admin.categories.create') }}" class="btn btn-primary btn-sm">
                     <i class="fas fa-plus"></i> Add Category
@@ -61,10 +61,10 @@
 
         <div class="card-body">
             <div class="table-responsive">
-                <table class="table table-hover align-middle">
+                <table class="table table-hover mb-0">
                     <thead class="table-light">
                         <tr>
-                            <th width="5%">#</th>
+                            <th width="5%">ID</th>
                             <th>Name</th>
                             <th>Food Items</th>
                             <th>Created At</th>
@@ -85,9 +85,9 @@
                             <td class="text-center">
                                 <div class="d-flex justify-content-center gap-2">
                                     <a href="{{ route('admin.categories.edit', $category->id) }}"
-                                        class="btn btn-sm btn-warning d-flex align-items-center"
+                                        class="btn btn-sm btn-outline-primary d-flex align-items-center"
                                         title="Edit">
-                                        <i class="fas fa-edit">Edit</i>
+                                        <i class="fas fa-edit me-1"></i> Edit
                                     </a>
 
                                     <button type="button" class="btn btn-sm btn-outline-danger btn-delete-category"

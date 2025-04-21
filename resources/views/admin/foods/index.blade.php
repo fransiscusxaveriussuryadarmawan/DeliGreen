@@ -49,34 +49,35 @@
             <p class="lead text-muted">Kelola data makanan</p>
         </div>
     </div>
-    <div class="card shadow-sm border-0">
-        <div class="card-header bg-white d-flex justify-content-between align-items-center py-3">
-            <h4 class="mb-0">
-                <i class="fas fa-utensils me-2 text-primary"></i>Food Management
-            </h4>
-            <a href="{{ route('admin.foods.create') }}" class="btn btn-primary">
-                <i class="fas fa-plus me-1"></i> Add Food
-            </a>
+
+    <div class="card shadow-sm">
+        <div class="card-header bg-white d-flex justify-content-between align-items-center">
+            <h5 class="card-title fw-semibold mb-4">Food List</h5>
+
+            <div>
+                <a href="{{ route('admin.foods.create') }}" class="btn btn-primary btn-sm">
+                    <i class="fas fa-plus"></i> Add Food
+                </a>
+            </div>
         </div>
 
-        <div class="card-body p-0">
-
+        <div class="card-body">
             <div class="table-responsive">
                 <table class="table table-hover mb-0">
                     <thead class="table-light">
                         <tr>
-                            <th class="py-3 px-4" width="8%">ID</th>
-                            <th class="py-3 px-4">Food Name</th>
-                            <th class="py-3 px-4">Category</th>
-                            <th class="py-3 px-4 text-end" width="15%">Price</th>
-                            <th class="py-3 px-4 text-center" width="20%">Actions</th>
+                            <th width="5%">ID</th>
+                            <th>Food Name</th>
+                            <th>Category</th>
+                            <th class="text-end">Price</th>
+                            <th width="15%" class="text-center">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
                         @forelse($foods as $food)
                         <tr>
-                            <td class="px-4">{{ $food->id }}</td>
-                            <td class="px-4">
+                            <td>{{ $food->id }}</td>
+                            <td>
                                 <div class="d-flex align-items-center">
                                     @if($food->image)
                                     <img src="{{ asset('storage/' . $food->image) }}" alt="{{ $food->name }}"
@@ -90,43 +91,40 @@
                                     <span>{{ $food->name }}</span>
                                 </div>
                             </td>
-                            <td class="px-4">
-                                <span class="badge bg-primary bg-opacity-10 text-primary py-2 px-3">
+                            <td>
+                                <span class="badge bg-primary">
                                     {{ $food->category->name }}
                                 </span>
                             </td>
-                            <td class="px-4 text-end fw-semibold">
-                                {{ $food->formatted_price }}
+                            <td class="text-end">
+                                <span class="fw-semibold">
+                                    {{ $food->formatted_price }}
+                                </span>
                             </td>
-                            <td class="px-4 text-center">
+
+                            <td class="text-center">
                                 <div class="d-flex justify-content-center gap-2">
                                     <a href="{{ route('admin.foods.edit', $food->id) }}"
-                                        class="btn btn-sm btn-outline-primary rounded-3 px-3"
+                                        class="btn btn-sm btn-outline-primary d-flex align-items-center"
                                         title="Edit">
                                         <i class="fas fa-edit me-1"></i> Edit
                                     </a>
-                                    <form action="{{ route('admin.foods.destroy', $food->id) }}" method="POST">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="button"
-                                            class="btn btn-sm btn-outline-danger rounded-3 px-3 btn-delete"
-                                            data-id="{{ $food->id }}"
-                                            data-name="{{ $food->name }}"
-                                            data-bs-toggle="modal"
-                                            data-bs-target="#confirmDeleteModal">
-                                            <i class="fas fa-trash-alt me-1"></i> Delete
-                                        </button>
 
-                                    </form>
+                                    <button type="button"
+                                        class="btn btn-sm btn-outline-danger btn-delete"
+                                        data-id="{{ $food->id }}"
+                                        data-name="{{ $food->name }}"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#confirmDeleteModal">
+                                        <i class="fas fa-trash-alt me-1"></i> Delete
+                                    </button>
                                 </div>
                             </td>
                         </tr>
                         @empty
                         <tr>
-                            <td colspan="5" class="text-center py-5 text-muted">
-                                <i class="fas fa-info-circle fa-2x mb-3"></i>
-                                <h5>No food items found</h5>
-                                <p class="mb-0">Add your first food item using the button above</p>
+                            <td colspan="5" class="text-center text-muted py-4">
+                                No food items found. <a href="{{ route('admin.foods.create') }}">Create one</a>.
                             </td>
                         </tr>
                         @endforelse

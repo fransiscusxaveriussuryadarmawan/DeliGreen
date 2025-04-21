@@ -100,7 +100,7 @@
                     <div class="card-body">
                         <h5 class="card-title">Pendapatan Bulan Ini</h5>
                         <p class="card-text">
-                            $ {{ number_format($monthlyRevenue, 2, ',', '.') }}
+                            Rp {{ number_format($monthlyRevenue, 2, ',', '.') }}
                         </p>
                     </div>
                 </div>

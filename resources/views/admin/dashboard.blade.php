@@ -16,11 +16,14 @@
                 <div class="card-body">
                     <h5 class="card-title text-muted mb-3">Total Omzet</h5>
                     <div class="d-flex align-items-center justify-content-between">
-                        <h2 class="text-success mb-0">Rp {{ number_format($totalOmzet, 0, ',', '.') }}</h2>
-                        <i class="bi bi-currency-dollar fs-1 text-success"></i>
+                        <h3 class="card-title mb-0">Rp {{ number_format($totalOmzet, 2, ',', '.') }}</h3>
+                        <span class="fs-1 fw-bold text-success">Rp</span>
                     </div>
                     <div class="mt-3">
-                        <span class="badge bg-success">+15% dari kemarin</span>
+                        <span class="badge bg-success">
+                            +{{ $growth }}% dari kemarin
+                        </span>
+
                     </div>
                 </div>
             </div>
@@ -31,27 +34,27 @@
                 <div class="card-body">
                     <h5 class="card-title text-muted mb-3">Pesanan Aktif</h5>
                     <div class="d-flex align-items-center justify-content-between">
-                        <h2 class="text-primary mb-0">{{ $activeOrders }}</h2>
+                        <h3 class="card-title mb-0">{{ $activeOrders }}</h3>
                         <i class="bi bi-cart-check fs-1 text-primary"></i>
                     </div>
                     <div class="mt-3">
-                        <span class="badge bg-primary">{{ $todayPendingOrders }} pesanan baru</span>
+                        <!--  -->
                     </div>
                 </div>
             </div>
         </div>
-        
+
 
         <div class="col-12 col-lg-4">
             <div class="card shadow-sm border-0 h-100">
                 <div class="card-body">
                     <h5 class="card-title text-muted mb-3">Produk Terlaris</h5>
                     <ul class="list-group list-group-flush">
-                        @foreach ($bestSellers as $item)
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            <span>{{ $item['name'] }}</span>
-                            <span class="badge bg-success">{{ $item['sold'] }}x Terjual</span>
-                        </li>
+                        @foreach ($bestSellers as $food)
+                        <div class="d-flex justify-content-between align-items-center gap-3">
+                            <span>{{ $food->name }}</span>
+                            <span class="badge bg-success">{{ $food->order_items_count }}x Terjual</span>
+                        </div>
                         @endforeach
                     </ul>
                 </div>
@@ -76,18 +79,27 @@
                 <div class="card-body">
                     <h5 class="card-title text-muted mb-4">Aktivitas Terbaru</h5>
                     <ul class="list-group list-group-flush">
-                        @foreach($recentOrders as $order)
-                            <li class="list-group-item d-flex justify-content-between align-items-center">
-                                <span>#ORD{{ str_pad($order->id, 3, '0', STR_PAD_LEFT) }}</span>
-                                <span class="badge 
-                                    @if($order->status == 'completed') bg-success 
-                                    @elseif($order->status == 'pending') bg-warning 
-                                    @elseif($order->status == 'canceled') bg-danger 
-                                    @endif">
-                                    {{ ucfirst($order->status) }}
-                                </span>
-                            </li>
-                        @endforeach
+                        @if ($latestOrder)
+                        <p class="mb-1">
+                            #{{ $latestOrder->id }}
+                        </p>
+                        @php
+                        $status = strtolower($latestOrder->status);
+                        $badgeClass = match($status) {
+                        'completed' => 'bg-success',
+                        'pending' => 'bg-warning',
+                        'cancelled' => 'bg-danger',
+                        default => 'bg-secondary',
+                        };
+                        @endphp
+                        <span class="badge {{ $badgeClass }} w-100 py-2 fw-semibold">
+                            {{ ucfirst($status) }}
+                        </span>
+                        @else
+                        <p class="mb-1 text-muted">Belum ada order yang dibuat</p>
+                        <span class="badge bg-secondary w-100 py-2 fw-semibold">N/A</span>
+                        @endif
+
                     </ul>
                 </div>
             </div>
@@ -97,43 +109,50 @@
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-    const ctx = document.getElementById('omzetChart').getContext('2d');
-    const omzetChart = new Chart(ctx, {
-        type: 'line',
-        data: {
-            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul'],
-            datasets: [{
-                label: 'Omzet (Rp)',
-                data: [1000000, 1500000, 2000000, 1800000, 2200000, 2450000, 2300000],
-                borderColor: '#2ecc71',
-                tension: 0.4,
-                fill: true,
-                backgroundColor: 'rgba(46, 204, 113, 0.1)',
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    ticks: {
-                        callback: function(value) {
-                            return 'Rp ' + value.toLocaleString();
+    window.addEventListener("DOMContentLoaded", () => {
+        const ctx = document.getElementById("omzetChart").getContext("2d");
+
+        const labels = JSON.parse(`@json($chartLabels)`);
+        const data = JSON.parse(`@json($chartData)`);
+
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Omzet (Rp)',
+                    data: data,
+                    borderColor: 'green',
+                    backgroundColor: 'rgba(0, 128, 0, 0.1)',
+                    fill: true,
+                    tension: 0.4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            callback: function(value) {
+                                return 'Rp ' + value.toLocaleString('id-ID');
+                            }
                         }
                     }
-                }
-            },
-            plugins: {
-                tooltip: {
-                    callbacks: {
-                        label: function(context) {
-                            return 'Omzet: Rp ' + context.raw.toLocaleString();
+                },
+                plugins: {
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return 'Omzet: Rp ' + context.raw.toLocaleString('id-ID');
+                            }
                         }
                     }
                 }
             }
-        }
+        });
     });
 </script>
+
 @endsection
