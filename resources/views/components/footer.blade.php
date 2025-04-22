@@ -11,7 +11,7 @@
                     <a href="#" class="text-white me-3"><i class="fa-brands fa-x-twitter"></i></a>
                     <a href="#" class="text-white"><i class="fa-brands fa-whatsapp"></i></a>
                 </div>
-                <img src="{{ asset('storage/logo/logo-deligreen.png') }}" alt="Logo DeliGreen" class="img-fluid mt-3"
+                <img src="{{ asset('logo/logo-deligreen.png') }}" alt="Logo DeliGreen" class="img-fluid mt-3"
                     style="max-width: 200px;">
             </div>
 
