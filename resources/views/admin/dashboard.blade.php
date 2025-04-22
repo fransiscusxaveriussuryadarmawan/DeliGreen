@@ -81,7 +81,7 @@
                     <ul class="list-group list-group-flush">
                         @if ($latestOrder)
                         <p class="mb-1">
-                            #{{ $latestOrder->id }}
+                            #ORD{{ str_pad($latestOrder->id, 3, '0', STR_PAD_LEFT) }}
                         </p>
                         @php
                         $status = strtolower($latestOrder->status);

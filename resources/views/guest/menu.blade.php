@@ -47,8 +47,8 @@
                         </div>
                     </div>
                 </div>
+            @endfor
         </div>
-        @endfor
     </div>
 </div>
 </div>
