@@ -11,7 +11,7 @@
             @foreach($revenues as $rev)
             <tr>
                 <td>{{ DateTime::createFromFormat('!m', $rev->month)->format('F') }}</td>
-                <td>$ {{ number_format($rev->revenue, 2, ',', '.') }}</td>
+                <td>Rp {{ number_format($rev->revenue, 2, ',', '.') }}</td>
             </tr>
             @endforeach
         </tbody>
