@@ -49,7 +49,9 @@ class DashboardController extends Controller
                 ->take(3)
                 ->get(),
 
-            'latestOrder' => Order::latest()->first(),
+            'latestOrder' => Order::latest()
+                ->with('customer')
+                ->first(),
             'growth' => round($growth, 2),
             'newOrders' => Order::whereDate('created_at', today())->count(),
         ]);

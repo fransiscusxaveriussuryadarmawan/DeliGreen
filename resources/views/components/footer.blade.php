@@ -6,11 +6,13 @@
                 <h5 class="fw-bold text-primary mb-3">DeliGreen</h5>
                 <p class="mb-2">Healthy food delivery system for better lifestyle.</p>
                 <div class="social-icons mt-3">
-                    <a href="#" class="text-white me-3"><i class="fab fa-facebook-f"></i></a>
-                    <a href="#" class="text-white me-3"><i class="fab fa-instagram"></i></a>
-                    <a href="#" class="text-white me-3"><i class="fab fa-twitter"></i></a>
-                    <a href="#" class="text-white"><i class="fab fa-whatsapp"></i></a>
+                    <a href="#" class="text-white me-3"><i class="fa-brands fa-facebook"></i></a>
+                    <a href="#" class="text-white me-3"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#" class="text-white me-3"><i class="fa-brands fa-x-twitter"></i></a>
+                    <a href="#" class="text-white"><i class="fa-brands fa-whatsapp"></i></a>
                 </div>
+                <img src="{{ asset('storage/logo/logo-deligreen.png') }}" alt="Logo DeliGreen" class="img-fluid mt-3"
+                    style="max-width: 200px;">
             </div>
 
             <div class="col-md-4 mb-4 mb-md-0">

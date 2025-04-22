@@ -37,9 +37,6 @@
                         <h3 class="card-title mb-0">{{ $activeOrders }}</h3>
                         <i class="bi bi-cart-check fs-1 text-primary"></i>
                     </div>
-                    <div class="mt-3">
-                        <!--  -->
-                    </div>
                 </div>
             </div>
         </div>
@@ -82,6 +79,8 @@
                         @if ($latestOrder)
                         <p class="mb-1">
                             #ORD{{ str_pad($latestOrder->id, 3, '0', STR_PAD_LEFT) }}
+                            -
+                            {{ $latestOrder->customer->name ?? 'No customer' }}
                         </p>
                         @php
                         $status = strtolower($latestOrder->status);
@@ -99,7 +98,6 @@
                         <p class="mb-1 text-muted">Belum ada order yang dibuat</p>
                         <span class="badge bg-secondary w-100 py-2 fw-semibold">N/A</span>
                         @endif
-
                     </ul>
                 </div>
             </div>
