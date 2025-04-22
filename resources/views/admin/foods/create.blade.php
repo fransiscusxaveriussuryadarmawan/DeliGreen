@@ -44,7 +44,7 @@
                 </div>
 
                 <div class="mb-3">
-                    <label for="price" class="form-label">Price ($)</label>
+                    <label for="price" class="form-label">Price (Rp)</label>
                     <input type="number" name="price" class="form-control" value="{{ old('price') }}" min="0" step="0.01" required>
                 </div>
 

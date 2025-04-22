@@ -83,15 +83,15 @@
                     <tr>
                         <td>{{ $loop->iteration }}</td>
                         <td>{{ $item->food->name }}</td>
-                        <td>$ {{ number_format($item->price, 2, '.', ',') }}</td>
+                        <td>Rp {{ number_format($item->price, 2, '.', ',') }}</td>
                         <td>{{ $item->quantity }}</td>
-                        <td>$ {{ number_format($item->price * $item->quantity, 2, '.', ',') }}</td>
+                        <td>Rp {{ number_format($item->price * $item->quantity, 2, '.', ',') }}</td>
                         @php $total += $item->price * $item->quantity; @endphp
                     </tr>
                     @endforeach
                     <tr class="table-light fw-bold">
                         <td colspan="4" class="text-end">Total</td>
-                        <td>$ {{ number_format($total, 2, '.', ',') }}</td>
+                        <td>Rp {{ number_format($total, 2, '.', ',') }}</td>
                     </tr>
                 </tbody>
             </table>

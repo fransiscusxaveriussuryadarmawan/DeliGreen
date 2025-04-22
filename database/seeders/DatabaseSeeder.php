@@ -20,7 +20,6 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // Create a specific category name
         $categoryNames = [
             'Appetizer',
             'Main Course',
@@ -39,8 +38,40 @@ class DatabaseSeeder extends Seeder
             ]);
         }
 
+        $foods = [
+            [
+                'name' => 'Grilled Chicken Salad',
+                'category_id' => 1,
+                'price' => 35000,
+                'description' => 'Healthy grilled chicken with fresh vegetables.',
+            ],
+            [
+                'name' => 'Spaghetti Carbonara',
+                'category_id' => 2,
+                'price' => 42000,
+                'description' => 'Classic Italian pasta with creamy sauce.',
+            ],
+            [
+                'name' => 'Fruit Smoothie Bowl',
+                'category_id' => 7,
+                'price' => 30000,
+                'description' => 'Refreshing smoothie with mixed fruits and granola.',
+            ],
+        ];
+        
+        foreach ($foods as $food) {
+            Food::create([
+                'name' => $food['name'],
+                'category_id' => $food['category_id'],
+                'price' => $food['price'],
+                'description' => $food['description'],
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+        }
+        
+
         User::factory(10)->create();
-        Food::factory(25)->create();
         Customer::factory(25)->create();
 
         Order::factory()

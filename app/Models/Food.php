@@ -32,6 +32,6 @@ class Food extends Model
 
     public function order_items()
     {
-        return $this->hasMany(\App\Models\OrderItem::class);
+        return $this->hasMany(OrderItem::class);
     }
 }
