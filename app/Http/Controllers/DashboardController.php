@@ -76,6 +76,6 @@ class DashboardController extends Controller
             'bestSellers' => [],
         ];
 
-        return view('guest.dashboard', $data);
+        return view('guest.welcome', $data);
     }
 }

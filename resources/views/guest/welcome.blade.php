@@ -4,6 +4,8 @@
 <link rel="stylesheet" href="{{ asset('css/guest.css') }}">
 @endsection
 
+
+
 @section('content')
 <section class="hero-section py-5" style="background: linear-gradient(rgba(255,255,255,0.9), rgba(255,255,255,0.9)), url('https://images.unsplash.com/photo-1490645935967-10de6ba17061?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80'); background-size: cover; min-height: 80vh;">
     <div class="container h-100">
@@ -12,9 +14,9 @@
                 <h1 class="display-3 fw-bold text-success mb-4">DeliGreen</h1>
                 <p class="lead mb-4">Makan sehat jadi mudah dengan pesanan online kami. Mulai hidup sehat hari ini!</p>
                 <div class="d-flex gap-3">
-                    <a href="{{ route('login') }}" class="btn btn-success btn-lg px-4">
-                        <i class="bi bi-box-arrow-in-right me-2"></i> Login
-                    </a>
+                    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#loginModal">
+                        <i class="fas fa-sign-in-alt"></i> Login
+                    </button>
                     <a href="#menu" class="btn btn-outline-success btn-lg px-4">
                         <i class="bi bi-egg-fried me-2"></i> Lihat Menu
                     </a>
@@ -136,3 +138,6 @@
     </div>
 </section>
 @endsection
+@include('components.login')
+
+

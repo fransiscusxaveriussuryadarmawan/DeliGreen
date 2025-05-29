@@ -45,11 +45,13 @@
 
             <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                 <li class="nav-item dropdown">
+                    @auth
                     <a href="#" class="nav-link dropdown-toggle d-flex align-items-center text-white" id="userDropdown"
                         role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="fas fa-user-circle fs-4 me-1"></i>Admin
+                        <i class="fas fa-user-circle fs-4 me-1"></i>{{ Auth::user()->name }}
                         <span class="d-none d-lg-inline ms-1"></span>
                     </a>
+                    @endauth
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
                         <li>
                             <a class="dropdown-item" href="#"><i class="fas fa-user me-2"></i>Profile</a>

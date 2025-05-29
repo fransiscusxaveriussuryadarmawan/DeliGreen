@@ -21,12 +21,14 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', [DashboardController::class, 'indexAdmin'])->name('dashboard');
+Route::get('/customer/dashboard', [DashboardController::class, 'index'])->name('customer.dashboard');
 
 Route::prefix('guest')->group(function () {
     Route::get('/', [DashboardController::class, 'indexGuest'])->name('guest.welcome');
     Route::get('/foods', [FoodController::class, 'index'])->name('guest.menu');
 });
 
+Route::post('/login', [AuthController::class, 'login'])->name('login');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 Route::prefix('admin')->group(function () {
@@ -64,3 +66,6 @@ Route::prefix('master')->group(function () {
         return view('master.orders');
     })->name('master.orders');
 });
+
+Route::get('/register', [AuthController::class, 'showRegistrationPage'])->name('register.page');
+Route::post('/register/verify', [AuthController::class, 'registerProcess'])->name('register.verify');

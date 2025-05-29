@@ -68,10 +68,10 @@
     </main>
 
     @include('components.footer')
-
-    @yield('scripts')
     @yield('modals')
-
+    @yield('scripts')
+    
+    
     <script>
         const logoutModal = document.getElementById('logoutModal');
         if (logoutModal) {
@@ -80,12 +80,30 @@
                     const safeTarget = document.querySelector('[data-bs-toggle="dropdown"]');
                     if (safeTarget) {
                         safeTarget.focus();
-                    } else {
+                    } 
+                    else {
                         document.body.focus();
                     }
                 });
             }); 
         }
     </script>
+
+    <script>
+        const loginModal = document.getElementById('loginModal');
+        if (loginModal) {
+        loginModal.addEventListener('hide.bs.modal', function () {
+            requestAnimationFrame(() => {
+                const safeTarget = document.querySelector('[data-bs-toggle="modal"][data-bs-target="#loginModal"]');
+                if (safeTarget) {
+                    safeTarget.focus();
+                } else {
+                    document.body.focus();
+                }
+            });
+        });
+    }
+    </script>
 </body>
+
 </html>
