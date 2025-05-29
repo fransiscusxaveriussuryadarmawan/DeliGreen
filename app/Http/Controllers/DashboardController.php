@@ -67,4 +67,15 @@ class DashboardController extends Controller
 
         return view('customer.dashboard', $data);
     }
+
+    public function indexGuest()
+    {
+        $data = [
+            'totalOmzet' => 0,
+            'activeOrders' => 0,
+            'bestSellers' => [],
+        ];
+
+        return view('guest.dashboard', $data);
+    }
 }

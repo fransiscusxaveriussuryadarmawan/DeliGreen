@@ -22,6 +22,11 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [DashboardController::class, 'indexAdmin'])->name('dashboard');
 
+Route::prefix('guest')->group(function () {
+    Route::get('/', [DashboardController::class, 'indexGuest'])->name('guest.welcome');
+    Route::get('/foods', [FoodController::class, 'index'])->name('guest.menu');
+});
+
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 Route::prefix('admin')->group(function () {
