@@ -52,6 +52,30 @@ class DatabaseSeeder extends Seeder
                 'description' => 'Classic Italian pasta with creamy sauce.',
             ],
             [
+                'name' => 'Cheese Nachos',
+                'category_id' => 3,
+                'price' => 25000,
+                'description' => 'Crispy nachos topped with melted cheese.',
+            ],
+            [
+                'name' => 'Chocolate Lava Cake',
+                'category_id' => 4,
+                'price' => 30000,
+                'description' => 'Decadent chocolate cake with a molten center.',
+            ],
+            [
+                'name' => 'Espresso',
+                'category_id' => 5,
+                'price' => 20000,
+                'description' => 'Strong and rich coffee shot.',
+            ],
+            [
+                'name' => 'Iced Matcha Latte',
+                'category_id' => 6,
+                'price' => 28000,
+                'description' => 'Refreshing matcha latte served cold.',
+            ],
+            [
                 'name' => 'Fruit Smoothie Bowl',
                 'category_id' => 7,
                 'price' => 30000,
