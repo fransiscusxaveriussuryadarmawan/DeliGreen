@@ -59,3 +59,6 @@ Route::prefix('master')->group(function () {
         return view('master.orders');
     })->name('master.orders');
 });
+
+Route::get('/register', [AuthController::class, 'showRegistrationPage'])->name('register.page');
+Route::post('/register/verify', [AuthController::class, 'registerProcess'])->name('register.verify');
