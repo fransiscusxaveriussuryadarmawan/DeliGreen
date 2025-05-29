@@ -31,6 +31,9 @@ Route::prefix('guest')->group(function () {
 Route::post('/login', [AuthController::class, 'login'])->name('login');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
+Route::get('/register', [AuthController::class, 'showRegistrationPage'])->name('register.page');
+Route::post('/register/verify', [AuthController::class, 'registerProcess'])->name('register.verify');
+
 Route::prefix('admin')->group(function () {
     Route::get('/', [DashboardController::class, 'indexAdmin'])->name('admin.dashboard');
     Route::resource('foods', FoodController::class)->names('admin.foods');
