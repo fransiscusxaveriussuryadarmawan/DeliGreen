@@ -70,39 +70,38 @@
     @include('components.footer')
     @yield('modals')
     @yield('scripts')
-    
-    
+
+
     <script>
         const logoutModal = document.getElementById('logoutModal');
         if (logoutModal) {
-            logoutModal.addEventListener('hide.bs.modal', function () {
+            logoutModal.addEventListener('hide.bs.modal', function() {
                 requestAnimationFrame(() => {
                     const safeTarget = document.querySelector('[data-bs-toggle="dropdown"]');
                     if (safeTarget) {
                         safeTarget.focus();
-                    } 
-                    else {
+                    } else {
                         document.body.focus();
                     }
                 });
-            }); 
+            });
         }
     </script>
 
     <script>
         const loginModal = document.getElementById('loginModal');
         if (loginModal) {
-        loginModal.addEventListener('hide.bs.modal', function () {
-            requestAnimationFrame(() => {
-                const safeTarget = document.querySelector('[data-bs-toggle="modal"][data-bs-target="#loginModal"]');
-                if (safeTarget) {
-                    safeTarget.focus();
-                } else {
-                    document.body.focus();
-                }
+            loginModal.addEventListener('hide.bs.modal', function() {
+                requestAnimationFrame(() => {
+                    const safeTarget = document.querySelector('[data-bs-toggle="modal"][data-bs-target="#loginModal"]');
+                    if (safeTarget) {
+                        safeTarget.focus();
+                    } else {
+                        document.body.focus();
+                    }
+                });
             });
-        });
-    }
+        }
     </script>
 </body>
 

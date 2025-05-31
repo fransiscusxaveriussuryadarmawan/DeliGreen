@@ -28,7 +28,7 @@ class AuthController extends Controller
 
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
-            return redirect()->intended(route('customer.dashboard')); 
+            return redirect()->intended(route('customer.dashboard'));
         }
 
         return back()->with('error', 'Email atau password salah')->withInput();
@@ -45,6 +45,8 @@ class AuthController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'phone' => ['required', 'regex:/^(08|628)[0-9]{7,13}$/'],
+            'address' => ['nullable', 'string', 'max:255'],
         ]);
 
         if ($validator->fails()) {
@@ -57,6 +59,9 @@ class AuthController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'phone' => $request->phone,
+            'address' => $request->address,
+            'role' => 'member',
         ]);
 
         event(new Registered($user));
@@ -67,7 +72,3 @@ class AuthController extends Controller
             ->with('success', 'Registrasi berhasil, silakan masuk.');
     }
 }
-
-    
-
-    

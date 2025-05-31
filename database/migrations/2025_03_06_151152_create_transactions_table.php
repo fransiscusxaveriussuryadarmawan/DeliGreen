@@ -13,9 +13,8 @@ return new class extends Migration
     {
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('customer_id');
-            $table->foreign('customer_id')->references('id')->on('customers')
-                ->onDelete('cascade');
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->string('invoice_number')->unique();
             $table->decimal('amount', 15, 2);
             $table->enum('order_status', ['Pending', 'Processing', 'Completed', 'Cancelled'])->default('Pending');
