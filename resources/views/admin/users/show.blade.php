@@ -35,10 +35,10 @@
         <div class="card-body">
             <h5 class="mb-3">Data Pelanggan</h5>
             <ul class="list-group list-group-flush">
-                <li class="list-group-item"><strong>Nama:</strong> {{ $customer->name }}</li>
-                <li class="list-group-item"><strong>Email:</strong> {{ $customer->email }}</li>
-                <li class="list-group-item"><strong>No. HP:</strong> {{ $customer->phone }}</li>
-                <li class="list-group-item"><strong>Bergabung Sejak:</strong> {{ $customer->created_at->format('d M Y') }}</li>
+                <li class="list-group-item"><strong>Nama:</strong> {{ $user->name }}</li>
+                <li class="list-group-item"><strong>Email:</strong> {{ $user->email }}</li>
+                <li class="list-group-item"><strong>No. HP:</strong> {{ $user->phone }}</li>
+                <li class="list-group-item"><strong>Bergabung Sejak:</strong> {{ $user->created_at->format('d M Y') }}</li>
             </ul>
         </div>
     </div>
@@ -82,8 +82,8 @@
 
             <div class="d-flex justify-content-center">
                 <button type="button" class="btn btn-outline-danger"
-                    data-id="{{ $customer->id }}"
-                    data-name="{{ $customer->name }}"
+                    data-id="{{ $user->id }}"
+                    data-name="{{ $user->name }}"
                     data-bs-toggle="modal"
                     data-bs-target="#confirmDeleteCustomerModal">
                     <i class="fas fa-trash-alt me-1"></i> Hapus Customer

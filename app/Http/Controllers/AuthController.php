@@ -19,6 +19,21 @@ class AuthController extends Controller
         return redirect()->route('guest.welcome');
     }
 
+    // public function login(Request $request)
+    // {
+    //     $credentials = $request->validate([
+    //         'email' => ['required', 'email'],
+    //         'password' => ['required'],
+    //     ]);
+
+    //     if (Auth::attempt($credentials)) {
+    //         $request->session()->regenerate();
+    //         return redirect()->intended(route('customer.dashboard'));
+    //     }
+
+    //     return back()->with('error', 'Email atau password salah')->withInput();
+    // }
+
     public function login(Request $request)
     {
         $credentials = $request->validate([
@@ -28,7 +43,19 @@ class AuthController extends Controller
 
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
-            return redirect()->intended(route('customer.dashboard'));
+
+            $user = Auth::user();
+
+            if ($user->role === 'admin') {
+                return redirect()->intended(route('admin.dashboard'));
+            }
+
+            if ($user->role === 'member') {
+                return redirect()->intended(route('user.dashboard'));
+            }
+
+            Auth::logout();
+            return back()->with('error', 'Akun tidak dikenali dalam sistem.');
         }
 
         return back()->with('error', 'Email atau password salah')->withInput();

@@ -40,7 +40,7 @@
                         style="height: 150px; object-fit: cover;">
                     <div class="card-body text-center">
                         <h5 class="card-title">{{ $category }}</h5>
-                        <a href="{{ route('login') }}" class="btn btn-sm btn-link text-success">Lihat Menu</a>
+                        <a href="#" class="btn btn-success w-100" data-bs-toggle="modal" data-bs-target="#loginModal">Lihat Menu</a>
                     </div>
                 </div>
             </div>
@@ -76,8 +76,8 @@
                         </div>
                     </div>
                     <div class="card-footer bg-white border-0">
-                        <a href="{{ route('login') }}" class="btn btn-sm btn-success w-100">
-                            <i class="bi bi-cart-plus me-1"></i> Pesan Sekarang
+                        <a href="#" class="btn btn-success w-100" data-bs-toggle="modal" data-bs-target="#loginModal">
+                            <i class="fas fa-shopping-cart me-1"></i> Pesan Sekarang
                         </a>
                     </div>
                 </div>
@@ -85,7 +85,7 @@
             @endforeach
         </div>
         <div class="text-center mt-4">
-            <a href="{{ route('login') }}" class="btn btn-outline-success px-4">
+            <a href="#" class="btn btn-success w-100" data-bs-toggle="modal" data-bs-target="#loginModal">
                 Lihat Menu Lengkap <i class="bi bi-arrow-right ms-2"></i>
             </a>
         </div>

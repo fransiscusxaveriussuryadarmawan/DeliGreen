@@ -1,13 +1,19 @@
 <?php
 
-use App\Http\Controllers\Admin\CategoryController;
-use App\Http\Controllers\Admin\CustomerController;
-use App\Http\Controllers\Admin\FoodController;
-use App\Http\Controllers\Admin\OrderController;
-use App\Http\Controllers\Admin\ReportController;
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
-use Illuminate\Support\Facades\Route;
+
+use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
+use App\Http\Controllers\Admin\FoodController as AdminFoodController;
+use App\Http\Controllers\Admin\OrderController as AdminOrderController;
+use App\Http\Controllers\Admin\UserController as AdminUserController;
+use App\Http\Controllers\Admin\ReportController as AdminReportController;
+
+use App\Http\Controllers\User\CategoryController as UserCategoryController;
+use App\Http\Controllers\User\FoodController as UserFoodController;
+use App\Http\Controllers\User\OrderController as UserOrderController;
+use App\Http\Controllers\User\ReportController as UserReportController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,55 +26,33 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', [DashboardController::class, 'indexAdmin'])->name('dashboard');
-Route::get('/customer/dashboard', [DashboardController::class, 'index'])->name('customer.dashboard');
-
-Route::prefix('guest')->group(function () {
-    Route::get('/', [DashboardController::class, 'indexGuest'])->name('guest.welcome');
-    Route::get('/foods', [FoodController::class, 'index'])->name('guest.menu');
+Route::prefix('guest')->name('guest.')->group(function () {
+    Route::get('/', [DashboardController::class, 'indexGuest'])->name('welcome');
+    Route::get('/foods', [UserFoodController::class, 'guestMenu'])->name('foods.index');
+    Route::get('/categories', [UserCategoryController::class, 'guestCategories'])->name('categories.index');
+    Route::get('/orders', fn() => redirect('/register'))->name('orders.index');
+    Route::get('/reports', fn() => redirect('/register'))->name('reports.index');
 });
 
+Route::get('/register', [AuthController::class, 'showRegistrationPage'])->name('register.page');
+Route::post('/register/verify', [AuthController::class, 'registerProcess'])->name('register.verify');
 Route::post('/login', [AuthController::class, 'login'])->name('login');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-Route::get('/register', [AuthController::class, 'showRegistrationPage'])->name('register.page');
-Route::post('/register/verify', [AuthController::class, 'registerProcess'])->name('register.verify');
-
-Route::prefix('admin')->group(function () {
-    Route::get('/', [DashboardController::class, 'indexAdmin'])->name('admin.dashboard');
-    Route::resource('foods', FoodController::class)->names('admin.foods');
-    Route::resource('categories', CategoryController::class)->names('admin.categories');
-    Route::resource('customers', CustomerController::class)->names('admin.customers');
-    Route::get('customers/{customer}/detail', [CustomerController::class, 'show'])->name('admin.customers.detail');
-    Route::resource('orders', OrderController::class)->names('admin.orders');
-
-    Route::get('/reports', [ReportController::class, 'index'])->name('admin.reports.index');
-    Route::get('/reports/load/{type}', [ReportController::class, 'load'])->name('admin.reports.load');
+Route::prefix('admin')->name('admin.')->group(function () {
+    Route::get('/dashboard', [DashboardController::class, 'indexAdmin'])->name('dashboard');
+    Route::resource('foods', AdminFoodController::class);
+    Route::resource('categories', AdminCategoryController::class);
+    Route::resource('orders', AdminOrderController::class);
+    Route::resource('users', AdminUserController::class);
+    Route::resource('reports', AdminReportController::class);
+    Route::get('/reports/load/{type}', [AdminReportController::class, 'load'])->name('reports.load');
 });
 
-
-Route::prefix('customer')->group(function () {
-    Route::get('/', [DashboardController::class, 'indexCustomer'])->name('customer.dashboard');
-    Route::resource('orders', OrderController::class)->names('customer.orders');
+Route::prefix('user')->name('user.')->group(function () {
+    Route::get('/dashboard', [DashboardController::class, 'indexCustomer'])->name('dashboard');
+    Route::resource('foods', UserFoodController::class);
+    Route::resource('categories', UserCategoryController::class);
+    Route::resource('orders', UserOrderController::class);
+    Route::resource('reports', UserReportController::class);
 });
-
-Route::prefix('master')->group(function () {
-    Route::get('/foods', function () {
-        return view('master.foods');
-    })->name('master.foods');
-
-    Route::get('/categories', function () {
-        return view('master.categories');
-    })->name('master.categories');
-
-    Route::get('/customers', function () {
-        return view('master.customers');
-    })->name('master.customers');
-
-    Route::get('/orders', function () {
-        return view('master.orders');
-    })->name('master.orders');
-});
-
-Route::get('/register', [AuthController::class, 'showRegistrationPage'])->name('register.page');
-Route::post('/register/verify', [AuthController::class, 'registerProcess'])->name('register.verify');

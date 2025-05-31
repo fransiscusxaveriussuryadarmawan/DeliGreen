@@ -43,16 +43,16 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @forelse($customers as $customer)
+                        @forelse($users as $user)
                         <tr>
-                            <td>C{{ str_pad($customer->id, 3, '0', STR_PAD_LEFT) }}</td>
-                            <td>{{ $customer->name }}</td>
-                            <td>{{ $customer->email }}</td>
-                            <td>{{ $customer->phone }}</td>
-                            <td>{{ $customer->orders_count }}x</td>
-                            <td>{{ $customer->created_at->format('d M Y') }}</td>
+                            <td>C{{ str_pad($user->id, 3, '0', STR_PAD_LEFT) }}</td>
+                            <td>{{ $user->name }}</td>
+                            <td>{{ $user->email }}</td>
+                            <td>{{ $user->phone }}</td>
+                            <td>{{ $user->orders_count }}x</td>
+                            <td>{{ $user->created_at->format('d M Y') }}</td>
                             <td>
-                                <a href="{{ route('admin.customers.detail', $customer->id) }}" class="btn btn-sm btn-outline-success">
+                                <a href="{{ route('admin.users.show', $user->id) }}" class="btn btn-sm btn-outline-success">
                                     <i class="bi bi-eye"></i> Detail
                                 </a>
                             </td>
@@ -67,30 +67,30 @@
                 </table>
             </div>
         </div>
-        @if($customers->hasPages())
+        @if($users->hasPages())
         <div class="d-flex justify-content-center mt-4">
             <nav aria-label="Page navigation">
                 <ul class="pagination">
 
-                    @if ($customers->onFirstPage())
+                    @if ($users->onFirstPage())
                     <li class="page-item disabled">
                         <span class="page-link">&laquo;</span>
                     </li>
                     @else
                     <li class="page-item">
-                        <a class="page-link" href="{{ $customers->previousPageUrl() }}" rel="prev">&laquo;</a>
+                        <a class="page-link" href="{{ $users->previousPageUrl() }}" rel="prev">&laquo;</a>
                     </li>
                     @endif
 
-                    @foreach ($customers->links()->elements[0] as $page => $url)
-                    <li class="page-item {{ $page == $customers->currentPage() ? 'active' : '' }}">
+                    @foreach ($users->links()->elements[0] as $page => $url)
+                    <li class="page-item {{ $page == $users->currentPage() ? 'active' : '' }}">
                         <a class="page-link" href="{{ $url }}">{{ $page }}</a>
                     </li>
                     @endforeach
 
-                    @if ($customers->hasMorePages())
+                    @if ($users->hasMorePages())
                     <li class="page-item">
-                        <a class="page-link" href="{{ $customers->nextPageUrl() }}" rel="next">&raquo;</a>
+                        <a class="page-link" href="{{ $users->nextPageUrl() }}" rel="next">&raquo;</a>
                     </li>
                     @else
                     <li class="page-item disabled">

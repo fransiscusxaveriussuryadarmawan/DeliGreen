@@ -27,8 +27,8 @@
     <div class="card mb-4">
         <div class="card-header bg-white fw-bold">Informasi Pemesan</div>
         <div class="card-body">
-            <p><strong>Nama:</strong> {{ $order->customer->name }}</p>
-            <p><strong>Email:</strong> {{ $order->customer->email }}</p>
+            <p><strong>Nama:</strong> {{ $order->user->name }}</p>
+            <p><strong>Email:</strong> {{ $order->user->email }}</p>
             <p><strong>Tanggal Pesan:</strong> {{ $order->created_at->format('d M Y, H:i') }}</p>
         </div>
     </div>

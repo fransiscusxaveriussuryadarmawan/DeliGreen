@@ -60,11 +60,13 @@
     </style>
 </head>
 
-<body>
+<body class="d-flex flex-column min-vh-100">
     @include('components.navbar')
 
     <main class="container-fluid">
-        @yield('content')
+        <main class="flex-fill">
+            @yield('content')
+        </main>
     </main>
 
     @include('components.footer')

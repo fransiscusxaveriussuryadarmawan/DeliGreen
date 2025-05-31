@@ -18,12 +18,28 @@
             <div class="col-md-4 mb-4 mb-md-0">
                 <h5 class="fw-bold text-primary mb-3">Quick Links</h5>
                 <ul class="list-unstyled">
+                    @php
+                    $role = auth()->check() ? auth()->user()->role : 'guest';
+                    @endphp
+
+                    @if($role === 'admin')
                     <li class="mb-2"><a href="{{ route('admin.foods.index') }}" class="text-white text-decoration-none">Food</a></li>
                     <li class="mb-2"><a href="{{ route('admin.categories.index') }}" class="text-white text-decoration-none">Categories</a></li>
-                    <li class="mb-2"><a href="{{ route('admin.customers.index') }}" class="text-white text-decoration-none">Customers</a></li>
+                    <li class="mb-2"><a href="{{ route('admin.users.index') }}" class="text-white text-decoration-none">Users</a></li>
                     <li class="mb-2"><a href="{{ route('admin.orders.index') }}" class="text-white text-decoration-none">Orders</a></li>
                     <li class="mb-2"><a href="{{ route('admin.reports.index') }}" class="text-white text-decoration-none">Reports</a></li>
+                    @elseif($role === 'member')
+                    <li class="mb-2"><a href="{{ route('user.foods.index') }}" class="text-white text-decoration-none">Food</a></li>
+                    <li class="mb-2"><a href="{{ route('user.categories.index') }}" class="text-white text-decoration-none">Categories</a></li>
+                    <li class="mb-2"><a href="{{ route('user.orders.index') }}" class="text-white text-decoration-none">Orders</a></li>
+                    <li class="mb-2"><a href="{{ route('user.reports.index') }}" class="text-white text-decoration-none">Reports</a></li>
+                    @else
+                    <li class="mb-2"><a href="{{ route('guest.foods.index') }}" class="text-white text-decoration-none">Food</a></li>
+                    <li class="mb-2"><a href="{{ route('guest.categories.index') }}" class="text-white text-decoration-none">Categories</a></li>
+                    @endif
                 </ul>
+
+
             </div>
 
             <div class="col-md-4">

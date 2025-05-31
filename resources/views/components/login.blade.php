@@ -26,6 +26,12 @@
         <div class="modal-footer">
           <button type="submit" class="btn btn-success">Login</button>
         </div>
+
+        <div class="text-center mb-3">
+          <small class="text-muted">
+            Belum punya akun? <a href="{{ route('register.page') }}" class="text-primary">Daftar di sini</a>
+          </small>
+        </div>
       </form>
     </div>
   </div>

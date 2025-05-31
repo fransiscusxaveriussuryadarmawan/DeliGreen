@@ -95,6 +95,14 @@
         </div>
 
         <button type="submit" class="btn btn-success w-100 fw-semibold">Daftar</button>
+
+        <div class="text-center mt-3">
+          <small class="text-muted">
+            Sudah punya akun?
+            <a href="{{ route('guest.welcome') }}" class="text-primary">Login di sini</a>
+          </small>
+        </div>
+
       </form>
     </div>
   </div>

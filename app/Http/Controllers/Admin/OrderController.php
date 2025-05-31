@@ -20,14 +20,14 @@ class OrderController extends Controller
             $orders->whereDate('created_at', request('date'));
         }
 
-        $orders = $orders->with('customer')->latest()->paginate(10);
+        $orders = $orders->with('user')->latest()->paginate(10);
 
         return view('admin.orders.index', compact('orders'));
     }
 
     public function show(Order $order)
     {
-        $order->load(['customer', 'items.food']);
+        $order->load(['user', 'items.food']);
         return view('admin.orders.show', compact('order'));
     }
 

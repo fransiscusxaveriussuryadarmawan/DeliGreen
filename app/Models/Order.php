@@ -5,21 +5,22 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Models\User;
 
 class Order extends Model
 {
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
-        'customer_id',
+        'user_id',
         'order_date',
         'total_price',
         'status',
     ];
 
-    public function customer()
+    public function user()
     {
-        return $this->belongsTo(Customer::class);
+        return $this->belongsTo(User::class);
     }
     public function items()
     {

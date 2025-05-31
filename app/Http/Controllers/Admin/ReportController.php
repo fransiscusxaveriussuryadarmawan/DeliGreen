@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Models\Customer;
 use App\Models\Order;
-use App\Models\OrderItem;
+use App\Models\User;
 use App\Models\Food;
 use App\Models\Category;
 use Illuminate\Support\Facades\DB;
@@ -16,7 +16,7 @@ class ReportController extends Controller
 {
     public function index()
     {
-        $topCustomer = Customer::withCount('orders')
+        $topCustomer = User::withCount('orders')
             ->orderByDesc('orders_count')
             ->first();
 
@@ -71,7 +71,7 @@ class ReportController extends Controller
     {
         return match ($type) {
             'top-customer' => [
-                'customers' => Customer::withCount('orders')
+                'customers' => User::withCount('orders')
                     ->orderByDesc('orders_count')
                     ->take(10)
                     ->get()

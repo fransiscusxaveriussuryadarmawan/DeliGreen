@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Category;
-use App\Models\Customer;
+use App\Models\User;
 use App\Models\Order;
 use App\Models\Food;
 use Carbon\Carbon;
@@ -39,7 +39,7 @@ class DashboardController extends Controller
             'categoryCount' => Category::count(),
             'foodCount' => Food::count(),
             'orderCount' => Order::count(),
-            'customerCount' => Customer::count(),
+            'customerCount' => User::where('role', 'member')->count(),
 
             'totalOmzet' => Order::sum('total_price'),
             'activeOrders' => Order::where('status', 'pending')->count(),
@@ -50,7 +50,7 @@ class DashboardController extends Controller
                 ->get(),
 
             'latestOrder' => Order::latest()
-                ->with('customer')
+                ->with('user')
                 ->first(),
             'growth' => round($growth, 2),
             'newOrders' => Order::whereDate('created_at', today())->count(),
@@ -65,17 +65,22 @@ class DashboardController extends Controller
             'bestSellers' => [],
         ];
 
-        return view('customer.dashboard', $data);
+        return view('user.dashboard', $data);
     }
+
+    // public function indexGuest()
+    // {
+    //     $data = [
+    //         'totalOmzet' => 0,
+    //         'activeOrders' => 0,
+    //         'bestSellers' => [],
+    //     ];
+
+    //     return view('guest.welcome', $data);
+    // }
 
     public function indexGuest()
     {
-        $data = [
-            'totalOmzet' => 0,
-            'activeOrders' => 0,
-            'bestSellers' => [],
-        ];
-
-        return view('guest.welcome', $data);
+        return view('guest.welcome');
     }
 }
