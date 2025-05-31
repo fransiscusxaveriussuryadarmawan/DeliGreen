@@ -69,8 +69,7 @@
 
     @include('components.footer')
     @yield('modals')
-    @yield('scripts')
-
+    @stack('scripts')
 
     <script>
         const logoutModal = document.getElementById('logoutModal');

@@ -10,7 +10,7 @@
         </div>
         <div class="modal-body">
           @if(session('error'))
-            <div class="alert alert-danger">{{ session('error') }}</div>
+          <div class="alert alert-danger">{{ session('error') }}</div>
           @endif
 
           <div class="mb-3">
@@ -31,3 +31,22 @@
   </div>
 </div>
 @endsection
+
+@push('scripts')
+@if(session('error'))
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const loginModalEl = document.getElementById('loginModal');
+    const loginModal = new bootstrap.Modal(loginModalEl);
+    loginModal.show();
+
+    loginModalEl.addEventListener('hidden.bs.modal', function() {
+      const backdrops = document.querySelectorAll('.modal-backdrop');
+      backdrops.forEach(b => b.remove());
+      document.body.classList.remove('modal-open');
+      document.body.style = '';
+    });
+  });
+</script>
+@endif
+@endpush
