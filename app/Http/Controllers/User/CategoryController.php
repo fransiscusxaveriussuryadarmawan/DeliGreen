@@ -16,10 +16,10 @@ class CategoryController extends Controller
         return view('user.categories.index');
     }
 
-    public function guestCategories()
+    public function guestIndex()
     {
-        $categories = Category::all(); // ambil semua kategori dari DB
-        return view('guest.categories', compact('categories'));
+        $categories = Category::withCount('foods')->paginate(10);
+        return view('guest.categories.index', compact('categories'));
     }
 
     /**

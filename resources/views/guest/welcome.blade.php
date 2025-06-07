@@ -15,7 +15,7 @@
                     <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#loginModal">
                         <i class="fas fa-sign-in-alt"></i> Login
                     </button>
-                    <a href="#menu" class="btn btn-outline-success btn-lg px-4">
+                    <a href="{{ route('guest.foods.index') }}" class="btn btn-outline-success btn-lg px-4">
                         <i class="bi bi-egg-fried me-2"></i> Lihat Menu
                     </a>
                 </div>
@@ -31,15 +31,15 @@
             <p class="text-muted">Temukan makanan sesuai kebutuhan dietmu</p>
         </div>
         <div class="row g-4">
-            @foreach(['Appetizer', 'Main Course', 'Snack', 'Dessert', 'Coffee', 'Non Coffee', 'Healthy Juice'] as $category)
+            @foreach($categories as $category)
             <div class="col-6 col-md-3">
                 <div class="card border-0 shadow-sm h-100 hover-lift">
-                    <img src="https://source.unsplash.com/random/300x200/?{{ strtolower($category) }}"
+                    <img src="https://picsum.photos/id/1/200/300"
                         class="card-img-top"
-                        alt="{{ $category }}"
+                        alt="{{ $category->slug }}"
                         style="height: 150px; object-fit: cover;">
                     <div class="card-body text-center">
-                        <h5 class="card-title">{{ $category }}</h5>
+                        <h5 class="card-title">{{ $category->name }}</h5>
                         <a href="#" class="btn btn-success w-100" data-bs-toggle="modal" data-bs-target="#loginModal">Lihat Menu</a>
                     </div>
                 </div>
@@ -56,26 +56,33 @@
             <p class="text-muted">Favorit pelanggan kami</p>
         </div>
         <div class="row g-4">
-            @foreach([
-            ['name' => 'Salad Sayur Organik', 'price' => 45000, 'calories' => 320],
-            ['name' => 'Bowl Avocado', 'price' => 55000, 'calories' => 420],
-            ['name' => 'Smoothie Mangga', 'price' => 35000, 'calories' => 280],
-            ['name' => 'Nasi Goreng Quinoa', 'price' => 50000, 'calories' => 380]
-            ] as $item)
+            @foreach($foods as $food)
             <div class="col-6 col-md-3">
                 <div class="card border-0 shadow-sm h-100 hover-lift">
-                    <img src="https://source.unsplash.com/random/300x200/?{{ str_replace(' ', '-', strtolower($item['name'])) }}"
-                        class="card-img-top"
-                        alt="{{ $item['name'] }}"
-                        style="height: 150px; object-fit: cover;">
-                    <div class="card-body">
-                        <h5 class="card-title">{{ $item['name'] }}</h5>
-                        <div class="d-flex justify-content-between align-items-center">
-                            <span class="text-success fw-bold">Rp {{ number_format($item['price'], 0, ',', '.') }}</span>
-                            <span class="badge bg-light text-dark">{{ $item['calories'] }} kcal</span>
-                        </div>
+                    {{-- Gunakan ratio yang sama untuk semua gambar makanan --}}
+                    <div class="ratio ratio-1x1">
+                        @if ($food->image && Storage::exists('foods/' . $food->image))
+                        {{-- Jika gambar ada di storage, tampilkan --}}
+                        <img src="{{ asset('storage/foods/' . $food->image) }}"
+                             style="object-fit: cover; height: 200px;" 
+                             class="card-img-top object-fit-cover"
+                             alt="{{ $food->name }}">
+                        @else
+                        {{-- Jika tidak ada gambar, tampilkan placeholder --}}
+                        <img src="https://picsum.photos/id/1/200/300"
+                             style="object-fit: cover; height: 200px;"
+                             class="card-img-top object-fit-cover"
+                             alt="{{ $food->name }}">
+                        @endif
                     </div>
-                    <div class="card-footer bg-white border-0">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ $food->name }}</h5>
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <span class="text-success fw-bold">Rp {{ number_format($food->price, 0, ',', '.') }}</span>
+                        </div>
+                        <p class="card-text text-muted small">{{ Str::limit($food->description, 50) }}</p>
+                    </div>
+                    <div class="card-footer bg-white border-0 pt-0">
                         <a href="#" class="btn btn-success w-100" data-bs-toggle="modal" data-bs-target="#loginModal">
                             <i class="fas fa-shopping-cart me-1"></i> Pesan Sekarang
                         </a>
@@ -85,7 +92,7 @@
             @endforeach
         </div>
         <div class="text-center mt-4">
-            <a href="#" class="btn btn-success w-100" data-bs-toggle="modal" data-bs-target="#loginModal">
+            <a href="#" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#loginModal">
                 Lihat Menu Lengkap <i class="bi bi-arrow-right ms-2"></i>
             </a>
         </div>
@@ -136,4 +143,8 @@
     </div>
 </section>
 @endsection
-@include('components.login')
+
+@push('modals')
+    @include('components.login')
+    @include('auth.register')
+@endpush

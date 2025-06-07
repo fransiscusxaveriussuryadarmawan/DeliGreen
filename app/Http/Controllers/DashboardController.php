@@ -81,6 +81,8 @@ class DashboardController extends Controller
 
     public function indexGuest()
     {
-        return view('guest.welcome');
+        $categories = Category::withCount('foods')->paginate(10);
+        $foods = Food::with('category')->orderBy('name')->paginate(10);
+        return view('guest.welcome', compact('categories', 'foods'));
     }
 }

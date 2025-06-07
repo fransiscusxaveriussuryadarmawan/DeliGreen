@@ -99,7 +99,7 @@
         <div class="text-center mt-3">
           <small class="text-muted">
             Sudah punya akun?
-            <a href="{{ route('guest.welcome') }}" class="text-primary">Login di sini</a>
+            <a href="{{ route('welcome') }}" class="text-primary">Login di sini</a>
           </small>
         </div>
 
@@ -109,30 +109,30 @@
 </div>
 @endsection
 
-@section('scripts')
-<script>
-  document.addEventListener('DOMContentLoaded', function() {
-    var toastElList = [].slice.call(document.querySelectorAll('.toast'))
-    toastElList.map(function(toastEl) {
-      return new bootstrap.Toast(toastEl, {
-        delay: 4000
-      }).show()
-    })
-  });
-
-  function togglePassword(inputId, el) {
-    const input = document.getElementById(inputId);
-    const icon = document.getElementById('toggleIcon-' + inputId);
-
-    if (input.type === "password") {
-      input.type = "text";
-      icon.classList.remove("fa-eye");
-      icon.classList.add("fa-eye-slash");
-    } else {
-      input.type = "password";
-      icon.classList.remove("fa-eye-slash");
-      icon.classList.add("fa-eye");
+@push('scripts')
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      var toastElList = [].slice.call(document.querySelectorAll('.toast'))
+      toastElList.map(function(toastEl) {
+        return new bootstrap.Toast(toastEl, {
+          delay: 4000
+        }).show()
+      })
+    });
+  
+    function togglePassword(inputId, el) {
+      const input = document.getElementById(inputId);
+      const icon = document.getElementById('toggleIcon-' + inputId);
+  
+      if (input.type === "password") {
+        input.type = "text";
+        icon.classList.remove("fa-eye");
+        icon.classList.add("fa-eye-slash");
+      } else {
+        input.type = "password";
+        icon.classList.remove("fa-eye-slash");
+        icon.classList.add("fa-eye");
+      }
     }
-  }
-</script>
-@endsection
+  </script>
+@endpush

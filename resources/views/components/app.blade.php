@@ -57,6 +57,32 @@
             padding-left: 1.5rem;
             padding-right: 1.5rem;
         }
+
+        .hero-section {
+            background: linear-gradient(135deg, #3498db, #2c3e50);
+        }
+
+        .card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border-radius: 10px;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+
+        .btn-primary {
+            background-color: #3498db;
+            border-color: #3498db;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background-color: #2980b9;
+            border-color: #2980b9;
+            transform: translateY(-2px);
+        }
     </style>
 </head>
 
@@ -70,40 +96,8 @@
     </main>
 
     @include('components.footer')
-    @yield('modals')
+
+    @stack('modals')
     @stack('scripts')
-
-    <script>
-        const logoutModal = document.getElementById('logoutModal');
-        if (logoutModal) {
-            logoutModal.addEventListener('hide.bs.modal', function() {
-                requestAnimationFrame(() => {
-                    const safeTarget = document.querySelector('[data-bs-toggle="dropdown"]');
-                    if (safeTarget) {
-                        safeTarget.focus();
-                    } else {
-                        document.body.focus();
-                    }
-                });
-            });
-        }
-    </script>
-
-    <script>
-        const loginModal = document.getElementById('loginModal');
-        if (loginModal) {
-            loginModal.addEventListener('hide.bs.modal', function() {
-                requestAnimationFrame(() => {
-                    const safeTarget = document.querySelector('[data-bs-toggle="modal"][data-bs-target="#loginModal"]');
-                    if (safeTarget) {
-                        safeTarget.focus();
-                    } else {
-                        document.body.focus();
-                    }
-                });
-            });
-        }
-    </script>
 </body>
-
 </html>
