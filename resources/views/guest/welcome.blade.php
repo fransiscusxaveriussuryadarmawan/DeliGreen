@@ -1,10 +1,7 @@
 @extends('components.app')
 
-@section('styles')
-<link rel="stylesheet" href="{{ asset('css/guest.css') }}">
-@endsection
-
 @section('content')
+<link rel="stylesheet" href="{{ asset('css/guest.css') }}">
 <section class="hero-section py-5" style="background: linear-gradient(rgba(255,255,255,0.9), rgba(255,255,255,0.9)), url('https://images.unsplash.com/photo-1490645935967-10de6ba17061?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80'); background-size: cover; min-height: 80vh;">
     <div class="container h-100">
         <div class="row h-100 align-items-center">
@@ -146,5 +143,4 @@
 
 @push('modals')
     @include('components.login')
-    @include('auth.register')
 @endpush

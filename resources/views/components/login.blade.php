@@ -14,13 +14,13 @@
             @endif
   
             <div class="mb-3">
-              <label for="email">Email</label>
-              <input type="email" class="form-control" name="email" required autofocus value="{{ old('email') }}">
+              <label for="login-email">Email</label>
+              <input type="email" class="form-control" id="login-email" name="email" required autofocus value="{{ old('email') }}">
             </div>
   
             <div class="mb-3">
-              <label for="password">Password</label>
-              <input type="password" class="form-control" name="password" required>
+              <label for="login-password">Password</label>
+              <input type="password" class="form-control" id="login-password" name="password" required>
             </div>
           </div>
           <div class="modal-footer">
@@ -43,7 +43,9 @@
   <script>
     document.addEventListener('DOMContentLoaded', function() {
       const loginModalEl = document.getElementById('loginModal');
-      const loginModal = new bootstrap.Modal(loginModalEl);
+      const loginModal = new bootstrap.Modal(loginModalEl, {
+        backdrop: true
+      });
       loginModal.show();
 
       loginModalEl.addEventListener('hidden.bs.modal', function() {

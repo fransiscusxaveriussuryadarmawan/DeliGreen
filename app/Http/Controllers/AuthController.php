@@ -16,7 +16,7 @@ class AuthController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect()->route('guest.welcome')
+        return redirect()->route('welcome')
             ->with('success', 'Anda telah berhasil keluar.');
     }
 
@@ -33,11 +33,11 @@ class AuthController extends Controller
             $user = Auth::user();
 
             if ($user->role === 'admin') {
-                return redirect()->intended(route('admin.dashboard'));
+                return redirect()->intended(route('admin.dashboard'))->with('success', 'Selamat datang, ' . $user->name . '!');
             }
 
             if ($user->role === 'member') {
-                return redirect()->intended(route('user.dashboard'));
+                return redirect()->intended(route('user.dashboard'))->with('success', 'Selamat datang, ' . $user->name . '!');
             }
 
             Auth::logout();
@@ -81,7 +81,7 @@ class AuthController extends Controller
 
         //auth()->login($user);
 
-        return redirect()->route('guest.welcome')
+        return redirect()->route('welcome')
             ->with('success', 'Registrasi berhasil, silakan masuk.');
     }
 

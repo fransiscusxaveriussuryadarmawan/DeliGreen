@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="id">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -91,6 +90,30 @@
 
     <main class="container-fluid">
         <main class="flex-fill">
+            {{-- Toast container posisi fixed di pojok kanan atas --}}
+            <div class="position-fixed top-0 end-0 p-3" style="z-index: 1080;">
+              @if(session('success'))
+              <div id="successToast" class="toast align-items-center text-bg-success bg-gradient border-0 show" role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="d-flex">
+                  <div class="toast-body">
+                    ✔ {{ session('success') }}
+                  </div>
+                  <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+              </div>
+              @endif
+
+              @if(session('error'))
+              <div id="errorToast" class="toast align-items-center text-bg-danger border-0 show" role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="d-flex">
+                  <div class="toast-body">
+                    ❌ {{ session('error') }}
+                  </div>
+                  <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+              </div>
+              @endif
+            </div>
             @yield('content')
         </main>
     </main>
@@ -99,5 +122,16 @@
 
     @stack('modals')
     @stack('scripts')
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+          var toastElList = [].slice.call(document.querySelectorAll('.toast'))
+          toastElList.map(function(toastEl) {
+            return new bootstrap.Toast(toastEl, {
+              delay: 4000
+            }).show()
+          })
+        });
+    </script>
 </body>
 </html>

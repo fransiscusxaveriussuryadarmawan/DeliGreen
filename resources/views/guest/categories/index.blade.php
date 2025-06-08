@@ -12,7 +12,7 @@
                     <i class="fas fa-3x text-primary mb-3"></i>
                     <h5 class="card-title">{{ $category->name }}</h5>
                     <p class="card-text">{{ $category->foods_count }} items</p>
-                    <a href="{{ route('guest.categories.show', $category->id) }}" class="btn btn-outline-primary">View Foods</a>
+                    <a href="{{ route('guest.categories.show', $category->id) }}" class="btn btn-outline-success">View Foods</a>
                 </div>
             </div>
         </div>

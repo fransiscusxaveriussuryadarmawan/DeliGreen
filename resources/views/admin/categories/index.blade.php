@@ -151,7 +151,7 @@
 </div>
 @endsection
 
-@section('scripts')
+@push('scripts')
 @if(session('success'))
 <script>
     document.addEventListener("DOMContentLoaded", function() {
@@ -178,5 +178,4 @@
         });
     });
 </script>
-
-@endsection
+@endpush

@@ -96,7 +96,7 @@
 </div>
 @endsection
 
-@section('scripts')
+@push('scripts')
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const deleteButton = document.querySelector('[data-bs-target="#confirmDeleteCustomerModal"]');
@@ -114,4 +114,4 @@
         }
     });
 </script>
-@endsection
+@endpush

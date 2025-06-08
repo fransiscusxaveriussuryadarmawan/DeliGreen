@@ -106,7 +106,7 @@
 </div>
 @endsection
 
-@section('scripts')
+@push('scripts')
 @if(session('success'))
 <script>
     document.addEventListener("DOMContentLoaded", function() {
@@ -115,5 +115,4 @@
     });
 </script>
 @endif
-
-@endsection
+@endpush

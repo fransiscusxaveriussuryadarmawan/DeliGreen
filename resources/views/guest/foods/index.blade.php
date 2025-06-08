@@ -11,7 +11,7 @@
                 <div class="input-group">
                     <input type="text" name="search" class="form-control" 
                         placeholder="Search food..." value="{{ request('search') }} ">
-                    <button class="btn btn-primary" type="submit"><i class="fas fa-search"></i></button>
+                    <button class="btn btn-success" type="submit"><i class="fas fa-search"></i></button>
                 </div>
             </form>
         </div>
@@ -33,7 +33,7 @@
                             </option>
                         @endforeach
                     </select>
-                    <button class="btn btn-outline-primary" type="submit">Filter
+                    <button class="btn btn-outline-success" type="submit">Filter
                     </button>
                 </div>
             </form>
@@ -52,7 +52,7 @@
                     <p class="card-text"><strong>Rp {{ number_format($food->price, 0, ',', '.') }}</strong></p>
                 </div>
                 <div class="card-footer bg-white border-0">
-                    <a href="#" class="btn btn-primary w-100">Order Now</a>
+                    <a href="#" class="btn btn-success w-100">Order Now</a>
                 </div>
             </div>
         </div>

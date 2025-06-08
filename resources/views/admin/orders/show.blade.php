@@ -100,10 +100,10 @@
 </div>
 @endsection
 
-@section('scripts')
+@push('scripts')
 <script>
     $(document).ready(function() {
         $('#orderSuccessModal').modal('show');
     });
 </script>
-@endsection
+@endpush
