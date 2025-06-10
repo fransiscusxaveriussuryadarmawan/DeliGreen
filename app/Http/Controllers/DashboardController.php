@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Models\Order;
 use App\Models\Food;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
 {
@@ -59,13 +60,19 @@ class DashboardController extends Controller
 
     public function indexCustomer()
     {
-        $data = [
-            'totalOmzet' => 0,
-            'activeOrders' => 0,
-            'bestSellers' => [],
-        ];
+        $user = Auth::user();
 
-        return view('user.dashboard', $data);
+        $categories = Category::withCount('foods')->paginate(10);
+        $recommendedFoods = Food::with('category')
+            ->inRandomOrder()
+            ->take(8)
+            ->get();
+        $recentOrders = Order::where('user_id', $user->id)
+            ->withCount('items')
+            ->latest()
+            ->take(5)
+            ->get();
+        return view('user.dashboard', compact('categories', 'recommendedFoods', 'recentOrders'));
     }
 
     // public function indexGuest()

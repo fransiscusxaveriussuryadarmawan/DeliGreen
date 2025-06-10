@@ -114,6 +114,7 @@
               </div>
               @endif
             </div>
+            @yield('styles')
             @yield('content')
         </main>
     </main>

@@ -34,4 +34,16 @@ class User extends Authenticatable
     {
         return $this->hasMany(Order::class);
     }
+
+    public function orderItems()
+    {
+        return $this->hasManyThrough(
+            OrderItem::class,
+            Order::class,
+            'user_id', // Foreign key on orders table
+            'order_id', // Foreign key on order_items table
+            'id', // Local key on users table
+            'id' // Local key on orders table
+        );
+    }
 }
