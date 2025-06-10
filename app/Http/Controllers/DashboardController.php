@@ -7,6 +7,7 @@ use App\Models\Category;
 use App\Models\User;
 use App\Models\Order;
 use App\Models\Food;
+use App\Models\OrderItem;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 
@@ -72,7 +73,12 @@ class DashboardController extends Controller
             ->latest()
             ->take(5)
             ->get();
-        return view('user.dashboard', compact('categories', 'recommendedFoods', 'recentOrders'));
+        $cartItemCount = OrderItem::where('user_id', $user->id)
+            ->whereHas('order', function ($query) {
+                $query->where('status', 'pending');
+            })
+            ->count();
+        return view('user.dashboard', compact('categories', 'recommendedFoods', 'recentOrders', 'cartItemCount'));
     }
 
     // public function indexGuest()

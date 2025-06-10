@@ -13,6 +13,7 @@ use App\Http\Controllers\Admin\ReportController as AdminReportController;
 use App\Http\Controllers\User\CategoryController as UserCategoryController;
 use App\Http\Controllers\User\FoodController as UserFoodController;
 use App\Http\Controllers\User\OrderController as UserOrderController;
+use App\Http\Controllers\User\OrderItemController as UserOrderItemController;
 use App\Http\Controllers\User\ReportController as UserReportController;
 
 /*
@@ -56,5 +57,6 @@ Route::prefix('user')->name('user.')->group(function () {
     Route::resource('foods', UserFoodController::class);
     Route::resource('categories', UserCategoryController::class);
     Route::resource('orders', UserOrderController::class);
+    Route::resource('order_items', UserOrderItemController::class);
     Route::resource('reports', UserReportController::class);
 });

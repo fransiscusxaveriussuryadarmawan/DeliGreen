@@ -113,11 +113,20 @@
                     <h1 class="display-4 text-success fw-bold mb-2">Selamat Datang, {{ Auth::user()->name }}!</h1>
                     <p class="lead text-muted mb-0">Apa yang ingin kamu pesan hari ini?</p>
                 </div>
-                <div class="mt-3 mt-md-0">
+                <div class="mt-3 mt-md-0 d-flex align-items-center gap-3">
                     <a href="{{ route('user.orders.create') }}" class="btn btn-success btn-lg px-4">
                         <i class="fas fa-plus me-2"></i> Pesan Sekarang
                     </a>
-                </div>
+                    <a href="{{ route('user.order_items.index') }}" class="btn btn-outline-success position-relative" style="font-size: 1.2rem;">
+                        <i class="fas fa-shopping-cart"></i>
+                        @if($cartItemCount > 0)
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                            {{ $cartItemCount }}
+                            <span class="visually-hidden">items in cart</span>
+                        </span>
+                        @endif
+                    </a>
+                </div>     
             </div>
         </div>
     </div>

@@ -15,8 +15,10 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('order_id');
             $table->unsignedBigInteger('food_id');
+            $table->unsignedBigInteger('user_id')->nullable(); // Optional, if you want to track who added the item
             $table->foreign('order_id')->references('id')->on('orders')->onDelete('cascade');
             $table->foreign('food_id')->references('id')->on('foods')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->decimal('price', 10, 2);
             $table->integer('quantity');
             $table->timestamps();

@@ -1,61 +1,54 @@
 @extends('components.app')
 
 @section('content')
-<div class="row">
-    <div class="col-lg-8">
-        <div class="card shadow-sm">
-            <div class="card-body">
-                <h4 class="mb-4">Keranjang Anda</h4>
+<div class="container py-4">
+    <h2>Keranjang Saya</h2>
+    <p>Berikut adalah daftar makanan yang telah Anda tambahkan ke keranjang.</p>
+    <hr>
 
-                <div class="d-flex gap-3 mb-4">
-                    <img src="https://via.placeholder.com/100x100" class="rounded" alt="Item">
-                    <div class="flex-grow-1">
-                        <h5>Salad Sayur Organik</h5>
-                        <p class="text-muted small mb-1">Ukuran: Large, Bahan: No onion</p>
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div class="input-group w-50">
-                                <button class="btn btn-outline-secondary">-</button>
-                                <input type="text" class="form-control text-center" value="2">
-                                <button class="btn btn-outline-secondary">+</button>
-                            </div>
-                            <h5 class="text-success mb-0">Rp 90.000</h5>
-                        </div>
-                    </div>
-                </div>
-            </div>
+    @if($cartItems->isEmpty())
+        <div class="alert alert-warning" role="alert">
+            Keranjang Anda kosong! Silakan tambahkan makanan ke keranjang.
         </div>
-    </div>
+        <a href="{{ route('user.foods.index') }}" class="btn btn-success">Lihat Makanan</a>
+    @else
+        <table class="table table-striped align-middle">
+            <thead>
+                <tr>
+                    <th>Nama Makanan</th>
+                    <th>Harga Satuan</th>
+                    <th>Jumlah</th>
+                    <th>Subtotal</th>
+                    <th>Aksi</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach($cartItems as $item)
+                <tr>
+                    <td>{{ $item->food->name }}</td>
+                    <td>Rp {{ number_format($item->food->price, 0, ',', '.') }}</td>
+                    <td>{{ $item->quantity }}</td>
+                    <td>Rp {{ number_format($item->food->price * $item->quantity, 0, ',', '.') }}</td>
+                    <td>
+                        <!-- Bisa tambahkan tombol hapus atau update quantity -->
+                        <form action="{{ route('user.cart.destroy', $item->id) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus item?')">
+                            @csrf
+                            @method('DELETE')
+                            <button class="btn btn-sm btn-danger">Hapus</button>
+                        </form>
+                    </td>
+                </tr>
+                @endforeach
+                <tr>
+                    <td colspan="3" class="text-end fw-bold">Total Harga</td>
+                    <td colspan="2" class="fw-bold">Rp {{ number_format($totalPrice, 0, ',', '.') }}</td>
+                </tr>
+            </tbody>
+        </table>
 
-    <div class="col-lg-4">
-        <div class="card shadow-sm sticky-top">
-            <div class="card-body">
-                <h5 class="mb-3">Ringkasan Pesanan</h5>
-                <div class="mb-3">
-                    <label class="form-label">Pilih Metode</label>
-                    <select class="form-select">
-                        <option>Dine-in</option>
-                        <option>Take-away</option>
-                    </select>
-                </div>
-
-                <div class="list-group mb-3">
-                    <div class="list-group-item d-flex justify-content-between">
-                        <span>Subtotal</span>
-                        <span>Rp 135.000</span>
-                    </div>
-                    <div class="list-group-item d-flex justify-content-between">
-                        <span>PPN 10%</span>
-                        <span>Rp 13.500</span>
-                    </div>
-                    <div class="list-group-item d-flex justify-content-between fw-bold">
-                        <span>Total</span>
-                        <span class="text-success">Rp 148.500</span>
-                    </div>
-                </div>
-
-                <button class="btn btn-success w-100">Lanjut ke Pembayaran</button>
-            </div>
-        </div>
-    </div>
+        <a href="{{ route('user.orders.create') }}" class="btn btn-success">
+            Lanjutkan ke Pemesanan
+        </a>
+    @endif
 </div>
 @endsection
