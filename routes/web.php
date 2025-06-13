@@ -32,7 +32,7 @@ Route::get('/', [DashboardController::class, 'indexGuest'])->name('welcome');
 Route::prefix('guest')->name('guest.')->group(function () {
     Route::get('/foods', [UserFoodController::class, 'guestIndex'])->name('foods.index');
     Route::get('/categories', [UserCategoryController::class, 'guestIndex'])->name('categories.index');
-    Route::get('/categories/show', [UserCategoryController::class, 'show'])->name('categories.show');
+    Route::get('/categories/{id}', [UserCategoryController::class, 'show'])->name('categories.show');
     Route::get('/orders', fn() => redirect('/register'))->name('orders.index');
     Route::get('/reports', fn() => redirect('/register'))->name('reports.index');
 });

@@ -3,7 +3,7 @@
 @section('content')
 <div class="container py-4">
     <h1 class="text-center mb-4">Categories</h1>
-    
+
     <div class="row">
         @foreach($categories as $category)
         <div class="col-md-3 mb-4">

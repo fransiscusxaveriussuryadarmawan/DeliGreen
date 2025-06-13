@@ -41,9 +41,13 @@ class CategoryController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show($id)
     {
-        //
+        $category = Category::findOrFail($id);
+
+        $foods = $category->foods()->paginate(9);
+
+        return view('guest.categories.show', compact('category', 'foods'));
     }
 
     /**

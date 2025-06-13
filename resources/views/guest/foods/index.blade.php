@@ -9,28 +9,28 @@
         <div class="col-md-6">
             <form action="{{ route('guest.foods.index') }}" method="GET">
                 <div class="input-group">
-                    <input type="text" name="search" class="form-control" 
+                    <input type="text" name="search" class="form-control"
                         placeholder="Search food..." value="{{ request('search') }} ">
                     <button class="btn btn-success" type="submit"><i class="fas fa-search"></i></button>
                 </div>
             </form>
         </div>
-        
+
         <div class="col-md-6">
             <form action="{{ route('guest.foods.index') }}" method="GET">
                 <!-- Pertahankan parameter pencarian -->
                 @if(request('search'))
-                    <input type="hidden" name="search" value="{{ request('search') }}">
+                <input type="hidden" name="search" value="{{ request('search') }}">
                 @endif
-                
+
                 <div class="input-group">
                     <select class="form-select" name="category">
                         <option value="">All Categories</option>
                         @foreach($categories as $cat)
-                            <option value="{{ $cat->slug }}" 
-                                {{ request('category') == $cat->slug ? 'selected' :   '' }}>
-                                {{ $cat->name }}
-                            </option>
+                        <option value="{{ $cat->slug }}"
+                            {{ request('category') == $cat->slug ? 'selected' :   '' }}>
+                            {{ $cat->name }}
+                        </option>
                         @endforeach
                     </select>
                     <button class="btn btn-outline-success" type="submit">Filter
@@ -52,7 +52,9 @@
                     <p class="card-text"><strong>Rp {{ number_format($food->price, 0, ',', '.') }}</strong></p>
                 </div>
                 <div class="card-footer bg-white border-0">
-                    <a href="#" class="btn btn-success w-100">Order Now</a>
+                    <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#loginModal">
+                        Order Now
+                    </button>
                 </div>
             </div>
         </div>

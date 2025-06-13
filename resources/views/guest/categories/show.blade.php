@@ -26,14 +26,14 @@
                 <div class="card-body">
                     <h5 class="card-title">{{ $food->name }}</h5>
                     <p class="card-text text-muted">{{ Str::limit($food->description, 100) }}</p>
-                    
+
                     <div class="d-flex justify-content-between align-items-center mt-3">
                         <span class="badge bg-light text-dark">
                             <i class="fas fa-star text-warning me-1"></i> {{ $food->rating ?? '4.5' }}
                         </span>
-                        <a href="#" class="btn btn-sm btn-outline-primary">
+                        <button type="button" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#loginModal">
                             <i class="fas fa-shopping-cart me-1"></i> Order
-                        </a>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -67,12 +67,12 @@
         border-radius: 10px;
         overflow: hidden;
     }
-    
+
     .card:hover {
         transform: translateY(-5px);
         box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
     }
-    
+
     .badge.bg-primary {
         font-size: 0.9rem;
         padding: 0.5rem 0.75rem;
