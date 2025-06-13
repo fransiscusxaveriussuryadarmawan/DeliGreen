@@ -54,7 +54,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
 Route::prefix('user')->name('user.')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'indexCustomer'])->name('dashboard');
-    Route::resource('foods', UserFoodController::class);
+    Route::get('/foods', [UserFoodController::class, 'memberIndex'])->name('foods.index');
     Route::resource('categories', UserCategoryController::class);
     Route::resource('orders', UserOrderController::class);
     Route::resource('order_items', UserOrderItemController::class);
