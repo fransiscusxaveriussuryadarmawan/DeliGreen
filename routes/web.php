@@ -29,7 +29,7 @@ use App\Http\Controllers\Guest\FoodController as GuestFoodController;
 |
 */
 
-Route::get('/', [DashboardController::class, 'indexGuest'])->name('welcome');
+Route::get('/', [DashboardController::class, 'indexGuest'])->middleware('blockIfLoggedIn')->name('welcome');
 Route::get('/register', [AuthController::class, 'showRegistrationPage'])->name('register.page');
 Route::post('/register/verify', [AuthController::class, 'registerProcess'])->name('register.verify');
 Route::post('/login', [AuthController::class, 'login'])->name('login');
@@ -53,7 +53,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin.only'])->grou
     Route::get('/reports/load/{type}', [AdminReportController::class, 'load'])->name('reports.load');
 });
 
-Route::prefix('user')->name('user.')->middleware('auth')->group(function () {
+Route::prefix('user')->name('member.')->middleware('auth')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'indexCustomer'])->name('dashboard');
     Route::get('/foods', [UserFoodController::class, 'memberIndex'])->name('foods.index');
     Route::resource('categories', UserCategoryController::class);

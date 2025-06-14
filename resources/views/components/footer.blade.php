@@ -29,9 +29,9 @@
                     <li class="mb-2"><a href="{{ route('admin.orders.index') }}" class="text-white text-decoration-none">Orders</a></li>
                     <li class="mb-2"><a href="{{ route('admin.reports.index') }}" class="text-white text-decoration-none">Reports</a></li>
                     @elseif($role === 'member')
-                    <li class="mb-2"><a href="{{ route('user.foods.index') }}" class="text-white text-decoration-none">Food</a></li>
-                    <li class="mb-2"><a href="{{ route('user.categories.index') }}" class="text-white text-decoration-none">Categories</a></li>
-                    <li class="mb-2"><a href="{{ route('user.orders.index') }}" class="text-white text-decoration-none">Orders</a></li>
+                    <li class="mb-2"><a href="{{ route('member.foods.index') }}" class="text-white text-decoration-none">Food</a></li>
+                    <li class="mb-2"><a href="{{ route('member.categories.index') }}" class="text-white text-decoration-none">Categories</a></li>
+                    <li class="mb-2"><a href="{{ route('member.orders.index') }}" class="text-white text-decoration-none">Orders</a></li>
                     @else
                     <li class="mb-2"><a href="{{ route('guest.foods.index') }}" class="text-white text-decoration-none">Food</a></li>
                     <li class="mb-2"><a href="{{ route('guest.categories.index') }}" class="text-white text-decoration-none">Categories</a></li>

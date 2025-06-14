@@ -1,26 +1,26 @@
 @php
 $prefix = 'guest';
 if (auth()->check()) {
-$prefix = auth()->user()->role === 'admin' ? 'admin' : 'user';
+$prefix = auth()->user()->role === 'admin' ? 'admin' : 'member';
 }
 @endphp
 
 <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #2c3e50;">
     <div class="container">
         @auth
-        @if (Auth::user()->role === 'admin')
-        <a class="navbar-brand fw-bold" href="{{ route('admin.dashboard') }}">
-            <i class="fas fa-leaf me-2"></i>DeliGreen Admin
-        </a>
-        @elseif (Auth::user()->role === 'member')
-        <a class="navbar-brand fw-bold" href="{{ route('user.dashboard') }}">
-            <i class="fas fa-leaf me-2"></i>DeliGreen
-        </a>
-        @endif
-        @else
-        <a class="navbar-brand fw-bold" href="{{ route('welcome') }}">
-            <i class="fas fa-leaf me-2"></i>DeliGreen
-        </a>
+            @if (Auth::user()->role === 'admin')
+                <a class="navbar-brand fw-bold" href="{{ route('admin.dashboard') }}">
+                    <i class="fas fa-leaf me-2"></i>DeliGreen Admin
+                </a>
+            @elseif (Auth::user()->role === 'member')
+                <a class="navbar-brand fw-bold" href="{{ route('member.dashboard') }}">
+                    <i class="fas fa-leaf me-2"></i>DeliGreen
+                </a>
+            @else
+                <a class="navbar-brand fw-bold" href="{{ route('welcome') }}">
+                    <i class="fas fa-leaf me-2"></i>DeliGreen
+                </a>
+            @endif
         @endauth
 
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
@@ -104,7 +104,12 @@ $prefix = auth()->user()->role === 'admin' ? 'admin' : 'user';
     </div>
 </nav>
 
-@push('modals')
-@include('components.login')
-@include('components.logout-modal')
-@endpush
+@auth
+    @push('modals')
+        @if (!Auth::check())
+            @include('components.login')
+        @else
+            @include('components.logout-modal')
+        @endif
+    @endpush
+@endauth

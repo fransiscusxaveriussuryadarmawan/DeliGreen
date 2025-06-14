@@ -13,8 +13,17 @@ use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
 {
+    public $user;
+
+    public function __construct(User $user)
+    {
+        $this->user = $user;
+    }
+
     public function indexAdmin()
     {
+        Auth::check() ? Auth::user() : null;
+
         $totalToday = Order::whereDate('created_at', today())->sum('total_price');
         $totalYesterday = Order::whereDate('created_at', today()->subDay())->sum('total_price');
 
@@ -56,12 +65,13 @@ class DashboardController extends Controller
                 ->first(),
             'growth' => round($growth, 2),
             'newOrders' => Order::whereDate('created_at', today())->count(),
+            'user' => Auth::user(),
         ]);
     }
 
     public function indexCustomer()
     {
-        $user = Auth::user();
+        $user = Auth::user() ? Auth::user() : null;
 
         $categories = Category::withCount('foods')->paginate(10);
         $recommendedFoods = Food::with('category')
@@ -78,7 +88,7 @@ class DashboardController extends Controller
                 $query->where('status', 'pending');
             })
             ->count();
-        return view('user.dashboard', compact('categories', 'recommendedFoods', 'recentOrders', 'cartItemCount'));
+        return view('user.dashboard', compact('categories', 'recommendedFoods', 'recentOrders', 'cartItemCount', 'user'));
     }
 
     // public function indexGuest()
@@ -94,8 +104,9 @@ class DashboardController extends Controller
 
     public function indexGuest()
     {
+        $user = Auth::check() ? Auth::user() : null;
         $categories = Category::withCount('foods')->paginate(10);
         $foods = Food::with('category')->orderBy('name')->paginate(10);
-        return view('guest.welcome', compact('categories', 'foods'));
+        return view('guest.welcome', compact('categories', 'foods', 'user'));
     }
 }

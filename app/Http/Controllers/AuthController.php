@@ -37,10 +37,10 @@ class AuthController extends Controller
             }
 
             if ($user->role === 'member') {
-                return redirect()->intended(route('user.dashboard'))->with('success', 'Selamat datang, ' . $user->name . '!');
+                return redirect()->intended(route('member.dashboard'))->with('success', 'Selamat datang, ' . $user->name . '!');
             }
 
-            Auth::logout();
+            //Auth::logout();
             return back()->with('error', 'Akun tidak dikenali dalam sistem.');
         }
 
@@ -87,6 +87,6 @@ class AuthController extends Controller
 
     public function user()
     {
-        return Auth::user();
+        return auth()->user;
     }
 }

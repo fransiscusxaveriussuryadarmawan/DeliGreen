@@ -114,10 +114,10 @@
                     <p class="lead text-muted mb-0">Apa yang ingin kamu pesan hari ini?</p>
                 </div>
                 <div class="mt-3 mt-md-0 d-flex align-items-center gap-3">
-                    <a href="{{ route('user.foods.index') }}" class="btn btn-success btn-lg px-4">
+                    <a href="{{ route('member.foods.index') }}" class="btn btn-success btn-lg px-4">
                         <i class="fas fa-plus me-2"></i> Pesan Sekarang
                     </a>
-                    <a href="{{ route('user.orders.index') }}" class="btn btn-outline-success position-relative" style="font-size: 1.2rem;">
+                    <a href="{{ route('member.orders.index') }}" class="btn btn-outline-success position-relative" style="font-size: 1.2rem;">
                         <i class="fas fa-shopping-cart"></i>
                         @if($cartItemCount > 0)
                         <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
@@ -211,12 +211,12 @@
         <div class="col-12">
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <h3 class="text-success mb-0">Kategori Makanan</h3>
-                <a href="{{ route('user.categories.index') }}" class="text-success">Lihat Semua <i class="fas fa-arrow-right ms-1"></i></a>
+                <a href="{{ route('member.categories.index') }}" class="text-success">Lihat Semua <i class="fas fa-arrow-right ms-1"></i></a>
             </div>
             <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-4">
                 @foreach ($categories as $category)
                 <div class="col">
-                    <a href="{{ route('user.categories.show', $category->id) }}" class="text-decoration-none">
+                    <a href="{{ route('member.categories.show', $category->id) }}" class="text-decoration-none">
                         <div class="card shadow-sm h-100 border-0 hover-shadow transition">
                             <div class="card-body text-center">
                                 <i class="fas fa-tags fa-2x text-success mb-2"></i>
@@ -236,7 +236,7 @@
         <div class="col-12">
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <h3 class="text-success mb-0">Rekomendasi untuk Anda</h3>
-                <a href="{{ route('user.foods.index') }}" class="text-success">Lihat Semua <i class="fas fa-arrow-right ms-1"></i></a>
+                <a href="{{ route('member.foods.index') }}" class="text-success">Lihat Semua <i class="fas fa-arrow-right ms-1"></i></a>
             </div>
             <div class="row g-4">
                 @foreach($recommendedFoods as $food)
@@ -280,7 +280,7 @@
         <div class="col-12">
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <h3 class="text-success mb-0">Riwayat Pesanan Terakhir</h3>
-                <a href="{{ route('user.orders.cart') }}" class="text-success">Lihat Semua <i class="fas fa-arrow-right ms-1"></i></a>
+                <a href="{{ route('member.orders.cart') }}" class="text-success">Lihat Semua <i class="fas fa-arrow-right ms-1"></i></a>
             </div>
             <div class="card dashboard-card">
                 <div class="card-body p-0">
@@ -313,7 +313,7 @@
                                         @endif
                                     </td>
                                     <td>
-                                        <a href="{{ route('user.orders.show', $order->id) }}" class="btn btn-sm btn-outline-success">
+                                        <a href="{{ route('member.orders.show', $order->id) }}" class="btn btn-sm btn-outline-success">
                                             <i class="fas fa-eye me-1"></i> Detail
                                         </a>
                                     </td>
@@ -337,7 +337,7 @@
                 <h5 class="modal-title" id="orderModalLabel{{ $food->id }}">Pesan {{ $food->name }}</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form action="{{ route('user.orders.checkout') }}" method="POST">
+            <form action="{{ route('member.orders.checkout') }}" method="POST">
                 @csrf
                 <div class="modal-body">
                     <div class="text-center mb-4">
