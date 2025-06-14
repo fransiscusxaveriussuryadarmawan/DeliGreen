@@ -57,9 +57,6 @@ Route::prefix('user')->name('user.')->middleware('auth')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'indexCustomer'])->name('dashboard');
     Route::get('/foods', [UserFoodController::class, 'memberIndex'])->name('foods.index');
     Route::resource('categories', UserCategoryController::class);
-    Route::resource('reports', UserReportController::class);
-
-    Route::post('/foods/order', [UserFoodController::class, 'order'])->name('foods.order');
 
     Route::get('/orders', [UserOrderItemController::class, 'index'])->name('orders.index');
     Route::get('/orders/{id}', [UserOrderItemController::class, 'show'])->name('orders.show');
@@ -71,4 +68,5 @@ Route::prefix('user')->name('user.')->middleware('auth')->group(function () {
     Route::post('/orders/remove', [UserOrderItemController::class, 'removeFromCart'])->name('orders.remove');
     Route::post('/orders/update', [UserOrderItemController::class, 'updateCart'])->name('orders.update');
     Route::post('/orders/checkout', [UserOrderItemController::class, 'checkout'])->name('orders.checkout');
+    Route::post('/orders/clear', [UserOrderItemController::class, 'clearCart'])->name('orders.clear');
 });

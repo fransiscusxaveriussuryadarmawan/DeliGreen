@@ -13,7 +13,13 @@ class OrderItemController extends Controller
     public function index()
     {
         $cart = session()->get('cart', []);
-        return view('user.orders.index', compact('cart'));
+
+        $orders = Order::withCount('items')
+            ->where('user_id', auth()->id())
+            ->latest()
+            ->get();
+
+        return view('user.orders.index', compact('cart', 'orders'));
     }
 
     public function show($id)
@@ -85,13 +91,17 @@ class OrderItemController extends Controller
         $total = 0;
 
         foreach ($cart as $food_id => $item) {
+            $itemPrice = floatval(str_replace(',', '', $item['price']));
+
             OrderItem::create([
                 'order_id' => $order->id,
                 'food_id' => $food_id,
+                'user_id' => auth()->id(),
                 'quantity' => $item['quantity'],
-                'price' => $item['price'],
+                'price' => $itemPrice,
             ]);
-            $total += $item['price'] * $item['quantity'];
+
+            $total += $itemPrice * $item['quantity'];
         }
 
         $order->update(['total_price' => $total]);
@@ -99,5 +109,11 @@ class OrderItemController extends Controller
         session()->forget('cart');
 
         return redirect()->route('user.orders.index')->with('success', 'Checkout berhasil! Pesanan Anda telah dibuat.');
+    }
+
+    public function clearCart()
+    {
+        session()->forget('cart');
+        return back()->with('success', 'Keranjang berhasil dikosongkan.');
     }
 }

@@ -18,7 +18,6 @@ $prefix = auth()->user()->role === 'admin' ? 'admin' : 'user';
         </a>
         @endif
         @else
-        {{-- Tampilan untuk Guest --}}
         <a class="navbar-brand fw-bold" href="{{ route('welcome') }}">
             <i class="fas fa-leaf me-2"></i>DeliGreen
         </a>
@@ -30,7 +29,6 @@ $prefix = auth()->user()->role === 'admin' ? 'admin' : 'user';
 
         <div class="collapse navbar-collapse" id="navbarContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                {{-- Menu untuk semua user termasuk guest --}}
                 <li class="nav-item mx-1">
                     <a class="nav-link py-2 px-3 rounded {{ request()->routeIs('guest.foods.*') ? 'active bg-white text-dark' : '' }}"
                         href="{{ route($prefix . '.foods.index') }}">
@@ -44,7 +42,6 @@ $prefix = auth()->user()->role === 'admin' ? 'admin' : 'user';
                     </a>
                 </li>
 
-                {{-- Menu khusus admin --}}
                 @if(auth()->check() && auth()->user()->role === 'admin')
                 <li class="nav-item mx-1">
                     <a class="nav-link py-2 px-3 rounded {{ request()->routeIs('admin.users.*') ? 'active bg-white text-dark' : '' }}"
@@ -54,25 +51,24 @@ $prefix = auth()->user()->role === 'admin' ? 'admin' : 'user';
                 </li>
                 @endif
 
-                {{-- Menu untuk user yang login --}}
                 @auth
                 <li class="nav-item mx-1">
                     <a class="nav-link py-2 px-3" href="{{ route($prefix . '.orders.index') }}">
                         <i class="fas fa-shopping-cart me-1"></i> Order
                     </a>
                 </li>
+                @if (auth()->user()->role === 'admin')
                 <li class="nav-item mx-1">
                     <a class="nav-link py-2 px-3" href="{{ route($prefix . '.reports.index') }}">
                         <i class="fas fa-chart-line ms-1"></i> Reports
                     </a>
                 </li>
+                @endif
                 @endauth
             </ul>
 
-            {{-- Menu Kanan --}}
             <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                 @auth
-                {{-- Dropdown untuk user yang login --}}
                 <li class="nav-item dropdown">
                     <a href="#" class="nav-link dropdown-toggle d-flex align-items-center text-white" id="userDropdown"
                         role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -94,7 +90,6 @@ $prefix = auth()->user()->role === 'admin' ? 'admin' : 'user';
                     </ul>
                 </li>
                 @else
-                {{-- Tampilan untuk Guest --}}
                 <li class="nav-item">
                     <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#loginModal">
                         <i class="fas fa-sign-in-alt"></i> Login

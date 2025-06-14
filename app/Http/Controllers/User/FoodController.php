@@ -22,35 +22,7 @@ class FoodController extends Controller
 
     public function order(Request $request)
     {
-        $request->validate([
-            'food_id' => 'required|exists:foods,id',
-        ]);
-
-        $user = auth()->user();
-
-        $order = Order::firstOrCreate(
-            ['user_id' => $user->id, 'status' => 'pending'],
-            ['total_price' => 0]
-        );
-
-        $item = OrderItem::where('order_id', $order->id)
-            ->where('food_id', $request->food_id)
-            ->first();
-
-        if ($item) {
-            $item->quantity += 1;
-            $item->save();
-        } else {
-            $food = Food::findOrFail($request->food_id);
-            OrderItem::create([
-                'order_id' => $order->id,
-                'food_id' => $food->id,
-                'quantity' => 1,
-                'price' => $food->price,
-            ]);
-        }
-
-        return back()->with('success', 'Makanan berhasil ditambahkan ke keranjang!');
+        //
     }
 
     public function memberIndex(Request $request)
@@ -65,14 +37,14 @@ class FoodController extends Controller
         }
 
         if ($categorySlug) {
-            $queryFood->whereHas('category', function($q) use ($categorySlug) {
+            $queryFood->whereHas('category', function ($q) use ($categorySlug) {
                 $q->where('slug', $categorySlug);
             });
         }
 
         $foods = $queryFood->paginate(10);
         $categories = Category::orderBy('name')->get();
-        
+
         return view('user.foods.index', compact('foods', 'categories'));
     }
 

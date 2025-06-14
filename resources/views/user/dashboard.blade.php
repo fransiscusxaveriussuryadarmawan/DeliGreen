@@ -302,7 +302,7 @@
                                     <td class="fw-bold">#{{ $order->id }}</td>
                                     <td>{{ $order->created_at->format('d M Y') }}</td>
                                     <td>{{ $order->items_count }} items</td>
-                                    <td class="fw-bold">Rp {{ number_format($order->total, 0, ',', '.') }}</td>
+                                    <td class="fw-bold">Rp {{ number_format($order->total_price, 0, ',', '.') }}</td>
                                     <td>
                                         @if($order->status == 'completed')
                                         <span class="badge bg-success order-badge">Selesai</span>

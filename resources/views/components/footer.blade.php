@@ -32,7 +32,6 @@
                     <li class="mb-2"><a href="{{ route('user.foods.index') }}" class="text-white text-decoration-none">Food</a></li>
                     <li class="mb-2"><a href="{{ route('user.categories.index') }}" class="text-white text-decoration-none">Categories</a></li>
                     <li class="mb-2"><a href="{{ route('user.orders.index') }}" class="text-white text-decoration-none">Orders</a></li>
-                    <li class="mb-2"><a href="{{ route('user.reports.index') }}" class="text-white text-decoration-none">Reports</a></li>
                     @else
                     <li class="mb-2"><a href="{{ route('guest.foods.index') }}" class="text-white text-decoration-none">Food</a></li>
                     <li class="mb-2"><a href="{{ route('guest.categories.index') }}" class="text-white text-decoration-none">Categories</a></li>
