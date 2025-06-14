@@ -13,13 +13,8 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        return view('user.categories.index');
-    }
-
-    public function guestIndex()
-    {
-        $categories = Category::withCount('foods')->paginate(10);
-        return view('guest.categories.index', compact('categories'));
+        $categories = Category::withCount('foods')->paginate(8);
+        return view('user.categories.index', compact('categories'));
     }
 
     /**
@@ -47,7 +42,7 @@ class CategoryController extends Controller
 
         $foods = $category->foods()->paginate(9);
 
-        return view('guest.categories.show', compact('category', 'foods'));
+        return view('user.categories.show', compact('category', 'foods'));
     }
 
     /**

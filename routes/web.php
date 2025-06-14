@@ -16,6 +16,11 @@ use App\Http\Controllers\User\OrderController as UserOrderController;
 use App\Http\Controllers\User\OrderItemController as UserOrderItemController;
 use App\Http\Controllers\User\ReportController as UserReportController;
 
+use App\Http\Controllers\Guest\CategoryController as GuestCategoryController;
+use App\Http\Controllers\Guest\FoodController as GuestFoodController;
+use App\Http\Controllers\Guest\OrderController as GuestOrderController;
+use App\Http\Controllers\Guest\ReportController as GuestReportController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -29,10 +34,10 @@ use App\Http\Controllers\User\ReportController as UserReportController;
 
 Route::get('/', [DashboardController::class, 'indexGuest'])->name('welcome');
 
-Route::prefix('guest')->name('guest.')->group(function () {
-    Route::get('/foods', [UserFoodController::class, 'guestIndex'])->name('foods.index');
-    Route::get('/categories', [UserCategoryController::class, 'guestIndex'])->name('categories.index');
-    Route::get('/categories/{id}', [UserCategoryController::class, 'show'])->name('categories.show');
+Route::prefix('guest')->name('guest.')->middleware('blockIfLoggedIn')->group(function () {
+    Route::get('/foods', [GuestFoodController::class, 'index'])->name('foods.index');
+    Route::get('/categories', [GuestCategoryController::class, 'index'])->name('categories.index');
+    Route::get('/categories/{id}', [GuestCategoryController::class, 'show'])->name('categories.show');
     Route::get('/orders', fn() => redirect('/register'))->name('orders.index');
     Route::get('/reports', fn() => redirect('/register'))->name('reports.index');
 });
@@ -42,7 +47,7 @@ Route::post('/register/verify', [AuthController::class, 'registerProcess'])->nam
 Route::post('/login', [AuthController::class, 'login'])->name('login');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-Route::prefix('admin')->name('admin.')->group(function () {
+Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin.only'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'indexAdmin'])->name('dashboard');
     Route::resource('foods', AdminFoodController::class);
     Route::resource('categories', AdminCategoryController::class);
@@ -52,11 +57,12 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('/reports/load/{type}', [AdminReportController::class, 'load'])->name('reports.load');
 });
 
-Route::prefix('user')->name('user.')->group(function () {
+Route::prefix('user')->name('user.')->middleware('auth')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'indexCustomer'])->name('dashboard');
     Route::resource('foods', UserFoodController::class);
     Route::resource('categories', UserCategoryController::class);
     Route::resource('orders', UserOrderController::class);
     Route::resource('order_items', UserOrderItemController::class);
     Route::resource('reports', UserReportController::class);
+    Route::post('/foods/order', [UserFoodController::class, 'order'])->name('foods.order');
 });

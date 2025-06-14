@@ -1,18 +1,10 @@
 @extends('components.app')
 
 @section('content')
-
-@if(session('success'))
-<div class="alert alert-success alert-dismissible fade show" role="alert">
-    {{ session('success') }}
-    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-</div>
-@endif
-
 <div class="container py-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1 class="text-success mb-0">Daftar Makanan</h1>
-        <span class="text-muted">{{ $foods->total() }} menu tersedia</span>
+        <h1 class="text-success mb-0">{{ $category->name }}</h1>
+        <span class="text-muted">{{ $foods->total() }} items available</span>
     </div>
 
     <div class="row g-3">
@@ -28,7 +20,7 @@
                             <span class="badge bg-light-success text-success position-absolute top-0 end-0 mt-2 me-2 rounded-pill px-3 py-2 shadow-sm">
                                 Rp {{ number_format($food->price, 0, ',', '.') }}
                             </span>
-                            <h6 class="text-muted mb-1">{{ $food->category->name ?? '-' }}</h6>
+                            <h6 class="text-muted mb-1">{{ $category->name }}</h6>
                             <h5 class="card-title mb-1">{{ $food->name }}</h5>
                             <p class="card-text small text-muted mb-1">{{ Str::limit($food->description, 60) }}</p>
                             <div class="d-flex justify-content-between align-items-center">
@@ -39,7 +31,6 @@
                                     <button class="btn btn-outline-success btn-sm px-2 py-1" style="border-radius: 6px;">
                                         <i class="fas fa-heart"></i>
                                     </button>
-
                                     <form method="POST" action="{{ route('user.foods.order') }}" class="d-inline">
                                         @csrf
                                         <input type="hidden" name="food_id" value="{{ $food->id }}">
@@ -59,22 +50,6 @@
 
     <div class="mt-4 d-flex justify-content-center">
         {{ $foods->links() }}
-    </div>
-</div>
-
-<!-- Modal Login -->
-<div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Login Diperlukan</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
-            </div>
-            <div class="modal-body text-center">
-                <p>Silakan login terlebih dahulu untuk memesan makanan.</p>
-                <a href="{{ route('login') }}" class="btn btn-primary">Login Sekarang</a>
-            </div>
-        </div>
     </div>
 </div>
 

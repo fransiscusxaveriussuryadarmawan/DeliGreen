@@ -11,6 +11,7 @@ use App\Models\User;
 use Illuminate\Database\Seeder;
 use App\Models\OrderItem;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
@@ -96,11 +97,29 @@ class DatabaseSeeder extends Seeder
 
         User::factory(10)->create();
 
+        User::create([
+            'name' => 'Admin DeliGreen',
+            'email' => 'admin@gmail.com',
+            'password' => Hash::make('masuk12345'),
+            'role' => 'admin',
+            'phone' => '08123456789',
+            'address' => 'Kantor Pusat DeliGreen',
+            'email_verified_at' => now(),
+        ]);
+
+        $userIds = User::pluck('id')->toArray();
+
         Order::factory()
             ->count(25)
             ->has(OrderItem::factory()->count(3), 'items')
-            ->create()
+            ->create([
+                'user_id' => fake()->randomElement($userIds),
+            ])
             ->each(function ($order) {
+                foreach ($order->items as $item) {
+                    $item->update(['user_id' => $order->user_id]);
+                }
+
                 $order->update([
                     'total_price' => $order->items->sum(fn($i) => $i->price * $i->quantity),
                 ]);

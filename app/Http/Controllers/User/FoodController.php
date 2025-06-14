@@ -5,6 +5,8 @@ namespace App\Http\Controllers\User;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use App\Models\Order;
+use App\Models\OrderItem;
 use App\Models\Food;
 
 class FoodController extends Controller
@@ -14,30 +16,41 @@ class FoodController extends Controller
      */
     public function index()
     {
-        return view('user.foods.index');
+        $foods = Food::with('category')->paginate(9);
+        return view('user.foods.index', compact('foods'));
     }
 
-    public function guestIndex(Request $request)
+    public function order(Request $request)
     {
-        $search = $request->query('search');
-        $categorySlug = $request->query('category');
+        $request->validate([
+            'food_id' => 'required|exists:foods,id',
+        ]);
 
-        $queryFood = Food::with('category')->orderBy('name');
+        $user = auth()->user();
 
-        if ($search) {
-            $queryFood->where('name', 'like', '%' . $search . '%');
+        $order = Order::firstOrCreate(
+            ['user_id' => $user->id, 'status' => 'pending'],
+            ['total_price' => 0]
+        );
+
+        $item = OrderItem::where('order_id', $order->id)
+            ->where('food_id', $request->food_id)
+            ->first();
+
+        if ($item) {
+            $item->quantity += 1;
+            $item->save();
+        } else {
+            $food = Food::findOrFail($request->food_id);
+            OrderItem::create([
+                'order_id' => $order->id,
+                'food_id' => $food->id,
+                'quantity' => 1,
+                'price' => $food->price,
+            ]);
         }
 
-        if ($categorySlug) {
-            $queryFood->whereHas('category', function($q) use ($categorySlug) {
-                $q->where('slug', $categorySlug);
-            });
-        }
-        
-        $foods = $queryFood->paginate(10);
-        $categories = Category::orderBy('name')->get();
-        
-        return view('guest.foods.index', compact('foods', 'categories'));
+        return back()->with('success', 'Makanan berhasil ditambahkan ke keranjang!');
     }
 
     /**
