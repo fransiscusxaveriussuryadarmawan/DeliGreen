@@ -53,6 +53,29 @@ class FoodController extends Controller
         return back()->with('success', 'Makanan berhasil ditambahkan ke keranjang!');
     }
 
+    public function memberIndex(Request $request)
+    {
+        $search = $request->query('search');
+        $categorySlug = $request->query('category');
+
+        $queryFood = Food::with('category')->orderBy('name');
+
+        if ($search) {
+            $queryFood->where('name', 'like', '%' . $search . '%');
+        }
+
+        if ($categorySlug) {
+            $queryFood->whereHas('category', function($q) use ($categorySlug) {
+                $q->where('slug', $categorySlug);
+            });
+        }
+
+        $foods = $queryFood->paginate(10);
+        $categories = Category::orderBy('name')->get();
+        
+        return view('user.foods.index', compact('foods', 'categories'));
+    }
+
     /**
      * Show the form for creating a new resource.
      */
