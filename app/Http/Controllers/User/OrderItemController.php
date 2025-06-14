@@ -3,75 +3,101 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+use App\Models\Food;
 use App\Models\Order;
 use App\Models\OrderItem;
-use Illuminate\Http\Request;
 
 class OrderItemController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        $user = auth()->user();
-
-        $cartItems = OrderItem::with('food')
-            ->where('user_id', $user->id)
-            ->get();
-        
-        $totalPrice = $cartItems->sum(function ($item) {
-            return $item->price * $item->quantity;
-        });
-
-        return view('user.orders.cart', compact('cartItems', 'totalPrice'));
+        $cart = session()->get('cart', []);
+        return view('user.orders.index', compact('cart'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function show($id)
     {
-        //
+        $order = Order::with('items.food')->findOrFail($id);
+        return view('user.orders.show', compact('order'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function addToCart(Request $request)
     {
-        //
+        $food = Food::findOrFail($request->food_id);
+
+        $cart = session()->get('cart', []);
+
+        if (isset($cart[$food->id])) {
+            $cart[$food->id]['quantity'] += 1;
+        } else {
+            $cart[$food->id] = [
+                'name' => $food->name,
+                'price' => $food->price,
+                'quantity' => 1
+            ];
+        }
+
+        session()->put('cart', $cart);
+
+        return back()->with('success', 'Makanan ditambahkan ke keranjang.');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function removeFromCart(Request $request)
     {
-        //
+        $cart = session()->get('cart', []);
+        unset($cart[$request->food_id]);
+        session()->put('cart', $cart);
+
+        return back()->with('success', 'Item dihapus dari keranjang.');
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
+    public function updateCart(Request $request)
     {
-        //
+        $foodId = $request->input('food_id');
+        $quantity = (int) $request->input('quantity');
+
+        $cart = session()->get('cart', []);
+
+        if (isset($cart[$foodId])) {
+            $cart[$foodId]['quantity'] = max(1, $quantity);
+            session()->put('cart', $cart);
+            return back()->with('success', 'Jumlah makanan diperbarui.');
+        }
+
+        return back()->with('error', 'Item tidak ditemukan di keranjang.');
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    public function checkout(Request $request)
     {
-        //
-    }
+        $cart = session()->get('cart', []);
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        if (count($cart) == 0) {
+            return back()->with('error', 'Keranjang Anda kosong.');
+        }
+
+        $order = Order::create([
+            'user_id' => auth()->id(),
+            'status' => 'pending',
+            'total_price' => 0,
+        ]);
+
+        $total = 0;
+
+        foreach ($cart as $food_id => $item) {
+            OrderItem::create([
+                'order_id' => $order->id,
+                'food_id' => $food_id,
+                'quantity' => $item['quantity'],
+                'price' => $item['price'],
+            ]);
+            $total += $item['price'] * $item['quantity'];
+        }
+
+        $order->update(['total_price' => $total]);
+
+        session()->forget('cart');
+
+        return redirect()->route('user.orders.index')->with('success', 'Checkout berhasil! Pesanan Anda telah dibuat.');
     }
 }

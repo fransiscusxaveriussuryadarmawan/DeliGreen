@@ -12,15 +12,11 @@ use App\Http\Controllers\Admin\ReportController as AdminReportController;
 
 use App\Http\Controllers\User\CategoryController as UserCategoryController;
 use App\Http\Controllers\User\FoodController as UserFoodController;
-use App\Http\Controllers\User\OrderController as UserOrderController;
 use App\Http\Controllers\User\OrderItemController as UserOrderItemController;
 use App\Http\Controllers\User\ReportController as UserReportController;
-use App\Http\Controllers\User\CartController as UserCartController;
 
 use App\Http\Controllers\Guest\CategoryController as GuestCategoryController;
 use App\Http\Controllers\Guest\FoodController as GuestFoodController;
-use App\Http\Controllers\Guest\OrderController as GuestOrderController;
-use App\Http\Controllers\Guest\ReportController as GuestReportController;
 
 /*
 |--------------------------------------------------------------------------
@@ -61,13 +57,18 @@ Route::prefix('user')->name('user.')->middleware('auth')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'indexCustomer'])->name('dashboard');
     Route::get('/foods', [UserFoodController::class, 'memberIndex'])->name('foods.index');
     Route::resource('categories', UserCategoryController::class);
-    Route::resource('orders', UserOrderController::class);
-    Route::resource('order_items', UserOrderItemController::class);
     Route::resource('reports', UserReportController::class);
+
     Route::post('/foods/order', [UserFoodController::class, 'order'])->name('foods.order');
-    Route::post('/cart/add', [UserCartController::class, 'add'])->name('cart.add');
-    Route::get('/cart', [UserCartController::class, 'index'])->name('cart.index');
-    Route::post('/cart/remove', [UserCartController::class, 'remove'])->name('cart.remove');
-    Route::post('/cart/checkout', [UserCartController::class, 'checkout'])->name('cart.checkout');
-    Route::post('/cart/update', [UserCartController::class, 'update'])->name('cart.update');
+
+    Route::get('/orders', [UserOrderItemController::class, 'index'])->name('orders.index');
+    Route::get('/orders/{id}', [UserOrderItemController::class, 'show'])->name('orders.show');
+    Route::get('/orders/cart', [UserOrderItemController::class, 'cart'])->name('orders.cart');
+    Route::post('/orders/store', [UserOrderItemController::class, 'store'])->name('orders.store');
+    Route::get('/orders/create', [UserOrderItemController::class, 'create'])->name('orders.create');
+
+    Route::post('/orders/add', [UserOrderItemController::class, 'addToCart'])->name('orders.add');
+    Route::post('/orders/remove', [UserOrderItemController::class, 'removeFromCart'])->name('orders.remove');
+    Route::post('/orders/update', [UserOrderItemController::class, 'updateCart'])->name('orders.update');
+    Route::post('/orders/checkout', [UserOrderItemController::class, 'checkout'])->name('orders.checkout');
 });

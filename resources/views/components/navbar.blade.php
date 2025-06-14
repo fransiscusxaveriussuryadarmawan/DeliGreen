@@ -57,7 +57,7 @@ $prefix = auth()->user()->role === 'admin' ? 'admin' : 'user';
                 {{-- Menu untuk user yang login --}}
                 @auth
                 <li class="nav-item mx-1">
-                    <a class="nav-link py-2 px-3" href="{{ route($prefix . '.cart.index') }}">
+                    <a class="nav-link py-2 px-3" href="{{ route($prefix . '.orders.index') }}">
                         <i class="fas fa-shopping-cart me-1"></i> Order
                     </a>
                 </li>

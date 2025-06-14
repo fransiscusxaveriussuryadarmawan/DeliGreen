@@ -8,12 +8,12 @@
         transition: all 0.3s ease;
         overflow: hidden;
     }
-    
+
     .dashboard-card:hover {
         transform: translateY(-5px);
         box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
     }
-    
+
     .category-card {
         border: none;
         border-radius: 12px;
@@ -21,58 +21,58 @@
         transition: all 0.3s ease;
         position: relative;
     }
-    
+
     .category-card:hover {
         transform: scale(1.03);
     }
-    
+
     .category-card img {
         transition: transform 0.5s ease;
     }
-    
+
     .category-card:hover img {
         transform: scale(1.1);
     }
-    
+
     .category-overlay {
         position: absolute;
         bottom: 0;
         left: 0;
         right: 0;
-        background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+        background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
         color: white;
         padding: 20px 15px 15px;
     }
-    
+
     .promo-carousel .carousel-item {
         border-radius: 15px;
         overflow: hidden;
         height: 300px;
     }
-    
+
     .promo-carousel .carousel-item img {
         object-fit: cover;
         height: 100%;
         width: 100%;
     }
-    
+
     .food-card {
         border: none;
         border-radius: 12px;
         overflow: hidden;
     }
-    
+
     .food-card-img {
         height: 180px;
         object-fit: cover;
     }
-    
+
     .order-badge {
         padding: 6px 12px;
         border-radius: 20px;
         font-weight: 500;
     }
-    
+
     .stats-card {
         border-radius: 15px;
         padding: 20px;
@@ -81,7 +81,7 @@
         position: relative;
         overflow: hidden;
     }
-    
+
     .stats-card::before {
         content: "";
         position: absolute;
@@ -92,7 +92,7 @@
         background: rgba(255, 255, 255, 0.15);
         border-radius: 50%;
     }
-    
+
     .stats-card i {
         font-size: 2.5rem;
         opacity: 0.3;
@@ -114,10 +114,10 @@
                     <p class="lead text-muted mb-0">Apa yang ingin kamu pesan hari ini?</p>
                 </div>
                 <div class="mt-3 mt-md-0 d-flex align-items-center gap-3">
-                    <a href="{{ route('user.orders.create') }}" class="btn btn-success btn-lg px-4">
+                    <a href="{{ route('user.foods.index') }}" class="btn btn-success btn-lg px-4">
                         <i class="fas fa-plus me-2"></i> Pesan Sekarang
                     </a>
-                    <a href="{{ route('user.order_items.index') }}" class="btn btn-outline-success position-relative" style="font-size: 1.2rem;">
+                    <a href="{{ route('user.orders.index') }}" class="btn btn-outline-success position-relative" style="font-size: 1.2rem;">
                         <i class="fas fa-shopping-cart"></i>
                         @if($cartItemCount > 0)
                         <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
@@ -126,7 +126,7 @@
                         </span>
                         @endif
                     </a>
-                </div>     
+                </div>
             </div>
         </div>
     </div>
@@ -177,8 +177,8 @@
             <div id="promoCarousel" class="carousel slide promo-carousel" data-bs-ride="carousel">
                 <div class="carousel-inner rounded-3">
                     <div class="carousel-item active">
-                        <img src="https://images.unsplash.com/photo-1555939594-58d7cb561ad1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80" 
-                             class="d-block w-100" alt="Promo 1">
+                        <img src="https://images.unsplash.com/photo-1555939594-58d7cb561ad1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80"
+                            class="d-block w-100" alt="Promo 1">
                         <div class="carousel-caption d-none d-md-block text-start" style="bottom: 40px;">
                             <h3 class="fw-bold">Diskon 30%</h3>
                             <p>Untuk semua menu salad hingga akhir bulan</p>
@@ -186,8 +186,8 @@
                         </div>
                     </div>
                     <div class="carousel-item">
-                        <img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80" 
-                             class="d-block w-100" alt="Promo 2">
+                        <img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80"
+                            class="d-block w-100" alt="Promo 2">
                         <div class="carousel-caption d-none d-md-block text-start" style="bottom: 40px;">
                             <h3 class="fw-bold">Paket Keluarga</h3>
                             <p>Diskon 25% untuk pesanan di atas Rp 200.000</p>
@@ -207,24 +207,21 @@
         </div>
     </div>
 
-    <!-- Kategori Makanan -->
     <div class="row mb-5">
         <div class="col-12">
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <h3 class="text-success mb-0">Kategori Makanan</h3>
                 <a href="{{ route('user.categories.index') }}" class="text-success">Lihat Semua <i class="fas fa-arrow-right ms-1"></i></a>
             </div>
-            <div class="row g-3">
-                @foreach($categories as $category)
-                <div class="col-6 col-md-4 col-lg-2">
+            <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-4">
+                @foreach ($categories as $category)
+                <div class="col">
                     <a href="{{ route('user.categories.show', $category->id) }}" class="text-decoration-none">
-                        <div class="category-card dashboard-card">
-                            <img src="{{ asset('storage/' . $category->image) }}" 
-                                 class="card-img-top"
-                                 alt="{{ $category->name }}"
-                                 style="height: 120px; object-fit: cover;">
-                            <div class="category-overlay">
-                                <h6 class="mb-0 fw-bold">{{ $category->name }}</h6>
+                        <div class="card shadow-sm h-100 border-0 hover-shadow transition">
+                            <div class="card-body text-center">
+                                <i class="fas fa-tags fa-2x text-success mb-2"></i>
+                                <h5 class="card-title text-dark fw-semibold">{{ $category->name }}</h5>
+                                <p class="text-muted small mb-0">{{ $category->foods_count }} menu tersedia</p>
                             </div>
                         </div>
                     </a>
@@ -245,9 +242,9 @@
                 @foreach($recommendedFoods as $food)
                 <div class="col-12 col-md-6 col-lg-4 col-xl-3">
                     <div class="food-card dashboard-card h-100">
-                        <img src="{{ asset('storage/' . $food->image) }}" 
-                             class="food-card-img"
-                             alt="{{ $food->name }}">
+                        <img src="{{ asset('storage/' . $food->image) }}"
+                            class="food-card-img"
+                            alt="{{ $food->name }}">
                         <div class="card-body">
                             <div class="d-flex justify-content-between align-items-start mb-2">
                                 <h5 class="card-title mb-0">{{ $food->name }}</h5>
@@ -283,7 +280,7 @@
         <div class="col-12">
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <h3 class="text-success mb-0">Riwayat Pesanan Terakhir</h3>
-                <a href="{{ route('user.orders.index') }}" class="text-success">Lihat Semua <i class="fas fa-arrow-right ms-1"></i></a>
+                <a href="{{ route('user.orders.cart') }}" class="text-success">Lihat Semua <i class="fas fa-arrow-right ms-1"></i></a>
             </div>
             <div class="card dashboard-card">
                 <div class="card-body p-0">
@@ -340,7 +337,7 @@
                 <h5 class="modal-title" id="orderModalLabel{{ $food->id }}">Pesan {{ $food->name }}</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form action="{{ route('user.orders.store') }}" method="POST">
+            <form action="{{ route('user.orders.checkout') }}" method="POST">
                 @csrf
                 <div class="modal-body">
                     <div class="text-center mb-4">
@@ -349,17 +346,17 @@
                         <p class="text-muted mb-0">{{ $food->description }}</p>
                         <h4 class="text-success mt-2">Rp {{ number_format($food->price, 0, ',', '.') }}</h4>
                     </div>
-                    
+
                     <div class="mb-3">
                         <label for="quantity" class="form-label">Jumlah</label>
                         <input type="number" class="form-control" id="quantity" name="quantity" value="1" min="1" max="10">
                     </div>
-                    
+
                     <div class="mb-3">
                         <label class="form-label">Catatan (opsional)</label>
                         <textarea class="form-control" name="notes" rows="2" placeholder="Contoh: Tanpa bawang, Pedas level 2"></textarea>
                     </div>
-                    
+
                     <input type="hidden" name="food_id" value="{{ $food->id }}">
                 </div>
                 <div class="modal-footer">
