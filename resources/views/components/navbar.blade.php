@@ -1,27 +1,27 @@
 @php
 $prefix = 'guest';
 if (auth()->check()) {
-    $prefix = auth()->user()->role === 'admin' ? 'admin' : 'user';
+$prefix = auth()->user()->role === 'admin' ? 'admin' : 'user';
 }
 @endphp
 
 <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #2c3e50;">
     <div class="container">
         @auth
-            @if (Auth::user()->role === 'admin')
-                <a class="navbar-brand fw-bold" href="{{ route('admin.dashboard') }}">
-                    <i class="fas fa-leaf me-2"></i>DeliGreen Admin
-                </a>
-            @elseif (Auth::user()->role === 'member')
-                <a class="navbar-brand fw-bold" href="{{ route('user.dashboard') }}">
-                    <i class="fas fa-leaf me-2"></i>DeliGreen
-                </a>
-            @endif
+        @if (Auth::user()->role === 'admin')
+        <a class="navbar-brand fw-bold" href="{{ route('admin.dashboard') }}">
+            <i class="fas fa-leaf me-2"></i>DeliGreen Admin
+        </a>
+        @elseif (Auth::user()->role === 'member')
+        <a class="navbar-brand fw-bold" href="{{ route('user.dashboard') }}">
+            <i class="fas fa-leaf me-2"></i>DeliGreen
+        </a>
+        @endif
         @else
-            {{-- Tampilan untuk Guest --}}
-            <a class="navbar-brand fw-bold" href="{{ route('welcome') }}">
-                <i class="fas fa-leaf me-2"></i>DeliGreen
-            </a>
+        {{-- Tampilan untuk Guest --}}
+        <a class="navbar-brand fw-bold" href="{{ route('welcome') }}">
+            <i class="fas fa-leaf me-2"></i>DeliGreen
+        </a>
         @endauth
 
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
@@ -57,7 +57,7 @@ if (auth()->check()) {
                 {{-- Menu untuk user yang login --}}
                 @auth
                 <li class="nav-item mx-1">
-                    <a class="nav-link py-2 px-3" href="{{ route($prefix . '.orders.index') }}">
+                    <a class="nav-link py-2 px-3" href="{{ route($prefix . '.cart.index') }}">
                         <i class="fas fa-shopping-cart me-1"></i> Order
                     </a>
                 </li>
@@ -72,37 +72,37 @@ if (auth()->check()) {
             {{-- Menu Kanan --}}
             <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                 @auth
-                    {{-- Dropdown untuk user yang login --}}
-                    <li class="nav-item dropdown">
-                        <a href="#" class="nav-link dropdown-toggle d-flex align-items-center text-white" id="userDropdown"
-                            role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="fas fa-user-circle fs-4 me-1"></i>{{ Auth::user()->name }}
-                            <span class="d-none d-lg-inline ms-1"></span>
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-                            <li>
-                                <a class="dropdown-item" href="#"><i class="fas fa-user me-2"></i>Profile</a>
-                            </li>
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
-                            <li>
-                                <a class="dropdown-item text-danger" href="#" data-bs-toggle="modal" data-bs-target="#logoutModal">
-                                    <i class="fas fa-sign-out-alt me-2"></i>Logout
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
+                {{-- Dropdown untuk user yang login --}}
+                <li class="nav-item dropdown">
+                    <a href="#" class="nav-link dropdown-toggle d-flex align-items-center text-white" id="userDropdown"
+                        role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fas fa-user-circle fs-4 me-1"></i>{{ Auth::user()->name }}
+                        <span class="d-none d-lg-inline ms-1"></span>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                        <li>
+                            <a class="dropdown-item" href="#"><i class="fas fa-user me-2"></i>Profile</a>
+                        </li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li>
+                            <a class="dropdown-item text-danger" href="#" data-bs-toggle="modal" data-bs-target="#logoutModal">
+                                <i class="fas fa-sign-out-alt me-2"></i>Logout
+                            </a>
+                        </li>
+                    </ul>
+                </li>
                 @else
-                    {{-- Tampilan untuk Guest --}}
-                    <li class="nav-item">
-                        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#loginModal">
-                            <i class="fas fa-sign-in-alt"></i> Login
-                        </button>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-white" href="{{ route('register.page') }}">Register</a>
-                    </li>
+                {{-- Tampilan untuk Guest --}}
+                <li class="nav-item">
+                    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#loginModal">
+                        <i class="fas fa-sign-in-alt"></i> Login
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="{{ route('register.page') }}">Register</a>
+                </li>
                 @endauth
             </ul>
         </div>
@@ -110,6 +110,6 @@ if (auth()->check()) {
 </nav>
 
 @push('modals')
-    @include('components.login')
-    @include('components.logout-modal')
+@include('components.login')
+@include('components.logout-modal')
 @endpush

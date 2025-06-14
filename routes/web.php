@@ -15,6 +15,7 @@ use App\Http\Controllers\User\FoodController as UserFoodController;
 use App\Http\Controllers\User\OrderController as UserOrderController;
 use App\Http\Controllers\User\OrderItemController as UserOrderItemController;
 use App\Http\Controllers\User\ReportController as UserReportController;
+use App\Http\Controllers\User\CartController as UserCartController;
 
 use App\Http\Controllers\Guest\CategoryController as GuestCategoryController;
 use App\Http\Controllers\Guest\FoodController as GuestFoodController;
@@ -33,6 +34,10 @@ use App\Http\Controllers\Guest\ReportController as GuestReportController;
 */
 
 Route::get('/', [DashboardController::class, 'indexGuest'])->name('welcome');
+Route::get('/register', [AuthController::class, 'showRegistrationPage'])->name('register.page');
+Route::post('/register/verify', [AuthController::class, 'registerProcess'])->name('register.verify');
+Route::post('/login', [AuthController::class, 'login'])->name('login');
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 Route::prefix('guest')->name('guest.')->middleware('blockIfLoggedIn')->group(function () {
     Route::get('/foods', [GuestFoodController::class, 'index'])->name('foods.index');
@@ -41,11 +46,6 @@ Route::prefix('guest')->name('guest.')->middleware('blockIfLoggedIn')->group(fun
     Route::get('/orders', fn() => redirect('/register'))->name('orders.index');
     Route::get('/reports', fn() => redirect('/register'))->name('reports.index');
 });
-
-Route::get('/register', [AuthController::class, 'showRegistrationPage'])->name('register.page');
-Route::post('/register/verify', [AuthController::class, 'registerProcess'])->name('register.verify');
-Route::post('/login', [AuthController::class, 'login'])->name('login');
-Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin.only'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'indexAdmin'])->name('dashboard');
@@ -65,4 +65,9 @@ Route::prefix('user')->name('user.')->middleware('auth')->group(function () {
     Route::resource('order_items', UserOrderItemController::class);
     Route::resource('reports', UserReportController::class);
     Route::post('/foods/order', [UserFoodController::class, 'order'])->name('foods.order');
+    Route::post('/cart/add', [UserCartController::class, 'add'])->name('cart.add');
+    Route::get('/cart', [UserCartController::class, 'index'])->name('cart.index');
+    Route::post('/cart/remove', [UserCartController::class, 'remove'])->name('cart.remove');
+    Route::post('/cart/checkout', [UserCartController::class, 'checkout'])->name('cart.checkout');
+    Route::post('/cart/update', [UserCartController::class, 'update'])->name('cart.update');
 });
