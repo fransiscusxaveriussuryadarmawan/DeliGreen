@@ -84,7 +84,7 @@
     </div>
 
     @else
-    <div class="alert alert-info">Keranjang Anda kosong. Silakan tambahkan makanan dari halaman <a href="{{ route('user.foods.index') }}">Daftar Makanan</a>.</div>
+    <div class="alert alert-info">Keranjang Anda kosong. Silakan tambahkan makanan dari halaman <a href="{{ route('member.foods.index') }}">Daftar Makanan</a>.</div>
     @endif
 
     <hr class="my-5">

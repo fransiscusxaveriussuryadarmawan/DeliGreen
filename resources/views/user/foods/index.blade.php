@@ -8,7 +8,7 @@
 
         <div class="row mb-4">
             <div class="col-md-6">
-                <form action="{{ route('user.foods.index') }}" method="GET">
+                <form action="{{ route('member.foods.index') }}" method="GET">
                     <div class="input-group">
                         <input type="text" name="search" class="form-control"
                             placeholder="Search food..." value="{{ request('search') }} ">
@@ -18,7 +18,7 @@
             </div>
 
             <div class="col-md-6">
-                <form action="{{ route('user.foods.index') }}" method="GET">
+                <form action="{{ route('member.foods.index') }}" method="GET">
                     @if(request('search'))
                     <input type="hidden" name="search" value="{{ request('search') }}">
                     @endif
@@ -54,7 +54,7 @@
                             <i class="fas fa-heart text-secondary"></i>
                         </button>
 
-                        <form action="{{ route('user.orders.add') }}" method="POST" class="d-inline">
+                        <form action="{{ route('member.orders.add') }}" method="POST" class="d-inline">
                             @csrf
                             <input type="hidden" name="food_id" value="{{ $food->id }}">
                             <button class="btn btn-success btn-sm">

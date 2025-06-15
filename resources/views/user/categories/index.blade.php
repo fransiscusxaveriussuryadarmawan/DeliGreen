@@ -10,7 +10,7 @@
     <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-4">
         @foreach ($categories as $category)
         <div class="col">
-            <a href="{{ route('user.categories.show', $category->id) }}" class="text-decoration-none">
+            <a href="{{ route('member.categories.show', $category->id) }}" class="text-decoration-none">
                 <div class="card shadow-sm h-100 border-0 hover-shadow transition">
                     <div class="card-body text-center">
                         <i class="fas fa-tags fa-2x text-success mb-2"></i>
