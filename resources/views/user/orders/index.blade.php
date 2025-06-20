@@ -14,53 +14,91 @@
         </form>
     </div>
 
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th>Nama Makanan</th>
-                <th>Harga</th>
-                <th>Jumlah</th>
-                <th>Subtotal</th>
-                <th>Aksi</th>
-            </tr>
-        </thead>
-        <tbody>
-            @php $total = 0; @endphp
-            @foreach($cart as $id => $item)
-            @php $subtotal = $item['price'] * $item['quantity']; $total += $subtotal; @endphp
-            <tr>
-                <td>{{ $item['name'] }}</td>
-                <td>Rp {{ number_format($item['price'], 0, ',', '.') }}</td>
-                <td>
-                    <form action="{{ route('member.orders.update') }}" method="POST" class="d-flex align-items-center">
-                        @csrf
-                        <input type="hidden" name="food_id" value="{{ $id }}">
-                        <input type="number" name="quantity" value="{{ $item['quantity'] }}" min="1" class="form-control form-control-sm me-2 quantity-input" data-food-id="{{ $id }}" style="width: 70px;">
-                    </form>
-                </td>
-                <td id="subtotal-{{ $id }}">Rp {{ number_format($subtotal, 0, ',', '.') }}</td>
-                <td>
-                    <form method="POST" action="{{ route('member.orders.remove') }}">
-                        @csrf
-                        <input type="hidden" name="food_id" value="{{ $id }}">
-                        <button class="btn btn-sm btn-danger">Hapus</button>
-                    </form>
-                </td>
-            </tr>
-            @endforeach
-            <tr class="fw-bold">
-                <td colspan="3">Total</td>
-                <td colspan="2" id="total">Rp {{ number_format($total, 0, ',', '.') }}</td>
-            </tr>
-        </tbody>
-    </table>
+    {{-- TABEL UTAMA UNTUK DESKTOP --}}
+    <div class="table-responsive d-none d-md-block">
+        <table class="table table-striped align-middle">
+            <thead>
+                <tr>
+                    <th>Nama Makanan</th>
+                    <th>Harga</th>
+                    <th>Jumlah</th>
+                    <th>Subtotal</th>
+                    <th>Aksi</th>
+                </tr>
+            </thead>
+            <tbody>
+                @php $total = 0; @endphp
+                @foreach($cart as $id => $item)
+                @php $subtotal = $item['price'] * $item['quantity']; $total += $subtotal; @endphp
+                <tr>
+                    <td>{{ $item['name'] }}</td>
+                    <td>Rp {{ number_format($item['price'], 0, ',', '.') }}</td>
+                    <td>
+                        <form action="{{ route('member.orders.update') }}" method="POST" class="d-flex align-items-center">
+                            @csrf
+                            <input type="hidden" name="food_id" value="{{ $id }}">
+                            <input type="number" name="quantity" value="{{ $item['quantity'] }}" min="1" class="form-control form-control-sm me-2 quantity-input" data-food-id="{{ $id }}" style="width: 70px;">
+                        </form>
+                    </td>
+                    <td class="subtotal" data-id="{{ $id }}">Rp {{ number_format($subtotal, 0, ',', '.') }}</td>
+                    <td>
+                        <form method="POST" action="{{ route('member.orders.remove') }}">
+                            @csrf
+                            <input type="hidden" name="food_id" value="{{ $id }}">
+                            <button class="btn btn-sm btn-danger">Hapus</button>
+                        </form>
+                    </td>
+                </tr>
+                @endforeach
+                <tr class="fw-bold">
+                    <td colspan="3">Total</td>
+                    <td colspan="2" class="total">Rp {{ number_format($total, 0, ',', '.') }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 
-    <div class="mt-4">
-        <button class="btn btn-success btn-lg" data-bs-toggle="modal" data-bs-target="#confirmCheckoutModal">
+    {{-- TAMPILAN MOBILE (KARTU PER ITEM) --}}
+    <div class="d-block d-md-none">
+        @php $total = 0; @endphp
+        @foreach($cart as $id => $item)
+        @php $subtotal = $item['price'] * $item['quantity']; $total += $subtotal; @endphp
+        <div class="card mb-3 shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title">{{ $item['name'] }}</h5>
+                <p class="card-text mb-1">Harga: <strong>Rp {{ number_format($item['price'], 0, ',', '.') }}</strong></p>
+                <p class="card-text mb-1">Subtotal: <strong class="subtotal" data-id="{{ $id }}">Rp {{ number_format($subtotal, 0, ',', '.') }}</strong></p>
+
+                {{-- input AJAX tanpa form --}}
+                <input type="number"
+                       name="quantity"
+                       value="{{ $item['quantity'] }}"
+                       min="1"
+                       inputmode="numeric"
+                       pattern="[0-9]*"
+                       class="form-control form-control-sm quantity-input mb-2"
+                       data-food-id="{{ $id }}"
+                       style="width: 80px;">
+
+                <form method="POST" action="{{ route('member.orders.remove') }}">
+                    @csrf
+                    <input type="hidden" name="food_id" value="{{ $id }}">
+                    <button class="btn btn-sm btn-outline-danger w-100">Hapus</button>
+                </form>
+            </div>
+        </div>
+        @endforeach
+
+        <div class="text-end fw-bold fs-5 mb-3 total">Total: Rp {{ number_format($total, 0, ',', '.') }}</div>
+    </div>
+
+    <div class="mt-4 text-end">
+        <button class="btn btn-success btn-md" data-bs-toggle="modal" data-bs-target="#confirmCheckoutModal">
             <i class="fas fa-check-circle me-1"></i> Checkout Sekarang
         </button>
     </div>
 
+    {{-- Modal Checkout --}}
     <div class="modal fade" id="confirmCheckoutModal" tabindex="-1" aria-labelledby="confirmCheckoutModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -81,9 +119,9 @@
             </div>
         </div>
     </div>
-
     @else
-    <div class="alert alert-info">Keranjang Anda kosong. Silakan tambahkan makanan dari halaman <a href="{{ route('member.foods.index') }}">Daftar Makanan</a>.</div>
+    <div class="alert alert-info">Keranjang Anda kosong. Silakan tambahkan makanan dari halaman <a href="{{ route('member.foods.index') }}">Daftar Makanan</a>.
+    </div>
     @endif
 
     <hr class="my-5">
@@ -136,42 +174,54 @@
 @endsection
 
 @push('scripts')
-    <script>
-        document.querySelectorAll('.quantity-input').forEach(input => {
-            input.addEventListener('input', function () {
-                const foodId = this.dataset.foodId;
-                const quantity = this.value;
+<script>
+    $(document).ready(function () {
+        function updateQty(foodId, quantity) {
+            if (quantity < 1 || !foodId) return;
 
-                if (quantity < 1) return;
+            $.ajax({
+                url: "{{ route('member.orders.update') }}",
+                type: "POST",
+                contentType: "application/json",
+                dataType: "json",
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                data: JSON.stringify({ food_id: foodId, quantity: quantity }),
+                success: function (data) {
+                    $(`.subtotal[data-id="${foodId}"]`).text(`Rp ${data.subtotal.toLocaleString('id-ID')}`);
+                    $('.total').text(`Rp ${data.total.toLocaleString('id-ID')}`);
+                    // Sinkronkan quantity di semua input dengan data-food-id yang sama
+                    $(`.quantity-input[data-food-id="${foodId}"]`).val(quantity);
 
-                fetch("{{ route('member.orders.update') }}", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                        "Accept": "application/json",
-                        "X-CSRF-TOKEN": '{{ csrf_token() }}'
-                    },
-                    body: JSON.stringify({ food_id: foodId, quantity: quantity })
-                })
-                .then(res => res.json())
-                .then(data => {
-                    document.getElementById(`subtotal-${foodId}`).innerText = `Rp ${data.subtotal.toLocaleString('id-ID')}`;
-                    document.getElementById('total').innerText = `Rp ${data.total.toLocaleString('id-ID')}`;
-                    // Di bagian success AJAX
-                    const toast = document.createElement('div');
-                    toast.className = 'toast align-items-center text-bg-success show position-fixed top-0 end-0 m-3';
-                    toast.style.zIndex = 1080;
-                    toast.innerHTML = `
-                      <div class="d-flex">
-                        <div class="toast-body">✔ Jumlah diperbarui</div>
-                        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
-                      </div>
-                    `;
-                    document.body.appendChild(toast);
+                    const toast = $(`
+                        <div class="toast align-items-center text-bg-success show position-fixed top-0 end-0 m-3" style="z-index: 1085;">
+                            <div class="d-flex">
+                                <div class="toast-body">✔ Jumlah diperbarui</div>
+                                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+                            </div>
+                        </div>
+                    `);
+                    $('body').append(toast);
                     setTimeout(() => toast.remove(), 2500);
-                })
-                .catch(err => console.error('Update quantity error:', err));
+                },
+                error: function (err) {
+                    console.error('Update quantity error:', err);
+                }
             });
+        }
+
+        // Tangkap input di mobile & desktop
+        $(document).on('input change blur', '.quantity-input', function () {
+            const foodId = $(this).data('food-id');
+            const quantity = $(this).val();
+            updateQty(foodId, quantity);
         });
-    </script>
+
+        // Prevent form default submit on Enter
+        $('.quantity-input').closest('form').on('submit', function (e) {
+            e.preventDefault();
+        });
+    });
+</script>
 @endpush

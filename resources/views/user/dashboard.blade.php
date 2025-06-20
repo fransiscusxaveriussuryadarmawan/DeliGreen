@@ -117,15 +117,6 @@
                     <a href="{{ route('member.foods.index') }}" class="btn btn-success btn-lg px-4">
                         <i class="fas fa-plus me-2"></i> Pesan Sekarang
                     </a>
-                    <a href="{{ route('member.orders.index') }}" class="btn btn-outline-success position-relative" style="font-size: 1.2rem;">
-                        <i class="fas fa-shopping-cart"></i>
-                        @if($cartItemCount > 0)
-                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                            {{ $cartItemCount }}
-                            <span class="visually-hidden">items in cart</span>
-                        </span>
-                        @endif
-                    </a>
                 </div>
             </div>
         </div>
@@ -368,4 +359,15 @@
     </div>
 </div>
 @endforeach
+<a href="{{ route('member.orders.index') }}"
+   class="btn btn-success position-fixed rounded-circle shadow-lg"
+   style="bottom: 20px; right: 20px; z-index: 1055; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center;">
+    <i class="fas fa-shopping-cart fs-4"></i>
+    @if($cartItemCount > 0)
+    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+        {{ $cartItemCount }}
+        <span class="visually-hidden">items in cart</span>
+    </span>
+    @endif
+</a>
 @endsection
