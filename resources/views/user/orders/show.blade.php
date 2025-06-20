@@ -40,7 +40,7 @@
         </tbody>
     </table>
 
-    <a href="{{ route('user.orders.index') }}" class="btn btn-success mt-3">
+    <a href="{{ route('member.orders.index') }}" class="btn btn-success mt-3">
         <i class="fas fa-arrow-left me-1"></i> Kembali ke Daftar Pesanan
     </a>
 </div>

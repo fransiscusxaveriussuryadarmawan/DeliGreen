@@ -6,7 +6,7 @@
 
     @if(count($cart) > 0)
     <div class="d-flex justify-content-end mb-3 gap-2">
-        <form method="POST" action="{{ route('user.orders.clear') }}">
+        <form method="POST" action="{{ route('member.orders.clear') }}">
             @csrf
             <button type="submit" class="btn btn-outline-danger">
                 <i class="fas fa-trash-alt me-1"></i> Kosongkan Keranjang
@@ -32,16 +32,15 @@
                 <td>{{ $item['name'] }}</td>
                 <td>Rp {{ number_format($item['price'], 0, ',', '.') }}</td>
                 <td>
-                    <form action="{{ route('user.orders.update') }}" method="POST" class="d-flex align-items-center">
+                    <form action="{{ route('member.orders.update') }}" method="POST" class="d-flex align-items-center">
                         @csrf
                         <input type="hidden" name="food_id" value="{{ $id }}">
-                        <input type="number" name="quantity" value="{{ $item['quantity'] }}" min="1" class="form-control form-control-sm me-2" style="width: 70px;">
-                        <button class="btn btn-sm btn-primary">Ubah</button>
+                        <input type="number" name="quantity" value="{{ $item['quantity'] }}" min="1" class="form-control form-control-sm me-2 quantity-input" data-food-id="{{ $id }}" style="width: 70px;">
                     </form>
                 </td>
-                <td>Rp {{ number_format($subtotal, 0, ',', '.') }}</td>
+                <td id="subtotal-{{ $id }}">Rp {{ number_format($subtotal, 0, ',', '.') }}</td>
                 <td>
-                    <form method="POST" action="{{ route('user.orders.remove') }}">
+                    <form method="POST" action="{{ route('member.orders.remove') }}">
                         @csrf
                         <input type="hidden" name="food_id" value="{{ $id }}">
                         <button class="btn btn-sm btn-danger">Hapus</button>
@@ -51,7 +50,7 @@
             @endforeach
             <tr class="fw-bold">
                 <td colspan="3">Total</td>
-                <td colspan="2">Rp {{ number_format($total, 0, ',', '.') }}</td>
+                <td colspan="2" id="total">Rp {{ number_format($total, 0, ',', '.') }}</td>
             </tr>
         </tbody>
     </table>
@@ -74,7 +73,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                    <form method="POST" action="{{ route('user.orders.checkout') }}">
+                    <form method="POST" action="{{ route('member.orders.checkout') }}">
                         @csrf
                         <button type="submit" class="btn btn-success">Ya, Checkout</button>
                     </form>
@@ -121,7 +120,7 @@
                         @endif
                     </td>
                     <td>
-                        <a href="{{ route('user.orders.show', $order->id) }}" class="btn btn-sm btn-outline-success">
+                        <a href="{{ route('member.orders.show', $order->id) }}" class="btn btn-sm btn-outline-success">
                             <i class="fas fa-eye"></i> Detail
                         </a>
                     </td>
@@ -133,6 +132,46 @@
     @else
     <div class="alert alert-warning mt-4">Belum ada pesanan yang dilakukan.</div>
     @endif
-
 </div>
 @endsection
+
+@push('scripts')
+    <script>
+        document.querySelectorAll('.quantity-input').forEach(input => {
+            input.addEventListener('input', function () {
+                const foodId = this.dataset.foodId;
+                const quantity = this.value;
+
+                if (quantity < 1) return;
+
+                fetch("{{ route('member.orders.update') }}", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Accept": "application/json",
+                        "X-CSRF-TOKEN": '{{ csrf_token() }}'
+                    },
+                    body: JSON.stringify({ food_id: foodId, quantity: quantity })
+                })
+                .then(res => res.json())
+                .then(data => {
+                    document.getElementById(`subtotal-${foodId}`).innerText = `Rp ${data.subtotal.toLocaleString('id-ID')}`;
+                    document.getElementById('total').innerText = `Rp ${data.total.toLocaleString('id-ID')}`;
+                    // Di bagian success AJAX
+                    const toast = document.createElement('div');
+                    toast.className = 'toast align-items-center text-bg-success show position-fixed top-0 end-0 m-3';
+                    toast.style.zIndex = 1080;
+                    toast.innerHTML = `
+                      <div class="d-flex">
+                        <div class="toast-body">✔ Jumlah diperbarui</div>
+                        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+                      </div>
+                    `;
+                    document.body.appendChild(toast);
+                    setTimeout(() => toast.remove(), 2500);
+                })
+                .catch(err => console.error('Update quantity error:', err));
+            });
+        });
+    </script>
+@endpush

@@ -61,17 +61,32 @@ class OrderItemController extends Controller
     public function updateCart(Request $request)
     {
         $foodId = $request->input('food_id');
-        $quantity = (int) $request->input('quantity');
+        $quantity = max(1, (int) $request->input('quantity'));
 
         $cart = session()->get('cart', []);
 
-        if (isset($cart[$foodId])) {
-            $cart[$foodId]['quantity'] = max(1, $quantity);
-            session()->put('cart', $cart);
-            return back()->with('success', 'Jumlah makanan diperbarui.');
+        if (!isset($cart[$foodId])) {
+            if ($request->expectsJson()) {
+                return response()->json(['error' => 'Item tidak ditemukan di keranjang.'], 404);
+            }
+            return back()->with('error', 'Item tidak ditemukan di keranjang.');
         }
 
-        return back()->with('error', 'Item tidak ditemukan di keranjang.');
+        $cart[$foodId]['quantity'] = $quantity;
+        session()->put('cart', $cart);
+
+        $subtotal = $cart[$foodId]['price'] * $quantity;
+        $total = collect($cart)->sum(fn($item) => $item['price'] * $item['quantity']);
+
+        if ($request->expectsJson()) {
+            return response()->json([
+                'success' => true,
+                'subtotal' => $subtotal,
+                'total' => $total,
+            ]);
+        }
+
+        return back()->with('success', 'Jumlah makanan diperbarui.');
     }
 
     public function checkout(Request $request)
@@ -108,7 +123,7 @@ class OrderItemController extends Controller
 
         session()->forget('cart');
 
-        return redirect()->route('user.orders.index')->with('success', 'Checkout berhasil! Pesanan Anda telah dibuat.');
+        return redirect()->route('member.orders.index')->with('success', 'Checkout berhasil! Pesanan Anda telah dibuat.');
     }
 
     public function clearCart()

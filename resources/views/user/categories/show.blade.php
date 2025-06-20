@@ -19,7 +19,7 @@
                         <i class="fas fa-heart text-secondary"></i>
                     </button>
 
-                    <form action="{{ route('user.orders.add') }}" method="POST" class="d-inline">
+                    <form action="{{ route('member.orders.add') }}" method="POST" class="d-inline">
                         @csrf
                         <input type="hidden" name="food_id" value="{{ $food->id }}">
                         <button class="btn btn-success btn-sm">
