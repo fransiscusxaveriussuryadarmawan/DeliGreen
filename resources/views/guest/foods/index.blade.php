@@ -45,7 +45,7 @@
         @forelse($foods as $food)
         <div class="col-md-4 mb-4">
             <div class="card h-100 shadow-sm">
-                <img src="https://picsum.photos/id/1/200/300" style="height: 200px; object-fit: cover;" class="card-img-top" alt="{{ $food->name }}">
+                <img src="{{ asset('storage/' . $food->image) }}" alt="{{ $food->name }}" style="height: 200px; object-fit: cover;" class="card-img-top" alt="{{ $food->name }}">
                 <div class="card-body">
                     <h5 class="card-title">{{ $food->name }}</h5>
                     <p class="card-text">{{ Str::limit($food->description, 100) }}</p>

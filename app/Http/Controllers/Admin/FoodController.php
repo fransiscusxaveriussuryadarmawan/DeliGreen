@@ -7,6 +7,7 @@ use App\Models\Category;
 use App\Models\Food;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class FoodController extends Controller
 {
@@ -32,8 +33,13 @@ class FoodController extends Controller
             'description' => 'nullable|string',
         ]);
 
+        $slug = Str::slug($validated['name']);
+        $validated['slug'] = $slug;
+
         if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->store('foods', 'public');
+            $extension = $request->file('image')->getClientOriginalExtension();
+            $imageName = $slug . '.' . $extension;
+            $imagePath = $request->file('image')->storeAs('foods', $imageName, 'public');
             $validated['image'] = $imagePath;
         }
 
@@ -59,14 +65,19 @@ class FoodController extends Controller
             'description' => 'nullable|string',
         ]);
 
+        $slug = Str::slug($validated['name']);
+        $validated['slug'] = $slug;
+
         if ($request->hasFile('image')) {
             if ($food->image && Storage::disk('public')->exists($food->image)) {
                 Storage::disk('public')->delete($food->image);
             }
 
-            $validated['image'] = $request->file('image')->store('foods', 'public');
+            $extension = $request->file('image')->getClientOriginalExtension();
+            $imageName = $slug . '.' . $extension;
+            $imagePath = $request->file('image')->storeAs('foods', $imageName, 'public');
+            $validated['image'] = $imagePath;
         }
-
         $food->update($validated);
 
         return redirect()->route('admin.foods.index')
