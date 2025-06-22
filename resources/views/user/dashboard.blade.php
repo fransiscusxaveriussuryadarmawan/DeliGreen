@@ -229,31 +229,25 @@
                 <h3 class="text-success mb-0">Rekomendasi untuk Anda</h3>
                 <a href="{{ route('member.foods.index') }}" class="text-success">Lihat Semua <i class="fas fa-arrow-right ms-1"></i></a>
             </div>
-            <div class="row g-4">
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
                 @foreach($recommendedFoods as $food)
-                <div class="col-12 col-md-6 col-lg-4 col-xl-3">
-                    <div class="food-card dashboard-card h-100">
+                <div class="col d-flex">
+                    <div class="card shadow-sm food-card flex-fill d-flex flex-column">
                         <img src="{{ asset('storage/' . $food->image) }}"
-                            class="food-card-img"
-                            alt="{{ $food->slug }}">
-                        <div class="card-body">
-                            <div class="d-flex justify-content-between align-items-start mb-2">
-                                <h5 class="card-title mb-0">{{ $food->name }}</h5>
-                                <span class="badge bg-success bg-opacity-10 text-success order-badge">
-                                    Rp {{ number_format($food->price, 0, ',', '.') }}
-                                </span>
-                            </div>
-                            <p class="card-text text-muted small mb-3">{{ $food->description }}</p>
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div>
-                                    <i class="fas fa-star text-warning"></i>
-                                    <small class="text-muted">4.8 (120)</small>
-                                </div>
+                             class="food-card-img"
+                             alt="{{ $food->slug }}">
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title">{{ $food->name }}</h5>
+                            <p class="card-text text-muted small flex-grow-1">{{ Str::limit($food->description, 80) }}</p>
+                            <div class="d-flex justify-content-between align-items-center mt-3">
+                                <span class="text-success fw-semibold">Rp {{ number_format($food->price, 0, ',', '.') }}</span>
                                 <div class="d-flex gap-2">
                                     <button class="btn btn-sm btn-outline-success">
                                         <i class="fas fa-heart"></i>
                                     </button>
-                                    <button class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#orderModal{{ $food->id }}">
+                                    <button class="btn btn-sm btn-success"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#orderModal{{ $food->id }}">
                                         <i class="fas fa-cart-plus me-1"></i> Pesan
                                     </button>
                                 </div>

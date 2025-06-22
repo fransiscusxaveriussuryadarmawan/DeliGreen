@@ -66,7 +66,7 @@
                 <div class="card border-0 shadow-sm h-100 hover-lift">
                     <div class="card-body">
                         <div class="image-wrapper">
-                            <img src="{{ asset('storage/' . $food->image) }}" class="card-img-top" alt="{{ $food->slug }}">
+                            <img src="{{ asset('storage/' . $food->image) }}" class="card-img-top" alt="{{ $food->slug }}" style="object-fit: cover; height: 200px;">
                         </div>
                         <div class="card-title">
                             <h5>{{ $food->name }}</h5>
