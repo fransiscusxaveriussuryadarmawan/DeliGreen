@@ -37,16 +37,14 @@
             <h2 class="fw-bold text-success">Kategori Pilihan</h2>
             <p class="text-muted">Temukan makanan sesuai kebutuhan dietmu</p>
         </div>
-        <div class="row g-4">
+        <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-4">
             @foreach($categories as $category)
-            <div class="col-6 col-md-3">
-                <div class="card border-0 shadow-sm h-100 hover-lift">
-                    <img src="https://picsum.photos/id/1/200/300"
-                        class="card-img-top"
-                        alt="{{ $category->slug }}"
-                        style="height: 150px; object-fit: cover;">
+            <div class="col">
+                <div class="card shadow-sm h-100 border-0 hover-shadow transition">
                     <div class="card-body text-center">
-                        <h5 class="card-title">{{ $category->name }}</h5>
+                        <i class="fas fa-tags fa-2x text-success mb-2"></i>
+                        <h5 class="card-title text-dark fw-semibold">{{ $category->name }}</h5>
+                        <p class="text-muted small mb-0">{{ $category->foods_count }} menu tersedia</p>
                         <a href="#" class="btn btn-success w-100" data-bs-toggle="modal" data-bs-target="#loginModal">Lihat Menu</a>
                     </div>
                 </div>
@@ -62,28 +60,17 @@
             <h2 class="fw-bold text-success">Menu Populer</h2>
             <p class="text-muted">Favorit pelanggan kami</p>
         </div>
-        <div class="row g-4">
-            @foreach($foods as $food)
-            <div class="col-6 col-md-3">
+        <div class="row justify-content-center g-4">
+            @foreach($popularFoods as $food)
+            <div class="col-6 col-md-4">
                 <div class="card border-0 shadow-sm h-100 hover-lift">
-                    {{-- Gunakan ratio yang sama untuk semua gambar makanan --}}
-                    <div class="ratio ratio-1x1">
-                        @if ($food->image && Storage::exists('foods/' . $food->image))
-                        {{-- Jika gambar ada di storage, tampilkan --}}
-                        <img src="{{ asset('storage/foods/' . $food->image) }}"
-                            style="object-fit: cover; height: 200px;"
-                            class="card-img-top object-fit-cover"
-                            alt="{{ $food->name }}">
-                        @else
-                        {{-- Jika tidak ada gambar, tampilkan placeholder --}}
-                        <img src="https://picsum.photos/id/1/200/300"
-                            style="object-fit: cover; height: 200px;"
-                            class="card-img-top object-fit-cover"
-                            alt="{{ $food->name }}">
-                        @endif
-                    </div>
                     <div class="card-body">
-                        <h5 class="card-title">{{ $food->name }}</h5>
+                        <div class="image-wrapper">
+                            <img src="{{ asset('storage/' . $food->image) }}" class="card-img-top" alt="{{ $food->slug }}">
+                        </div>
+                        <div class="card-title">
+                            <h5>{{ $food->name }}</h5>
+                        </div>
                         <div class="d-flex justify-content-between align-items-center mb-2">
                             <span class="text-success fw-bold">Rp {{ number_format($food->price, 0, ',', '.') }}</span>
                         </div>
@@ -150,7 +137,3 @@
     </div>
 </section>
 @endsection
-
-@push('modals')
-@include('components.login')
-@endpush

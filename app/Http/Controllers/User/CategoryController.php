@@ -13,7 +13,7 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $categories = Category::withCount('foods')->paginate(8);
+        $categories = Category::withCount('foods')->paginate(9);
         return view('user.categories.index', compact('categories'));
     }
 

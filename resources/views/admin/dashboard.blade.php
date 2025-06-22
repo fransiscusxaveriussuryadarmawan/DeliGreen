@@ -80,7 +80,7 @@
                         <p class="mb-1">
                             #ORD{{ str_pad($latestOrder->id, 3, '0', STR_PAD_LEFT) }}
                             -
-                            {{ $latestOrder->customer->name ?? 'No customer' }}
+                            {{ $latestOrder->user->name ?? 'No customer' }}
                         </p>
                         @php
                         $status = strtolower($latestOrder->status);

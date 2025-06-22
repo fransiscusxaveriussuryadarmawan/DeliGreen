@@ -26,7 +26,7 @@ class FoodController extends Controller
             });
         }
 
-        $foods = $queryFood->paginate(10);
+        $foods = $queryFood->paginate(9);
         $categories = Category::orderBy('name')->get();
 
         return view('guest.foods.index', compact('foods', 'categories'));

@@ -10,6 +10,7 @@ use App\Models\Food;
 use App\Models\OrderItem;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
@@ -106,7 +107,15 @@ class DashboardController extends Controller
     {
         $user = Auth::check() ? Auth::user() : null;
         $categories = Category::withCount('foods')->paginate(10);
-        $foods = Food::with('category')->orderBy('name')->paginate(10);
-        return view('guest.welcome', compact('categories', 'foods', 'user'));
+        $popularFoods = Food::with('category')
+        ->withCount([
+            'order_items as total_ordered' => function ($query) {
+                $query->select(DB::raw("SUM(quantity)"));
+            }
+        ])
+        ->orderByDesc('total_ordered')
+        ->take(3)
+        ->get();
+        return view('guest.welcome', compact('categories', 'popularFoods', 'user'));
     }
 }

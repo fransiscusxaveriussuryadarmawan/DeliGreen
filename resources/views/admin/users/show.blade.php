@@ -89,8 +89,6 @@
                     <i class="fas fa-trash-alt me-1"></i> Hapus Customer
                 </button>
             </div>
-
-
         </div>
     </div>
 </div>

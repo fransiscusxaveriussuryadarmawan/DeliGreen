@@ -122,6 +122,13 @@
 
   @include('components.footer')
 
+  @auth
+    @include('components.logout-modal')
+  @endauth
+  @if (!auth()->check())
+    @include('components.login')
+  @endif
+  
   @stack('modals')
   @stack('scripts')
 
@@ -155,7 +162,5 @@
       });
     });
   </script>
-
 </body>
-
 </html>

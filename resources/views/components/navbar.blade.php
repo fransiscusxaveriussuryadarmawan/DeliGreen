@@ -1,7 +1,7 @@
 @php
 $prefix = 'guest';
 if (auth()->check()) {
-$prefix = auth()->user()->role === 'admin' ? 'admin' : 'member';
+    $prefix = auth()->user()->role === 'admin' ? 'admin' : 'member';
 }
 @endphp
 
@@ -12,16 +12,18 @@ $prefix = auth()->user()->role === 'admin' ? 'admin' : 'member';
                 <a class="navbar-brand fw-bold" href="{{ route('admin.dashboard') }}">
                     <i class="fas fa-leaf me-2"></i>DeliGreen Admin
                 </a>
-            @elseif (Auth::user()->role === 'member')
-                <a class="navbar-brand fw-bold" href="{{ route('member.dashboard') }}">
-                    <i class="fas fa-leaf me-2"></i>DeliGreen
-                </a>
             @else
-                <a class="navbar-brand fw-bold" href="{{ route('welcome') }}">
+                <a class="navbar-brand fw-bold" href="{{ route('member.dashboard') }}">
                     <i class="fas fa-leaf me-2"></i>DeliGreen
                 </a>
             @endif
         @endauth
+
+        @guest
+            <a class="navbar-brand fw-bold" href="{{ route('welcome') }}">
+                <i class="fas fa-leaf me-2"></i>DeliGreen
+            </a>
+        @endguest
 
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
             <span class="navbar-toggler-icon"></span>
@@ -103,13 +105,3 @@ $prefix = auth()->user()->role === 'admin' ? 'admin' : 'member';
         </div>
     </div>
 </nav>
-
-@auth
-    @push('modals')
-        @if (!Auth::check())
-            @include('components.login')
-        @else
-            @include('components.logout-modal')
-        @endif
-    @endpush
-@endauth

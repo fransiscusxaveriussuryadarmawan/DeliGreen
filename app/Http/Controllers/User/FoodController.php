@@ -14,38 +14,30 @@ class FoodController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
-    {
-        $foods = Food::with('category')->paginate(9);
-        return view('user.foods.index', compact('foods'));
-    }
-
-    public function order(Request $request)
-    {
-        //
-    }
-
     public function memberIndex(Request $request)
     {
         $search = $request->query('search');
         $categorySlug = $request->query('category');
-
         $queryFood = Food::with('category')->orderBy('name');
-
         if ($search) {
             $queryFood->where('name', 'like', '%' . $search . '%');
         }
-
         if ($categorySlug) {
             $queryFood->whereHas('category', function ($q) use ($categorySlug) {
                 $q->where('slug', $categorySlug);
             });
         }
-
-        $foods = $queryFood->paginate(10);
+        $foods = $queryFood->paginate(9);
         $categories = Category::orderBy('name')->get();
-
         return view('user.foods.index', compact('foods', 'categories'));
+    }
+    
+    /**
+     * Show the form for ordering food.
+     */
+    public function order(Request $request)
+    {
+        //
     }
 
     /**

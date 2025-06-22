@@ -235,7 +235,7 @@
                     <div class="food-card dashboard-card h-100">
                         <img src="{{ asset('storage/' . $food->image) }}"
                             class="food-card-img"
-                            alt="{{ $food->name }}">
+                            alt="{{ $food->slug }}">
                         <div class="card-body">
                             <div class="d-flex justify-content-between align-items-start mb-2">
                                 <h5 class="card-title mb-0">{{ $food->name }}</h5>

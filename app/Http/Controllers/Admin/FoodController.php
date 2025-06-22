@@ -13,7 +13,7 @@ class FoodController extends Controller
 {
     public function index()
     {
-        $foods = Food::with('category')->paginate(10);
+        $foods = Food::with('category')->paginate(9);
         return view('admin.foods.index', compact('foods'));
     }
 

@@ -44,7 +44,7 @@
             @foreach($foods as $food)
             <div class="col-6 col-md-4">
                 <div class="card">
-                    <img src="https://picsum.photos/id/63/200/300" style="height: 200px; object-fit: cover;" class="card-img-top" alt="{{ $food->name }}">
+                    <img src="{{ asset('storage/' . $food->image) }}" style="height: 200px; object-fit: cover;" class="card-img-top" alt="{{ $food->name }}">
                     <div class="card-body">
                         <h5 class="card-title">{{ $food->name }}</h5>
                         <p class="card-text">{{ $food->description }}</p>
@@ -67,8 +67,11 @@
             </div>
             @endforeach
         </div>
-
-        {{ $foods->links() }}
+        @if ($foods->hasPages())
+        <div class="mt-4">
+            {{ $foods->links() }}
+        </div>
+        @endif
     </div>
 </div>
 @endsection

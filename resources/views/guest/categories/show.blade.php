@@ -43,10 +43,11 @@
         </div>
         @endforeach
     </div>
-
-    <div class="mt-4 d-flex justify-content-center">
+    @if ($foods->hasPages())
+    <div class="mt-4">
         {{ $foods->links() }}
     </div>
+    @endif
 </div>
 
 <!-- Modal Login -->
