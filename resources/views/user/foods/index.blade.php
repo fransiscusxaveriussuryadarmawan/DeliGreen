@@ -2,6 +2,25 @@
 
 @section('content')
 
+<!-- Modal untuk pilihan Dine In atau Takeaway -->
+<div class="modal fade" id="orderModal" tabindex="-1" aria-labelledby="orderModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="orderModalLabel">Pilih Opsi Pemesanan</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Silakan pilih opsi pemesanan Anda:</p>
+                <div class="d-grid gap-2">
+                    <button class="btn btn-success" id="dineInBtn">Dine In</button>
+                    <button class="btn btn-outline-success" id="takeawayBtn">Takeaway</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="container py-4">
     <h1 class="text-success mb-4">Daftar Makanan</h1>
     <div class="container">
@@ -74,4 +93,24 @@
         @endif
     </div>
 </div>
+<script>
+    window.onload = function() {
+    // Check if the order type is already set in sessionStorage
+    if (!sessionStorage.getItem('orderType')) {
+        let modal = new bootstrap.Modal(document.getElementById('orderModal'));
+        modal.show();
+
+        // Store the order type in sessionStorage when the user selects "Dine In" or "Takeaway"
+        document.getElementById('dineInBtn').addEventListener('click', function() {
+            sessionStorage.setItem('orderType', 'dine_in');
+            modal.hide();
+        });
+
+        document.getElementById('takeawayBtn').addEventListener('click', function() {
+            sessionStorage.setItem('orderType', 'takeaway');
+            modal.hide();
+        });
+    }
+}
+</script>
 @endsection

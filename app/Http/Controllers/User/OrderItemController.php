@@ -96,11 +96,14 @@ class OrderItemController extends Controller
         if (count($cart) == 0) {
             return back()->with('error', 'Keranjang Anda kosong.');
         }
+        
+        $orderType = session('orderType', 'dine_in');
 
         $order = Order::create([
             'user_id' => auth()->id(),
             'status' => 'pending',
             'total_price' => 0,
+            'order_type' => $orderType,
         ]);
 
         $total = 0;
@@ -122,6 +125,7 @@ class OrderItemController extends Controller
         $order->update(['total_price' => $total]);
 
         session()->forget('cart');
+        session()->forget('orderType');
 
         return redirect()->route('member.orders.index')->with('success', 'Checkout berhasil! Pesanan Anda telah dibuat.');
     }

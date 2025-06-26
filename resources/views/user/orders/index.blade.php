@@ -23,6 +23,7 @@
                     <th>Harga</th>
                     <th>Jumlah</th>
                     <th>Subtotal</th>
+                    <th>Jenis Pemesanan</th> <!-- Perbaikan kolom untuk Jenis Pemesanan -->
                     <th>Aksi</th>
                 </tr>
             </thead>
@@ -42,6 +43,14 @@
                     </td>
                     <td class="subtotal" data-id="{{ $id }}">Rp {{ number_format($subtotal, 0, ',', '.') }}</td>
                     <td>
+                        <!-- Menampilkan status Dine In atau Takeaway -->
+                        @if(session('orderType') == 'dine_in')
+                            <span class="badge bg-info">Dine In</span>
+                        @else
+                            <span class="badge bg-secondary">Takeaway</span>
+                        @endif
+                    </td>
+                    <td>
                         <form method="POST" action="{{ route('member.orders.remove') }}">
                             @csrf
                             <input type="hidden" name="food_id" value="{{ $id }}">
@@ -52,7 +61,7 @@
                 @endforeach
                 <tr class="fw-bold">
                     <td colspan="3">Total</td>
-                    <td colspan="2" class="total">Rp {{ number_format($total, 0, ',', '.') }}</td>
+                    <td colspan="3" class="total">Rp {{ number_format($total, 0, ',', '.') }}</td>
                 </tr>
             </tbody>
         </table>
@@ -85,6 +94,13 @@
                     <input type="hidden" name="food_id" value="{{ $id }}">
                     <button class="btn btn-sm btn-outline-danger w-100">Hapus</button>
                 </form>
+
+                <!-- Menampilkan jenis pemesanan untuk tampilan mobile -->
+                @if(session('orderType') == 'dine_in')
+                    <span class="badge bg-info">Dine In</span>
+                @else
+                    <span class="badge bg-secondary">Takeaway</span>
+                @endif
             </div>
         </div>
         @endforeach
@@ -120,8 +136,7 @@
         </div>
     </div>
     @else
-    <div class="alert alert-info">Keranjang Anda kosong. Silakan tambahkan makanan dari halaman <a href="{{ route('member.foods.index') }}">Daftar Makanan</a>.
-    </div>
+    <div class="alert alert-info">Keranjang Anda kosong. Silakan tambahkan makanan dari halaman <a href="{{ route('member.foods.index') }}">Daftar Makanan</a>.</div>
     @endif
 
     <hr class="my-5">
