@@ -103,11 +103,27 @@
         // Store the order type in sessionStorage when the user selects "Dine In" or "Takeaway"
         document.getElementById('dineInBtn').addEventListener('click', function() {
             sessionStorage.setItem('orderType', 'dine_in');
+            fetch("{{ route('member.orders.setOrderType') }}", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRF-TOKEN": "{{ csrf_token() }}"
+                },
+                body: JSON.stringify({ orderType: "dine_in" }) 
+            });
             modal.hide();
         });
 
         document.getElementById('takeawayBtn').addEventListener('click', function() {
             sessionStorage.setItem('orderType', 'takeaway');
+            fetch("{{ route('member.orders.setOrderType') }}", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRF-TOKEN": "{{ csrf_token() }}"
+                },
+                body: JSON.stringify({ orderType: "takeaway" })
+            });
             modal.hide();
         });
     }

@@ -59,6 +59,7 @@ Route::prefix('user')->name('member.')->middleware('auth')->group(function () {
     Route::resource('categories', UserCategoryController::class);
 
     Route::get('/orders', [UserOrderItemController::class, 'index'])->name('orders.index');
+    Route::post('/orders/setOrderType', [UserOrderItemController::class, 'setOrderType'])->name('orders.setOrderType');
     Route::get('/orders/{id}', [UserOrderItemController::class, 'show'])->name('orders.show');
     Route::get('/orders/cart', [UserOrderItemController::class, 'cart'])->name('orders.cart');
     Route::post('/orders/store', [UserOrderItemController::class, 'store'])->name('orders.store');

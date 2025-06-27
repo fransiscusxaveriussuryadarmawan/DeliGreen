@@ -22,6 +22,17 @@ class OrderItemController extends Controller
         return view('user.orders.index', compact('cart', 'orders'));
     }
 
+    public function setOrderType(Request $request)
+    {
+        $validated = $request->validate([
+            'orderType' => 'required|in:dine_in,takeaway',
+        ]);
+
+        session(['orderType' => $validated['orderType']]);
+
+        return response()->json(['message' => 'Order type set successfully']);
+    }
+
     public function show($id)
     {
         $order = Order::with('items.food')->findOrFail($id);
@@ -54,6 +65,7 @@ class OrderItemController extends Controller
         $cart = session()->get('cart', []);
         unset($cart[$request->food_id]);
         session()->put('cart', $cart);
+        session()->forget('orderType');
 
         return back()->with('success', 'Item dihapus dari keranjang.');
     }
@@ -97,7 +109,7 @@ class OrderItemController extends Controller
             return back()->with('error', 'Keranjang Anda kosong.');
         }
         
-        $orderType = session('orderType', 'dine_in');
+        $orderType = session('orderType');
 
         $order = Order::create([
             'user_id' => auth()->id(),
@@ -133,6 +145,7 @@ class OrderItemController extends Controller
     public function clearCart()
     {
         session()->forget('cart');
+        session()->forget('orderType');
         return back()->with('success', 'Keranjang berhasil dikosongkan.');
     }
 }
