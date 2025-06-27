@@ -21,6 +21,7 @@ return new class extends Migration
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->decimal('price', 10, 2);
             $table->integer('quantity');
+            $table->boolean('order_type')->nullable(); // 0 for dine_in, 1 for takeaway
             $table->timestamps();
         });
     }
