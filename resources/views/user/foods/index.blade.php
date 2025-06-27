@@ -132,7 +132,7 @@
                         @csrf
                         <input type="hidden" name="food_id" value="{{ $food->id }}">
                         <button class="btn btn-success w-100 py-2">
-                            <i class="fas fa-shopping-cart me-2"></i> Tambah ke Keranjang
+                            <i class="fas fa-cart-plus me-2"></i> Tambah ke Keranjang
                         </button>
                     </form>
                 </div>

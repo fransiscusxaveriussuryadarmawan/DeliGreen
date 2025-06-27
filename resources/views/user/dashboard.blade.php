@@ -241,16 +241,6 @@
                             <p class="card-text text-muted small flex-grow-1">{{ Str::limit($food->description, 80) }}</p>
                             <div class="d-flex justify-content-between align-items-center mt-3">
                                 <span class="text-success fw-semibold">Rp {{ number_format($food->price, 0, ',', '.') }}</span>
-                                <div class="d-flex gap-2">
-                                    <button class="btn btn-sm btn-outline-success">
-                                        <i class="fas fa-heart"></i>
-                                    </button>
-                                    <button class="btn btn-sm btn-success"
-                                        data-bs-toggle="modal"
-                                        data-bs-target="#orderModal{{ $food->id }}">
-                                        <i class="fas fa-cart-plus me-1"></i> Pesan
-                                    </button>
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -312,56 +302,4 @@
         </div>
     </div>
 </div>
-
-<!-- Order Modals -->
-@foreach($recommendedFoods as $food)
-<div class="modal fade" id="orderModal{{ $food->id }}" tabindex="-1" aria-labelledby="orderModalLabel{{ $food->id }}" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="orderModalLabel{{ $food->id }}">Pesan {{ $food->name }}</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <form action="{{ route('member.orders.checkout') }}" method="POST">
-                @csrf
-                <div class="modal-body">
-                    <div class="text-center mb-4">
-                        <img src="{{ asset('storage/' . $food->image) }}" class="img-fluid rounded mb-3" alt="{{ $food->name }}" style="max-height: 200px;">
-                        <h4 class="mb-1">{{ $food->name }}</h4>
-                        <p class="text-muted mb-0">{{ $food->description }}</p>
-                        <h4 class="text-success mt-2">Rp {{ number_format($food->price, 0, ',', '.') }}</h4>
-                    </div>
-
-                    <div class="mb-3">
-                        <label for="quantity" class="form-label">Jumlah</label>
-                        <input type="number" class="form-control" id="quantity" name="quantity" value="1" min="1" max="10">
-                    </div>
-
-                    <div class="mb-3">
-                        <label class="form-label">Catatan (opsional)</label>
-                        <textarea class="form-control" name="notes" rows="2" placeholder="Contoh: Tanpa bawang, Pedas level 2"></textarea>
-                    </div>
-
-                    <input type="hidden" name="food_id" value="{{ $food->id }}">
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Batal</button>
-                    <button type="submit" class="btn btn-success">Tambahkan ke Keranjang</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-@endforeach
-<a href="{{ route('member.orders.index') }}"
-   class="btn btn-success position-fixed rounded-circle shadow-lg"
-   style="bottom: 20px; right: 20px; z-index: 1055; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center;">
-    <i class="fas fa-shopping-cart fs-4"></i>
-    @if($cartItemCount > 0)
-    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-        {{ $cartItemCount }}
-        <span class="visually-hidden">items in cart</span>
-    </span>
-    @endif
-</a>
 @endsection

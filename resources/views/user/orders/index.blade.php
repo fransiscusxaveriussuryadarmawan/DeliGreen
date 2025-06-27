@@ -1,5 +1,15 @@
 @extends('components.app')
 
+@if(session('success'))
+    @push('scripts')
+    <script>
+        // Bersihkan orderType setelah checkout sukses
+        sessionStorage.removeItem('orderType');
+    </script>
+    @endpush
+@endif
+
+
 @section('content')
 <div class="container py-4">
     <h2 class="text-success mb-4">🛒 Keranjang Anda</h2>
