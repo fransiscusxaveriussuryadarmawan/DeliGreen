@@ -1,20 +1,26 @@
 @extends('components.app')
 
 @section('content')
-
-<!-- Modal untuk pilihan Dine In atau Takeaway -->
+<!-- Modal for Dine In or Takeaway -->
 <div class="modal fade" id="orderModal" tabindex="-1" aria-labelledby="orderModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
-            <div class="modal-header">
+            <div class="modal-header bg-success text-white">
                 <h5 class="modal-title" id="orderModalLabel">Pilih Opsi Pemesanan</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <p>Silakan pilih opsi pemesanan Anda:</p>
-                <div class="d-grid gap-2">
-                    <button class="btn btn-success" id="dineInBtn">Dine In</button>
-                    <button class="btn btn-outline-success" id="takeawayBtn">Takeaway</button>
+                <div class="text-center mb-4">
+                    <i class="fas fa-utensils fa-3x text-success mb-3"></i>
+                    <p class="fs-5">Silakan pilih opsi pemesanan Anda:</p>
+                </div>
+                <div class="d-grid gap-3">
+                    <button class="btn btn-success btn-lg py-3" id="dineInBtn">
+                        <i class="fas fa-store me-2"></i> Dine In
+                    </button>
+                    <button class="btn btn-outline-success btn-lg py-3" id="takeawayBtn">
+                        <i class="fas fa-shopping-bag me-2"></i> Takeaway
+                    </button>
                 </div>
             </div>
         </div>
@@ -22,111 +28,328 @@
 </div>
 
 <div class="container py-4">
-    <h1 class="text-success mb-4">Daftar Makanan</h1>
-    <div class="container">
-
-        <div class="row mb-4">
-            <div class="col-md-6">
-                <form action="{{ route('member.foods.index') }}" method="GET">
-                    <div class="input-group">
-                        <input type="text" name="search" class="form-control"
-                            placeholder="Search food..." value="{{ request('search') }} ">
-                        <button class="btn btn-success" type="submit"><i class="fas fa-search"></i></button>
-                    </div>
-                </form>
-            </div>
-
-            <div class="col-md-6">
-                <form action="{{ route('member.foods.index') }}" method="GET">
-                    @if(request('search'))
-                    <input type="hidden" name="search" value="{{ request('search') }}">
+    <!-- Header with responsive adjustments -->
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mb-4">
+        <div class="mb-3 mb-md-0">
+            <h1 class="text-success fw-bold mb-2">Daftar Makanan</h1>
+            <p class="text-muted">Temukan berbagai pilihan makanan lezat untuk dipesan</p>
+        </div>
+        <div class="d-flex">
+            <div class="cart-icon position-relative me-3">
+                <a href="{{ route('member.orders.index') }}" class="btn btn-success rounded-circle p-2">
+                    <i class="fas fa-shopping-cart fs-5"></i>
+                </a>
+                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                    @if(session('cart') && count(session('cart')) > 0)
+                        {{ count(session('cart')) }}
+                    @else
+                        0
                     @endif
-
-                    <div class="input-group">
-                        <select class="form-select" name="category">
-                            <option value="">All Categories</option>
-                            @foreach($categories as $cat)
-                            <option value="{{ $cat->slug }}"
-                                {{ request('category') == $cat->slug ? 'selected' :   '' }}>
-                                {{ $cat->name }}
-                            </option>
-                            @endforeach
-                        </select>
-                        <button class="btn btn-outline-success" type="submit">Filter
-                        </button>
-                    </div>
-                </form>
+                    <span class="visually-hidden">Items in cart</span>
+                </span>
             </div>
         </div>
+    </div>
 
-        <div class="row g-4">
-            @foreach($foods as $food)
-            <div class="col-6 col-md-4">
-                <div class="card">
-                    <img src="{{ asset('storage/' . $food->image) }}" style="height: 200px; object-fit: cover;" class="card-img-top" alt="{{ $food->name }}">
-                    <div class="card-body">
-                        <h5 class="card-title">{{ $food->name }}</h5>
-                        <p class="card-text">{{ $food->description }}</p>
-                        <p class="fw-bold">Rp {{ number_format($food->price, 0, ',', '.') }}</p>
+    <!-- Search and Filter Section - Responsive Design -->
+    <div class="card shadow-sm mb-4" id="filterCard">
+        <div class="card-body">
+            <div class="row g-3">
+                <!-- Search Input -->
+                <div class="col-md-6">
+                    <form action="{{ route('member.foods.index') }}" method="GET">
+                        <div class="input-group">
+                            <span class="input-group-text bg-success text-white">
+                                <i class="fas fa-search"></i>
+                            </span>
+                            <input type="text" name="search" class="form-control form-control-lg"
+                                placeholder="Cari makanan..." value="{{ request('search') }}">
+                            <button class="btn btn-success" type="submit">Cari</button>
+                        </div>
+                    </form>
+                </div>
 
-                        <button class="btn btn-outline-success btn-sm px-2 py-1 love-toggle" data-id="{{ $food->id }}" style="border-radius: 6px;">
-                            <i class="fas fa-heart text-secondary"></i>
-                        </button>
+                <!-- Category Filter -->
+                <div class="col-md-6">
+                    <form action="{{ route('member.foods.index') }}" method="GET">
+                        @if(request('search'))
+                        <input type="hidden" name="search" value="{{ request('search') }}">
+                        @endif
 
-                        <form action="{{ route('member.orders.add') }}" method="POST" class="d-inline">
-                            @csrf
-                            <input type="hidden" name="food_id" value="{{ $food->id }}">
-                            <button class="btn btn-success btn-sm">
-                                <i class="fas fa-shopping-cart me-1"></i> Tambah ke Keranjang
-                            </button>
-                        </form>
-
-                    </div>
+                        <div class="input-group">
+                            <span class="input-group-text bg-success text-white">
+                                <i class="fas fa-tag"></i>
+                            </span>
+                            <select class="form-select form-select-lg" name="category">
+                                <option value="">Semua Kategori</option>
+                                @foreach($categories as $cat)
+                                <option value="{{ $cat->slug }}"
+                                    {{ request('category') == $cat->slug ? 'selected' : '' }}>
+                                    {{ $cat->name }}
+                                </option>
+                                @endforeach
+                            </select>
+                            <button class="btn btn-outline-success" type="submit">Filter</button>
+                        </div>
+                    </form>
                 </div>
             </div>
-            @endforeach
         </div>
-        @if ($foods->hasPages())
-        <div class="mt-4">
-            {{ $foods->links() }}
-        </div>
-        @endif
     </div>
+
+    <!-- Food Grid - Responsive Layout -->
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-3 g-4">
+        @foreach($foods as $food)
+        <div class="col">
+            <div class="card h-100 shadow-sm border-0 overflow-hidden">
+                <!-- Food Image with Aspect Ratio -->
+                <div class="position-relative">
+                    <img src="{{ asset('storage/' . $food->image) }}" 
+                         class="card-img-top" 
+                         alt="{{ $food->name }}"
+                         style="height: 200px; object-fit: cover;">
+                </div>
+                
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-start mb-2">
+                        <h5 class="card-title fw-bold mb-0">{{ $food->name }}</h5>
+                        <span class="badge bg-success bg-opacity-10 text-success">
+                            {{ $food->category->name }}
+                        </span>
+                    </div>
+                    
+                    <p class="card-text text-muted small mb-3 food-description">
+                        {{ $food->description }}
+                    </p>
+                    
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <div>
+                            <span class="fw-bold text-success fs-5">Rp {{ number_format($food->price, 0, ',', '.') }}</span>
+                        </div>
+                    </div>
+                    
+                    <form action="{{ route('member.orders.add') }}" method="POST">
+                        @csrf
+                        <input type="hidden" name="food_id" value="{{ $food->id }}">
+                        <button class="btn btn-success w-100 py-2">
+                            <i class="fas fa-shopping-cart me-2"></i> Tambah ke Keranjang
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        @endforeach
+    </div>
+
+    <!-- Empty State -->
+    @if($foods->isEmpty())
+    <div class="text-center py-5">
+        <div class="py-5">
+            <i class="fas fa-utensils fa-4x text-muted mb-4"></i>
+            <h4 class="text-muted mb-3">Tidak ada makanan ditemukan</h4>
+            <p class="text-muted mb-4">Coba kata kunci lain atau filter kategori berbeda</p>
+            <a href="{{ route('member.foods.index') }}" class="btn btn-success px-4">
+                <i class="fas fa-sync me-2"></i> Reset Pencarian
+            </a>
+        </div>
+    </div>
+    @endif
+
+    <!-- Pagination -->
+    @if ($foods->hasPages())
+    <div class="mt-5">
+        <nav aria-label="Food pagination">
+            {{ $foods->links() }}
+        </nav>
+    </div>
+    @endif
 </div>
+
+<style>
+    /* Custom Styles */
+    body {
+        background-color: #f8f9fa;
+    }
+    
+    .card {
+        border-radius: 12px;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        border: none;
+    }
+    
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    }
+    
+    .food-description {
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        min-height: 40px;
+    }
+    
+    .cart-icon .badge {
+        font-size: 0.7rem;
+        padding: 0.35em 0.6em;
+    }
+    
+    .input-group-text {
+        border: none;
+    }
+    
+    .form-control, .form-select {
+        border-left: none;
+        padding-left: 0;
+    }
+    
+    .form-control:focus, .form-select:focus {
+        box-shadow: none;
+        border-color: #ced4da;
+    }
+    
+    /* Card image overlay for consistency */
+    .card-img-top {
+        border-top-left-radius: 12px !important;
+        border-top-right-radius: 12px !important;
+    }
+    
+    .btn-success {
+        background-color: #28a745;
+        border-color: #28a745;
+        transition: all 0.3s ease;
+    }
+    
+    .btn-success:hover {
+        background-color: #218838;
+        border-color: #1e7e34;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(40, 167, 69, 0.3);
+    }
+    
+    .badge {
+        font-weight: 500;
+    }
+    
+    /* Pagination styling */
+    .pagination .page-link {
+        color: #000000;
+        border: 1px solid #dee2e6;
+    }
+    
+    .pagination .page-item.active .page-link {
+        background-color: #28a745;
+        border-color: #28a745;
+    }
+    
+    .pagination .page-link:hover {
+        color: #000000;
+        background-color: #e9ecef;
+    }
+    
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+        .input-group-text, .form-select, .form-control {
+            font-size: 1rem !important;
+        }
+        
+        .btn {
+            padding: 0.5rem 1rem;
+        }
+        
+        h1 {
+            font-size: 1.75rem;
+        }
+        
+        .card-body {
+            padding: 1rem;
+        }
+    }
+    
+    @media (max-width: 576px) {
+        #filterCard {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 1050;
+            margin-bottom: 0;
+            border-radius: 16px 16px 0 0;
+            display: none;
+        }
+        
+        #filterCard.active {
+            display: block;
+            animation: slideUp 0.3s ease-out;
+        }
+        
+        @keyframes slideUp {
+            from { transform: translateY(100%); }
+            to { transform: translateY(0); }
+        }
+        
+        .row-cols-sm-2 > .col {
+            flex: 0 0 auto;
+            width: 100%;
+        }
+    }
+</style>
+
 <script>
     window.onload = function() {
-    // Check if the order type is already set in sessionStorage
-    if (!sessionStorage.getItem('orderType')) {
-        let modal = new bootstrap.Modal(document.getElementById('orderModal'));
-        modal.show();
-
-        // Store the order type in sessionStorage when the user selects "Dine In" or "Takeaway"
-        document.getElementById('dineInBtn').addEventListener('click', function() {
-            sessionStorage.setItem('orderType', 'dine_in');
-            fetch("{{ route('member.orders.setOrderType') }}", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "X-CSRF-TOKEN": "{{ csrf_token() }}"
-                },
-                body: JSON.stringify({ orderType: "dine_in" }) 
+        // Order type modal
+        if (!sessionStorage.getItem('orderType')) {
+            let modal = new bootstrap.Modal(document.getElementById('orderModal'));
+            modal.show();
+            
+            document.getElementById('dineInBtn').addEventListener('click', function() {
+                sessionStorage.setItem('orderType', 'dine_in');
+                fetch("{{ route('member.orders.setOrderType') }}", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-CSRF-TOKEN": "{{ csrf_token() }}"
+                    },
+                    body: JSON.stringify({ orderType: "dine_in" }) 
+                });
+                modal.hide();
             });
-            modal.hide();
-        });
-
-        document.getElementById('takeawayBtn').addEventListener('click', function() {
-            sessionStorage.setItem('orderType', 'takeaway');
-            fetch("{{ route('member.orders.setOrderType') }}", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "X-CSRF-TOKEN": "{{ csrf_token() }}"
-                },
-                body: JSON.stringify({ orderType: "takeaway" })
+            
+            document.getElementById('takeawayBtn').addEventListener('click', function() {
+                sessionStorage.setItem('orderType', 'takeaway');
+                fetch("{{ route('member.orders.setOrderType') }}", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-CSRF-TOKEN": "{{ csrf_token() }}"
+                    },
+                    body: JSON.stringify({ orderType: "takeaway" })
+                });
+                modal.hide();
             });
-            modal.hide();
+        }
+        
+        // Mobile filter toggle
+        const filterToggle = document.getElementById('filterToggle');
+        const filterCard = document.getElementById('filterCard');
+        
+        if (filterToggle && filterCard) {
+            filterToggle.addEventListener('click', () => {
+                filterCard.classList.toggle('active');
+            });
+        }
+        
+        // Close filter when clicking outside on mobile
+        document.addEventListener('click', (e) => {
+            if (window.innerWidth <= 576 && 
+                filterCard.classList.contains('active') && 
+                !filterCard.contains(e.target) && 
+                e.target !== filterToggle) {
+                filterCard.classList.remove('active');
+            }
         });
-    }
-}
+    };
 </script>
 @endsection
