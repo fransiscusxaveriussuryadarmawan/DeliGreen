@@ -1,15 +1,5 @@
 @extends('components.app')
 
-@if(session('success'))
-    @push('scripts')
-    <script>
-        // Bersihkan orderType setelah checkout sukses
-        sessionStorage.removeItem('orderType');
-    </script>
-    @endpush
-@endif
-
-
 @section('content')
 <div class="container py-4">
     <h2 class="text-success mb-4">🛒 Keranjang Anda</h2>
@@ -53,11 +43,12 @@
                     </td>
                     <td class="subtotal" data-id="{{ $id }}">Rp {{ number_format($subtotal, 0, ',', '.') }}</td>
                     <td>
-                        <!-- Menampilkan status Dine In atau Takeaway -->
-                        @if(session('orderType') == 'dine_in')
+                        @if($item['orderType'] === 'dine_in')
                             <span class="badge bg-info">Dine In</span>
-                        @else
+                        @elseif($item['orderType'] === 'takeaway')
                             <span class="badge bg-secondary">Takeaway</span>
+                        @else
+                            <span class="badge bg-dark">-</span>
                         @endif
                     </td>
                     <td>
@@ -105,12 +96,13 @@
                     <button class="btn btn-sm btn-outline-danger w-100">Hapus</button>
                 </form>
 
-                <!-- Menampilkan jenis pemesanan untuk tampilan mobile -->
-                @if(session('orderType') == 'dine_in')
+                @if($item['orderType'] === 'dine_in')
                     <span class="badge bg-info">Dine In</span>
-                @else
+                @elseif($item['orderType'] === 'takeaway')
                     <span class="badge bg-secondary">Takeaway</span>
-                @endif
+                @else
+                    <span class="badge bg-dark">-</span>
+                @endif  
             </div>
         </div>
         @endforeach

@@ -2,7 +2,7 @@
 
 @section('content')
 <!-- Modal for Dine In or Takeaway -->
-<div class="modal fade" id="orderModal" tabindex="-1" aria-labelledby="orderModalLabel" aria-hidden="true">
+<div class="modal fade" id="orderTypeModal" tabindex="-1" aria-labelledby="orderTypeModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header bg-success text-white">
@@ -15,10 +15,10 @@
                     <p class="fs-5">Silakan pilih opsi pemesanan Anda:</p>
                 </div>
                 <div class="d-grid gap-3">
-                    <button class="btn btn-success btn-lg py-3" id="dineInBtn">
+                    <button class="btn btn-success btn-lg py-3 select-order-type" id="dineInBtn" data-type="dine_in">
                         <i class="fas fa-store me-2"></i> Dine In
                     </button>
-                    <button class="btn btn-outline-success btn-lg py-3" id="takeawayBtn">
+                    <button class="btn btn-outline-success btn-lg py-3 select-order-type" id="takeawayBtn" data-type="takeaway">
                         <i class="fas fa-shopping-bag me-2"></i> Takeaway
                     </button>
                 </div>
@@ -128,13 +128,16 @@
                         </div>
                     </div>
                     
-                    <form action="{{ route('member.orders.add') }}" method="POST">
+                    <form action="{{ route('member.orders.add') }}" method="POST" class="d-inline">
                         @csrf
                         <input type="hidden" name="food_id" value="{{ $food->id }}">
-                        <button class="btn btn-success w-100 py-2">
-                            <i class="fas fa-cart-plus me-2"></i> Tambah ke Keranjang
+                        <input type="hidden" name="orderType" value="" class="order-type-input">
+
+                        <button type="button" class="btn btn-success btn-sm add-to-cart-btn"
+                            data-food-id="{{ $food->id }}">
+                            <i class="fas fa-shopping-cart me-1"></i> Tambah ke Keranjang
                         </button>
-                    </form>
+                    </form>   
                 </div>
             </div>
         </div>
@@ -164,6 +167,22 @@
     </div>
     @endif
 </div>
+
+<!-- Modal Pilih Order Type -->
+<!--<div class="modal fade" id="orderTypeModal" tabindex="-1" aria-labelledby="orderTypeModalLabel" <!--aria-hidden="true">
+<!--  <div class="modal-dialog modal-dialog-centered">
+<!--    <div class="modal-content">
+<!--      <div class="modal-header">
+<!--        <h5 class="modal-title">Pilih Jenis Pemesanan</h5>
+<!--        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+<!--      </div>
+<!--      <div class="modal-body text-center">
+<!--        <button class="btn btn-info w-100 mb-2 select-order-type" data-type="dine_in">Dine In</button>
+<!--        <button class="btn btn-secondary w-100 select-order-type" data-type="takeaway">Takeaway</button>
+<!--      </div>
+<!--    </div>
+<!--  </div>
+<!--</div> -->
 
 <style>
     /* Custom Styles */
@@ -297,37 +316,22 @@
     }
 </style>
 
+@push('scripts')
 <script>
     window.onload = function() {
         // Order type modal
-        if (!sessionStorage.getItem('orderType')) {
-            let modal = new bootstrap.Modal(document.getElementById('orderModal'));
+        if (!sessionStorage.getItem('orderTypeModalShown')) {
+            let modal = new bootstrap.Modal(document.getElementById('orderTypeModal'));
             modal.show();
             
             document.getElementById('dineInBtn').addEventListener('click', function() {
-                sessionStorage.setItem('orderType', 'dine_in');
-                fetch("{{ route('member.orders.setOrderType') }}", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                        "X-CSRF-TOKEN": "{{ csrf_token() }}"
-                    },
-                    body: JSON.stringify({ orderType: "dine_in" }) 
-                });
-                modal.hide();
+                sessionStorage.setItem('orderTypeModalShown', 'true');
+                bootstrap.Modal.getInstance(document.getElementById('orderTypeModal')).hide();
             });
             
             document.getElementById('takeawayBtn').addEventListener('click', function() {
-                sessionStorage.setItem('orderType', 'takeaway');
-                fetch("{{ route('member.orders.setOrderType') }}", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                        "X-CSRF-TOKEN": "{{ csrf_token() }}"
-                    },
-                    body: JSON.stringify({ orderType: "takeaway" })
-                });
-                modal.hide();
+                sessionStorage.setItem('orderTypeModalShown', 'true');
+                bootstrap.Modal.getInstance(document.getElementById('orderTypeModal')).hide();
             });
         }
         
@@ -352,4 +356,27 @@
         });
     };
 </script>
+
+<script>
+    let currentForm = null;
+
+    document.querySelectorAll('.add-to-cart-btn').forEach(btn => {
+        btn.addEventListener('click', function () {
+            currentForm = this.closest('form');
+            const modal = new bootstrap.Modal(document.getElementById('orderTypeModal'));
+            modal.show();
+        });
+    });
+
+    document.querySelectorAll('.select-order-type').forEach(button => {
+        button.addEventListener('click', function () {
+            const orderType = this.getAttribute('data-type');
+            if (currentForm) {
+                currentForm.querySelector('.order-type-input').value = orderType;
+                currentForm.submit();
+            }
+        });
+    });
+</script>
+@endpush
 @endsection
