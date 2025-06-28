@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\User;
-
+use Illuminate\Support\Str;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Food;
@@ -19,7 +19,20 @@ class OrderItemController extends Controller
             ->latest()
             ->get();
 
-        return view('user.orders.index', compact('cart', 'orders'));
+        // return view('user.orders.index', compact('cart', 'orders'));
+        
+        $statusNotif = null;
+
+        foreach (session()->all() as $key => $val) {
+            if (Str::startsWith($key, 'status_updated_for_user_id_')) {
+                $userId = str_replace('status_updated_for_user_id_', '', $key);
+                if ((int)$userId === auth()->id()) {
+                    $statusNotif = $val;
+                    break;
+                }
+            }
+        }
+        return view('user.orders.index', compact('cart', 'orders', 'statusNotif'));
     }
 
     public function show($id)
@@ -110,9 +123,9 @@ class OrderItemController extends Controller
 
         $total = 0;
 
-        $request->validate([
-            'orderType' => 'required|in:dine_in,takeaway',
-        ]);
+        // $request->validate([
+        //     'orderType' => 'required|in:dine_in,takeaway',
+        // ]);
 
         foreach ($cart as $food_id => $item) {
             $itemPrice = floatval(str_replace(',', '', $item['price']));

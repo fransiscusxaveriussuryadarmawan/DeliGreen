@@ -18,6 +18,10 @@ use App\Http\Controllers\User\ReportController as UserReportController;
 use App\Http\Controllers\Guest\CategoryController as GuestCategoryController;
 use App\Http\Controllers\Guest\FoodController as GuestFoodController;
 
+use App\Events\OrderStatusUpdated;
+use App\Models\Order;
+
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -30,6 +34,7 @@ use App\Http\Controllers\Guest\FoodController as GuestFoodController;
 */
 
 Route::get('/', [DashboardController::class, 'indexGuest'])->middleware('blockIfLoggedIn')->name('welcome');
+
 Route::get('/register', [AuthController::class, 'showRegistrationPage'])->name('register.page');
 Route::post('/register/verify', [AuthController::class, 'registerProcess'])->name('register.verify');
 Route::post('/login', [AuthController::class, 'login'])->name('login');
@@ -43,7 +48,7 @@ Route::prefix('guest')->name('guest.')->middleware('blockIfLoggedIn')->group(fun
     Route::get('/reports', fn() => redirect('/register'))->name('reports.index');
 });
 
-Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin.only'])->group(function () {
+Route::prefix('admin')->name('admin.')->middleware(['auth'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'indexAdmin'])->name('dashboard');
     Route::resource('foods', AdminFoodController::class);
     Route::resource('categories', AdminCategoryController::class);
@@ -70,3 +75,19 @@ Route::prefix('user')->name('member.')->middleware('auth')->group(function () {
     Route::post('/orders/checkout', [UserOrderItemController::class, 'checkout'])->name('orders.checkout');
     Route::post('/orders/clear', [UserOrderItemController::class, 'clearCart'])->name('orders.clear');
 });
+Broadcast::routes(['middleware' => ['auth']]);
+Route::post('/broadcasting/auth', function () {
+    return response()->json(['user' => auth()->user()], 200);
+});
+
+// Route::get('/test-broadcast', function () {
+//     $order = \App\Models\Order::latest()->first();
+    
+//     if (!$order) {
+//         return 'Tidak ada order ditemukan';
+//     }
+
+//     event(new OrderStatusUpdated($order));
+
+//     return 'Event OrderStatusUpdated berhasil dikirim ke user ID: ' . $order->user_id;
+// });

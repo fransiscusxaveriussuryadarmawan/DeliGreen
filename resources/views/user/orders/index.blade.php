@@ -1,5 +1,7 @@
 @extends('components.app')
 
+
+
 @section('content')
 <div class="container py-4">
     <h2 class="text-success mb-4">🛒 Keranjang Anda</h2>
@@ -145,6 +147,14 @@
 
     <h2 class="text-success mb-4">📦 Riwayat Pesanan Anda</h2>
 
+    @if(isset($statusNotif))
+<div class="alert alert-info alert-dismissible fade show" role="alert">
+    {{ $statusNotif }}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+@endif
+
+
     @if($orders->count() > 0)
     <div class="table-responsive">
         <table class="table table-hover align-middle">
@@ -188,6 +198,10 @@
     <div class="alert alert-warning mt-4">Belum ada pesanan yang dilakukan.</div>
     @endif
 </div>
+<div id="status-alert" class="alert alert-success alert-dismissible fade show position-fixed bottom-0 end-0 m-3 d-none" role="alert" style="z-index: 9999;">
+    <span id="status-message"></span>
+</div>
+
 @endsection
 
 @push('scripts')
@@ -241,4 +255,71 @@
         });
     });
 </script>
+<!-- <script>
+    function showStatusAlert(message) {
+        const alertBox = document.getElementById('status-alert');
+        const messageSpan = document.getElementById('status-message');
+
+        messageSpan.textContent = message;
+
+        alertBox.classList.remove('d-none');
+        alertBox.classList.add('show');
+
+        setTimeout(() => {
+            alertBox.classList.remove('show');
+            alertBox.classList.add('d-none');
+        }, 4000);
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        if (typeof Echo !== 'undefined' && Echo) {
+            Echo.private(`App.Models.User.{{ auth()->id() }}`)
+                .listen('.OrderStatusUpdated', function (e) {
+                    showStatusAlert(`Status Pesanan dengan ID #${e.order.id} telah diperbarui`);
+                });
+        } else {
+            console.warn('Echo belum tersedia.');
+        }
+    });
+</script> -->
+<script>
+    const userId = {{ auth()->user()->id }};
+
+    Echo.private(`user.${userId}`)
+        .listen('.order.status.updated', (e) => {
+            alert(e.message); // ganti dengan toast jika mau
+        });
+</script>
+<!-- <script>
+    function showStatusAlert(message) {
+        const alertBox = document.getElementById('status-alert');
+        const messageSpan = document.getElementById('status-message');
+
+        messageSpan.textContent = message;
+        alertBox.style.display = 'block';
+        setTimeout(() => {
+            alertBox.style.display = 'none';
+        }, 4000);
+    }
+
+    window.Echo.private(`App.Models.User.{{ auth()->id() }}`)
+        .listen('.OrderStatusUpdated', (e) => {
+            showStatusAlert(`Status Pesanan dengan ID #${e.order.id} telah diperbarui`);
+        });
+</script> -->
+
+<!-- <script>
+    setTimeout(() => {
+        const alert = document.querySelector('.alert-success');
+        if (alert) {
+            alert.style.transition = 'opacity 0.5s ease-out';
+            alert.style.opacity = '0';
+            setTimeout(() => alert.remove(), 500);
+        }
+    }, 4000);
+</script> -->
+
+
+
+
 @endpush
