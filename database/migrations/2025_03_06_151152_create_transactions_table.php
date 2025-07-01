@@ -12,12 +12,12 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('transactions', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('invoice_id')->primary();
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->string('invoice_number')->unique();
+            $table->enum('payment_method', ['QRIS', 'Credit Card', 'Debit Card', 'e-Wallet'])->nullable();
             $table->decimal('amount', 15, 2);
-            $table->enum('order_status', ['Pending', 'Processing', 'Completed', 'Cancelled'])->default('Pending');
+            $table->enum('payment_status', ['Pending', 'Paid', 'Failed'])->default('Pending');
             $table->timestamps();
         });
     }
