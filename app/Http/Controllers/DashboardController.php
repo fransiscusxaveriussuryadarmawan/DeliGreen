@@ -72,7 +72,14 @@ class DashboardController extends Controller
 
     public function indexCustomer()
     {
-        $user = Auth::user() ? Auth::user() : null;
+        $user = Auth::user();
+
+        $userPoints = 1250;
+        $activeOrdersCount = Order::where('user_id', $user->id)
+            ->whereIn('status', ['pending', 'processing'])
+            ->count();
+        $totalOrdersCount = Order::where('user_id', $user->id)->count();
+        $favoritesCount = 10;
 
         $categories = Category::withCount('foods')->paginate(10);
         $recommendedFoods = Food::with('category')
@@ -84,13 +91,26 @@ class DashboardController extends Controller
             ->latest()
             ->take(5)
             ->get();
+
         $cartItemCount = OrderItem::where('user_id', $user->id)
             ->whereHas('order', function ($query) {
                 $query->where('status', 'pending');
             })
             ->count();
-        return view('user.dashboard', compact('categories', 'recommendedFoods', 'recentOrders', 'cartItemCount', 'user'));
+
+        return view('user.dashboard', compact(
+            'categories',
+            'recommendedFoods',
+            'recentOrders',
+            'cartItemCount',
+            'user',
+            'userPoints',
+            'activeOrdersCount',
+            'favoritesCount',
+            'totalOrdersCount'
+        ));
     }
+
 
     // public function indexGuest()
     // {
@@ -108,14 +128,14 @@ class DashboardController extends Controller
         $user = Auth::check() ? Auth::user() : null;
         $categories = Category::withCount('foods')->paginate(10);
         $popularFoods = Food::with('category')
-        ->withCount([
-            'order_items as total_ordered' => function ($query) {
-                $query->select(DB::raw("SUM(quantity)"));
-            }
-        ])
-        ->orderByDesc('total_ordered')
-        ->take(3)
-        ->get();
+            ->withCount([
+                'order_items as total_ordered' => function ($query) {
+                    $query->select(DB::raw("SUM(quantity)"));
+                }
+            ])
+            ->orderByDesc('total_ordered')
+            ->take(3)
+            ->get();
         return view('guest.welcome', compact('categories', 'popularFoods', 'user'));
     }
 }
