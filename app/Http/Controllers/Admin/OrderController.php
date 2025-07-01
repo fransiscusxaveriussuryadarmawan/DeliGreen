@@ -42,7 +42,7 @@ class OrderController extends Controller
         // event(new \App\Events\OrderStatusUpdated($order));
 
        
-        event(new OrderStatusUpdated('Hai, makananmu sedang diproses di restoran kami!', $order->user_id));
+        // event(new OrderStatusUpdated('Hai, makananmu sedang diproses di restoran kami!', $order->user_id));
 
         return back()->with('success', 'Status berhasil diperbarui');
     }

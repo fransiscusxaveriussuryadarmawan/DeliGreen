@@ -82,6 +82,15 @@ Route::post('/broadcasting/auth', function () {
     return response()->json(['user' => auth()->user()], 200);
 });
 
+Route::middleware('auth')->get('/order-status/{id}', function ($id) {
+    $order = \App\Models\Order::where('id', $id)
+        ->where('user_id', auth()->id()) // validasi milik user tsb
+        ->firstOrFail();
+
+    return response()->json(['status' => $order->status]);
+});
+
+
 // Route::get('/test-broadcast', function () {
 //     $order = \App\Models\Order::latest()->first();
     

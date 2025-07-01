@@ -176,15 +176,13 @@
                     <td>{{ $order->items_count }} item</td>
                     <td>Rp {{ number_format($order->total_price, 0, ',', '.') }}</td>
                     <td>
-                        @if($order->status === 'completed')
-                        <span class="badge bg-success">Selesai</span>
-                        @elseif($order->status === 'processing')
-                        <span class="badge bg-warning text-dark">Diproses</span>
-                        @elseif($order->status === 'canceled')
-                        <span class="badge bg-danger">Dibatalkan</span>
-                        @else
-                        <span class="badge bg-info">Menunggu</span>
-                        @endif
+                        <span id="order-status-{{ $order->id }}"
+                            class="badge 
+                                {{ $order->status === 'completed' ? 'bg-success' : '' }}
+                                {{ $order->status === 'canceled' ? 'bg-danger' : '' }}
+                                {{ $order->status === 'pending' ? 'bg-info' : '' }}">
+                            {{ ucfirst($order->status) }}
+                        </span>
                     </td>
                     <td>
                         <a href="{{ route('member.orders.show', $order->id) }}" class="btn btn-sm btn-outline-success">
@@ -322,6 +320,67 @@
 </script> -->
 
 
+<script>
+    const currentStatuses = {};
 
+    @foreach ($orders as $order)
+        currentStatuses[{{ $order->id }}] = "{{ $order->status }}";
+    @endforeach
+
+    setInterval(() => {
+        Object.entries(currentStatuses).forEach(([id, oldStatus]) => {
+            fetch(`/order-status/${id}`)
+                .then(res => res.json())
+                .then(data => {
+                    if (data.status !== oldStatus) {
+                        currentStatuses[id] = data.status;
+                        updateStatusDisplay(id, data.status);
+                        showNotification(`Status pesanan dengan ID #ORD${id} telah diperbarui ke "${data.status}"`);
+                    }
+                });
+        });
+    }, 5000);
+
+    function updateStatusDisplay(id, status) {
+        const statusElem = document.getElementById(`order-status-${id}`);
+        if (!statusElem) return;
+
+        statusElem.textContent = status;
+
+        statusElem.className = 'badge'; 
+        switch (status.toLowerCase()) {
+            case 'completed':
+            case 'selesai':
+                statusElem.classList.add('bg-success', 'text-white');
+                break;
+            case 'pending':
+            case 'menunggu':
+                statusElem.classList.add('bg-warning', 'text-dark');
+                break;
+            case 'canceled':
+            case 'dibatalkan':
+                statusElem.classList.add('bg-danger', 'text-white');
+                break;
+            default:
+                statusElem.classList.add('bg-info', 'text-white');
+        }
+    }
+
+    function showNotification(message) {
+        const notif = document.createElement('div');
+        notif.textContent = message;
+        notif.style.position = 'fixed';
+        notif.style.bottom = '20px';
+        notif.style.right = '20px';
+        notif.style.backgroundColor = '#38c172';
+        notif.style.color = 'white';
+        notif.style.padding = '10px 20px';
+        notif.style.borderRadius = '10px';
+        notif.style.boxShadow = '0 2px 5px rgba(0,0,0,0.3)';
+        notif.style.zIndex = 9999;
+        document.body.appendChild(notif);
+        setTimeout(() => notif.remove(), 5000);
+    }
+</script>
 
 @endpush
