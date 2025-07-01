@@ -38,7 +38,8 @@ class OrderItemController extends Controller
     public function show($id)
     {
         $order = Order::with('items.food')->findOrFail($id);
-        return view('user.orders.show', compact('order'));
+        $transaction = Transaction::where('order_id', $order->id)->first();
+        return view('user.orders.show', compact('order', 'transaction'));
     }
 
     public function addToCart(Request $request)
@@ -146,10 +147,9 @@ class OrderItemController extends Controller
             'invoice_id' => Str::uuid(),
             'order_id' => $order->id,
             'user_id' => auth()->id(),
-            'transaction_date' => now(),
             'payment_method' => null,
             'amount' => $total,
-            'payment_status' => 'Pending',
+            'payment_status' => 'pending',
         ]);
 
         session()->forget('cart');
@@ -172,21 +172,24 @@ class OrderItemController extends Controller
             abort(403);
         }
 
-        $transaction = \App\Models\Transaction::updateOrCreate(
+        Transaction::updateOrCreate(
             ['order_id' => $order->id],
             [
                 'user_id' => auth()->id(),
                 'transaction_date' => now(),
                 'payment_method' => $request->payment_method,
-                'amount' => $order->items->sum(fn($item) => $item->price * $item->quantity),
                 'payment_status' => 'paid'
             ]
         );
 
-        $order->status = 'completed';
+        $order->status = 'processing';
         $order->save();
+
+        $user = $order->user;
+
+        $user->point += $order->total_price * 0.1;
+        $user->save();
 
         return response()->json(['success' => true]);
     }
-
 }

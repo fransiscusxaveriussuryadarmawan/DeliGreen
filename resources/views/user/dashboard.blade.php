@@ -121,8 +121,8 @@
         </div>
     </div>
 
-    <div class="row mb-4">
-        <div class="col-md-3 col-sm-6">
+    <div class="row justify-content-center mb-3">
+        <div class="col-12 col-md-4">
             <div class="stats-card bg-primary">
                 <h5 class="fw-bold">Poin Saya</h5>
                 <h2 class="fw-bold">{{ number_format($userPoints) }}</h2>
@@ -130,7 +130,7 @@
                 <i class="fas fa-coins"></i>
             </div>
         </div>
-        <div class="col-md-3 col-sm-6">
+        <div class="col-12 col-md-4">
             <div class="stats-card bg-success">
                 <h5 class="fw-bold">Pesanan Aktif</h5>
                 <h2 class="fw-bold">{{ $activeOrdersCount }}</h2>
@@ -138,15 +138,7 @@
                 <i class="fas fa-truck"></i>
             </div>
         </div>
-        <div class="col-md-3 col-sm-6">
-            <div class="stats-card bg-warning">
-                <h5 class="fw-bold">Favorit Saya</h5>
-                <h2 class="fw-bold">{{ $favoritesCount }}</h2>
-                <p>Menu favorit tersimpan</p>
-                <i class="fas fa-heart"></i>
-            </div>
-        </div>
-        <div class="col-md-3 col-sm-6">
+        <div class="col-12 col-md-4">
             <div class="stats-card bg-info">
                 <h5 class="fw-bold">Total Pesanan</h5>
                 <h2 class="fw-bold">{{ $totalOrdersCount }}</h2>
@@ -155,7 +147,6 @@
             </div>
         </div>
     </div>
-
 
     <div class="row mb-5">
         <div class="col-12">
@@ -168,19 +159,17 @@
                     <div class="carousel-item active">
                         <img src="https://images.unsplash.com/photo-1555939594-58d7cb561ad1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80"
                             class="d-block w-100" alt="Promo 1">
-                        <div class="carousel-caption d-none d-md-block text-start" style="bottom: 40px;">
+                        <div class="carousel-caption d-md-block text-start" style="bottom: 80px;">
                             <h3 class="fw-bold">Diskon 30%</h3>
                             <p>Untuk semua menu salad hingga akhir bulan</p>
-                            <button class="btn btn-light btn-sm">Klaim Sekarang</button>
                         </div>
                     </div>
                     <div class="carousel-item">
                         <img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80"
                             class="d-block w-100" alt="Promo 2">
-                        <div class="carousel-caption d-none d-md-block text-start" style="bottom: 40px;">
+                        <div class="carousel-caption d-md-block text-start" style="bottom: 80px;">
                             <h3 class="fw-bold">Paket Keluarga</h3>
                             <p>Diskon 25% untuk pesanan di atas Rp 200.000</p>
-                            <button class="btn btn-light btn-sm">Klaim Sekarang</button>
                         </div>
                     </div>
                 </div>

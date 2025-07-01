@@ -74,12 +74,12 @@ class DashboardController extends Controller
     {
         $user = Auth::user();
 
-        $userPoints = 1250;
+        $userPoints = $user->point ?? 0;
+
         $activeOrdersCount = Order::where('user_id', $user->id)
             ->whereIn('status', ['pending', 'processing'])
             ->count();
         $totalOrdersCount = Order::where('user_id', $user->id)->count();
-        $favoritesCount = 10;
 
         $categories = Category::withCount('foods')->paginate(10);
         $recommendedFoods = Food::with('category')
@@ -106,7 +106,6 @@ class DashboardController extends Controller
             'user',
             'userPoints',
             'activeOrdersCount',
-            'favoritesCount',
             'totalOrdersCount'
         ));
     }

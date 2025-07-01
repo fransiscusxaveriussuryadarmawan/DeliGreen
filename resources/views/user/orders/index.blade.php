@@ -176,8 +176,22 @@
                             class="badge 
                                 {{ $order->status === 'completed' ? 'bg-success' : '' }}
                                 {{ $order->status === 'canceled' ? 'bg-danger' : '' }}
+                                {{ $order->status === 'processing' ? 'bg-warning text-dark' : '' }}
                                 {{ $order->status === 'pending' ? 'bg-info' : '' }}">
-                            {{ ucfirst($order->status) }}
+                                
+                            @switch($order->status)
+                                @case('completed')
+                                    Selesai
+                                    @break
+                                @case('canceled')
+                                    Dibatalkan
+                                    @break
+                                @case('processing')
+                                    Diproses
+                                    @break
+                                @default
+                                    Menunggu
+                            @endswitch
                         </span>
                     </td>
                     <td>

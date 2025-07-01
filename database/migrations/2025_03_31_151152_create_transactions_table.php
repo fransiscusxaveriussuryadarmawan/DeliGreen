@@ -20,7 +20,7 @@ return new class extends Migration
             $table->dateTime('transaction_date')->nullable();
             $table->enum('payment_method', ['QRIS', 'Credit Card', 'Debit Card', 'e-Wallet'])->nullable();
             $table->decimal('amount', 10, 2);
-            $table->enum('payment_status', ['Pending', 'Paid', 'Failed'])->default('Pending');
+            $table->enum('payment_status', ['pending', 'paid', 'failed'])->default('Pending');
             $table->timestamps();
         });
     }

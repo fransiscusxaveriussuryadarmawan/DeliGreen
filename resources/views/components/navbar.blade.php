@@ -34,7 +34,7 @@ if (auth()->check()) {
                 <li class="nav-item mx-1">
                     <a class="nav-link py-2 px-3 rounded {{ request()->routeIs('guest.foods.*') ? 'active bg-white text-dark' : '' }}"
                         href="{{ route($prefix . '.foods.index') }}">
-                        <i class="fas fa-utensils me-1"></i>Food
+                        <i class="fas fa-utensils me-1"></i> Menu
                     </a>
                 </li>
                 <li class="nav-item mx-1">

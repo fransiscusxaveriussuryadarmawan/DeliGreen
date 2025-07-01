@@ -29,7 +29,7 @@
 <div class="container py-4">
     <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mb-4">
         <div class="mb-3 mb-md-0">
-            <h1 class="text-success fw-bold mb-2">Daftar Makanan</h1>
+            <h1 class="text-success fw-bold mb-2">Daftar Menu</h1>
             <p class="text-muted">Temukan berbagai pilihan makanan lezat untuk dipesan</p>
         </div>
         <div class="d-flex">
@@ -59,7 +59,7 @@
                                 <i class="fas fa-search"></i>
                             </span>
                             <input type="text" name="search" class="form-control form-control-lg"
-                                placeholder="Cari makanan..." value="{{ request('search') }}">
+                                placeholder=" Cari menu..." value="{{ request('search') }}">
                             <button class="btn btn-success" type="submit">Cari</button>
                         </div>
                     </form>
@@ -76,7 +76,7 @@
                                 <i class="fas fa-tag"></i>
                             </span>
                             <select class="form-select form-select-lg" name="category">
-                                <option value="">Semua Kategori</option>
+                                <option value="">&nbsp;Semua Kategori</option>
                                 @foreach($categories as $cat)
                                 <option value="{{ $cat->slug }}"
                                     {{ request('category') == $cat->slug ? 'selected' : '' }}>

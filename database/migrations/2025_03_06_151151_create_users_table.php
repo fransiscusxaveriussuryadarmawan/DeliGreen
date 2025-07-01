@@ -20,6 +20,7 @@ return new class extends Migration
             $table->enum('role', ['admin', 'member'])->default('member');
             $table->string('phone')->nullable();
             $table->string('address')->nullable();
+            $table->double('point', 10, 2)->default(0);
             $table->rememberToken();
             $table->timestamps();
             $table->softDeletes();
