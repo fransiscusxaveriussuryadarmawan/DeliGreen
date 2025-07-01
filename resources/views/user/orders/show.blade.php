@@ -78,28 +78,28 @@
           <div class="form-check mb-2">
             <input class="form-check-input" type="radio" name="payment_method" id="qris" value="QRIS" required>
             <label class="form-check-label" for="qris">
-            <img src="{{ asset('logo/qris.png') }}" alt="QRIS" width="30" class="me-2">
+            <img src="{{ asset('logo/qris.png') }}" alt="QRIS" width="120" class="me-2">
             QRIS
             </label>
           </div>
           <div class="form-check mb-2">
             <input class="form-check-input" type="radio" name="payment_method" id="debit" value="Debit Card" required>
             <label class="form-check-label" for="debit">
-                <img src="{{ asset('logo/debitcard.png') }}" alt="debit" width="30" class="me-2">
+                <img src="{{ asset('logo/debitcard.png') }}" alt="debit" width="150" class="me-2">
                 Debit Card
             </label>
           </div>
           <div class="form-check mb-2">
             <input class="form-check-input" type="radio" name="payment_method" id="credit" value="Credit Card" required>
             <label class="form-check-label" for="credit">
-                <img src="{{ asset('logo/creditcard.png') }}" alt="credit" width="30" class="me-2">
+                <img src="{{ asset('logo/creditcard.png') }}" alt="credit" width="150" class="me-2">
                 Credit Card
             </label>
           </div>
           <div class="form-check mb-2">
             <input class="form-check-input" type="radio" name="payment_method" id="ewallet" value="e-Wallet" required>
             <label class="form-check-label" for="ewallet">
-                <img src="{{ asset('logo/ewallet.png') }}" alt="ewallet" width="30" class="me-2">
+                <img src="{{ asset('logo/ewallet.png') }}" alt="ewallet" width="150" class="me-2">
             E-Wallet
             </label>
           </div>
