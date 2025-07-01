@@ -9,3 +9,11 @@ window.Echo = new Echo({
     cluster: import.meta.env.VITE_PUSHER_APP_CLUSTER,
     encrypted: true
 });
+
+const metaUserId = document.head.querySelector('meta[name="user-id"]');
+const userId = metaUserId ? metaUserId.content : null;
+
+window.Echo.private(`user.${userId}`)
+    .listen('.order.status.updated', (e) => {
+        alert(e.message);
+    });

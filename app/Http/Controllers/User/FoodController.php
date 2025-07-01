@@ -29,7 +29,11 @@ class FoodController extends Controller
         }
         $foods = $queryFood->paginate(9);
         $categories = Category::orderBy('name')->get();
-        return view('user.foods.index', compact('foods', 'categories'));
+        $orders = Order::where('user_id', auth()->id())
+            ->latest()
+            ->take(5)
+            ->get();
+        return view('user.foods.index', compact('foods', 'categories', 'orders'));
     }
     
     /**

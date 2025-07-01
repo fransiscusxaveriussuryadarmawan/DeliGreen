@@ -28,10 +28,7 @@
                             <h6 class="text-muted mb-1">{{ $category->name }}</h6>
                             <h5 class="card-title mb-1">{{ $food->name }}</h5>
                             <p class="card-text small text-muted mb-1">{{ Str::limit($food->description, 60) }}</p>
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div class="text-warning small">
-                                    <i class="fas fa-star me-1"></i> {{ $food->rating ?? '4.8' }} (120)
-                                </div>
+                            <div class="justify-content-center align-items-center">
                                 <button class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#loginModal">
                                     <i class="fas fa-shopping-cart me-1"></i> Pesan
                                 </button>

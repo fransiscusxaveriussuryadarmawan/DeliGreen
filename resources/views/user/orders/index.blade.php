@@ -1,7 +1,6 @@
 @extends('components.app')
 
-
-
+@section('title', 'Your Orders')
 @section('content')
 <div class="container py-4">
     <h2 class="text-success mb-4">🛒 Keranjang Anda</h2>
@@ -20,7 +19,7 @@
         <table class="table table-striped align-middle">
             <thead>
                 <tr>
-                    <th>Nama Makanan</th>
+                    <th>Nama Menu</th>
                     <th>Harga</th>
                     <th>Jumlah</th>
                     <th>Subtotal</th>
@@ -136,7 +135,7 @@
         </div>
     </div>
     @else
-    <div class="alert alert-info">Keranjang Anda kosong. Silakan tambahkan makanan dari halaman <a href="{{ route('member.foods.index') }}">Daftar Makanan</a>.</div>
+    <div class="alert alert-info">Keranjang Anda kosong. Silakan tambahkan makanan dari halaman <a href="{{ route('member.foods.index') }}">Daftar Menu</a>.</div>
     @endif
 
     <hr class="my-5">
@@ -176,21 +175,21 @@
                             class="badge 
                                 {{ $order->status === 'completed' ? 'bg-success' : '' }}
                                 {{ $order->status === 'canceled' ? 'bg-danger' : '' }}
-                                {{ $order->status === 'processing' ? 'bg-warning text-dark' : '' }}
-                                {{ $order->status === 'pending' ? 'bg-info' : '' }}">
+                                {{ $order->status === 'processing' ? 'bg-info' : '' }}
+                                {{ $order->status === 'pending' ? 'bg-warning' : '' }}">
                                 
                             @switch($order->status)
                                 @case('completed')
-                                    Selesai
+                                    selesai
                                     @break
                                 @case('canceled')
-                                    Dibatalkan
+                                    dibatalkan
                                     @break
                                 @case('processing')
-                                    Diproses
+                                    diproses
                                     @break
                                 @default
-                                    Menunggu
+                                    menunggu
                             @endswitch
                         </span>
                     </td>
@@ -262,18 +261,6 @@
         });
     });
 </script>
-
-<script>
-    const userId = {{ auth()->user()->id }};
-
-    Echo.private(`user.${userId}`)
-        .listen('.order.status.updated', (e) => {
-            alert(e.message); 
-        });
-</script>
-
-
-
 <script>
     const currentStatuses = {};
 
@@ -304,15 +291,19 @@
         statusElem.className = 'badge'; 
         switch (status.toLowerCase()) {
             case 'completed':
-            case 'selesai':
+                statusElem.textContent = 'selesai';
                 statusElem.classList.add('bg-success', 'text-white');
                 break;
+            case 'processing':
+                statusElem.textContent = 'diproses';
+                statusElem.classList.add('bg-info', 'text-white');
+                break;
             case 'pending':
-            case 'menunggu':
-                statusElem.classList.add('bg-warning', 'text-dark');
+                statusElem.textContent = 'menunggu';
+                statusElem.classList.add('bg-warning', 'text-white');
                 break;
             case 'canceled':
-            case 'dibatalkan':
+                statusElem.textContent = 'dibatalkan';
                 statusElem.classList.add('bg-danger', 'text-white');
                 break;
             default:
@@ -336,5 +327,4 @@
         setTimeout(() => notif.remove(), 5000);
     }
 </script>
-
 @endpush

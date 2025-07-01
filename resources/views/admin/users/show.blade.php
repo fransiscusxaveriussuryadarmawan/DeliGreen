@@ -61,7 +61,7 @@
                         <tr>
                             <td>#ORD{{ str_pad($order->id, 3, '0', STR_PAD_LEFT) }}</td>
                             <td>{{ $order->created_at->format('d M Y H:i') }}</td>
-                            <td>$ {{ number_format($order->total_price, 2, ',', '.') }}</td>
+                            <td>Rp {{ number_format($order->total_price, 2, ',', '.') }}</td>
                             <td>
                                 <span class="badge 
                                     @if($order->status == 'completed') bg-success 

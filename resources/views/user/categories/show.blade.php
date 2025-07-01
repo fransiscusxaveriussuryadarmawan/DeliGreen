@@ -15,10 +15,6 @@
                     <p class="card-text">{{ $food->description }}</p>
                     <p class="fw-bold">Rp {{ number_format($food->price, 0, ',', '.') }}</p>
 
-                    <button class="btn btn-outline-success btn-sm px-2 py-1 love-toggle" data-id="{{ $food->id }}" style="border-radius: 6px;">
-                        <i class="fas fa-heart text-secondary"></i>
-                    </button>
-
                     <form action="{{ route('member.orders.add') }}" method="POST" class="d-inline">
                         @csrf
                         <input type="hidden" name="food_id" value="{{ $food->id }}">
@@ -38,3 +34,44 @@
     @endif
 </div>
 @endsection
+
+@once
+@push('scripts')
+<script>
+    const currentStatuses = {};
+
+    @foreach ($orders as $order)
+        currentStatuses[{{ $order->id }}] = "{{ $order->status }}";
+    @endforeach
+
+    setInterval(() => {
+        Object.entries(currentStatuses).forEach(([id, oldStatus]) => {
+            fetch(`/order-status/${id}`)
+                .then(res => res.json())
+                .then(data => {
+                    if (data.status !== oldStatus) {
+                        currentStatuses[id] = data.status;
+                        showNotification(`Status pesanan dengan ID #ORD${id} telah diperbarui ke "${data.status}"`);
+                    }
+                });
+        });
+    }, 5000);
+
+    function showNotification(message) {
+        const notif = document.createElement('div');
+        notif.textContent = message;
+        notif.style.position = 'fixed';
+        notif.style.bottom = '20px';
+        notif.style.right = '20px';
+        notif.style.backgroundColor = '#38c172';
+        notif.style.color = 'white';
+        notif.style.padding = '10px 20px';
+        notif.style.borderRadius = '10px';
+        notif.style.boxShadow = '0 2px 5px rgba(0,0,0,0.3)';
+        notif.style.zIndex = 9999;
+        document.body.appendChild(notif);
+        setTimeout(() => notif.remove(), 5000);
+    }
+</script>
+@endpush
+@endonce

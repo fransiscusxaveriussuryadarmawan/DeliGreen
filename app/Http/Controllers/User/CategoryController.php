@@ -5,6 +5,7 @@ namespace App\Http\Controllers\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Category;
+use App\Models\Order;
 
 class CategoryController extends Controller
 {
@@ -14,7 +15,11 @@ class CategoryController extends Controller
     public function index()
     {
         $categories = Category::withCount('foods')->paginate(9);
-        return view('user.categories.index', compact('categories'));
+        $orders = Order::where('user_id', auth()->id())
+            ->latest()
+            ->take(5)
+            ->get();
+        return view('user.categories.index', compact('categories', 'orders'));
     }
 
     /**
@@ -39,10 +44,13 @@ class CategoryController extends Controller
     public function show($id)
     {
         $category = Category::findOrFail($id);
-
         $foods = $category->foods()->paginate(9);
+        $orders = Order::where('user_id', auth()->id())
+            ->latest()
+            ->take(5)
+            ->get();
 
-        return view('user.categories.show', compact('category', 'foods'));
+        return view('user.categories.show', compact('category', 'foods', 'orders'));
     }
 
     /**

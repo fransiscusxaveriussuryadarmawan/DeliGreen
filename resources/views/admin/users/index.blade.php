@@ -1,5 +1,6 @@
 @extends('components.app')
 
+@section('title', 'Customers')
 @section('content')
 <div class="container-fluid py-4">
 

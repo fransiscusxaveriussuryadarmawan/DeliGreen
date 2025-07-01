@@ -1,5 +1,6 @@
 @extends('components.app')
 
+@section('title', 'Orders')
 @section('content')
 <div class="container-fluid py-4">
     @if(session('success'))
@@ -57,6 +58,7 @@
                                 <span class="badge 
                                     @if($order->status == 'completed') bg-success 
                                     @elseif($order->status == 'pending') bg-warning 
+                                    @elseif($order->status == 'processing') bg-info
                                     @else bg-danger @endif">
                                     {{ $order->status }}
                                 </span>

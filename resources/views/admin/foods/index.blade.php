@@ -1,6 +1,6 @@
 @extends('components.app')
 
-@section('title', 'Food List')
+@section('title', 'Menus')
 @section('content')
 <div class="container mt-4">
 
@@ -45,18 +45,18 @@
 
     <div class="row mb-4">
         <div class="col-12">
-            <h1 class="display-4 text-success fw-bold">Master Food</h1>
-            <p class="lead text-muted">Kelola data makanan</p>
+            <h1 class="display-4 text-success fw-bold">Master Menu</h1>
+            <p class="lead text-muted">Kelola data menu makanan/minuman</p>
         </div>
     </div>
 
     <div class="card shadow-sm">
         <div class="card-header bg-white d-flex justify-content-between align-items-center">
-            <h5 class="card-title fw-semibold mb-4">Food List</h5>
+            <h5 class="card-title fw-semibold mb-4">Menu List</h5>
 
             <div>
                 <a href="{{ route('admin.foods.create') }}" class="btn btn-primary btn-sm">
-                    <i class="fas fa-plus"></i> Add Food
+                    <i class="fas fa-plus"></i> Add Menu
                 </a>
             </div>
         </div>
@@ -66,8 +66,8 @@
                 <table class="table table-hover mb-0">
                     <thead class="table-light">
                         <tr>
-                            <th width="5%">ID</th>
-                            <th>Food Name</th>
+                            <th width="5%">No.</th>
+                            <th>Name</th>
                             <th>Category</th>
                             <th class="text-end">Price</th>
                             <th width="15%" class="text-center">Actions</th>

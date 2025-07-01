@@ -259,18 +259,31 @@
                             <tbody>
                                 @foreach($recentOrders as $order)
                                 <tr>
-                                    <td class="fw-bold">#{{ $order->id }}</td>
+                                    <td class="fw-bold">#ORD{{ $order->id }}</td>
                                     <td>{{ $order->created_at->format('d M Y') }}</td>
                                     <td>{{ $order->items_count }} items</td>
                                     <td class="fw-bold">Rp {{ number_format($order->total_price, 0, ',', '.') }}</td>
                                     <td>
-                                        @if($order->status == 'completed')
-                                        <span class="badge bg-success order-badge">Selesai</span>
-                                        @elseif($order->status == 'processing')
-                                        <span class="badge bg-warning text-dark order-badge">Diproses</span>
-                                        @elseif($order->status == 'pending')
-                                        <span class="badge bg-info order-badge">Menunggu</span>
-                                        @endif
+                                        <span id="order-status-{{ $order->id }}" class="badge order-badge 
+                                            {{ $order->status === 'completed' ? 'bg-success' : '' }}
+                                            {{ $order->status === 'canceled' ? 'bg-danger' : '' }}
+                                            {{ $order->status === 'processing' ? 'bg-info' : '' }}
+                                            {{ $order->status === 'pending' ? 'bg-warning' : '' }}">
+
+                                            @switch($order->status)
+                                                @case('completed')
+                                                    selesai
+                                                    @break
+                                                @case('canceled')
+                                                    dibatalkan
+                                                    @break
+                                                @case('processing')
+                                                    diproses
+                                                    @break
+                                                @default
+                                                    menunggu
+                                            @endswitch
+                                        </span>
                                     </td>
                                     <td>
                                         <a href="{{ route('member.orders.show', $order->id) }}" class="btn btn-sm btn-outline-success">
@@ -288,3 +301,74 @@
     </div>
 </div>
 @endsection
+
+@once
+@push('scripts')
+<script>
+    const currentStatuses = {};
+
+    @foreach ($recentOrders as $order)
+        currentStatuses[{{ $order->id }}] = "{{ $order->status }}";
+    @endforeach
+
+    setInterval(() => {
+        Object.entries(currentStatuses).forEach(([id, oldStatus]) => {
+            fetch(`/order-status/${id}`)
+                .then(res => res.json())
+                .then(data => {
+                    if (data.status !== oldStatus) {
+                        currentStatuses[id] = data.status;
+                        updateStatusDisplay(id, data.status);
+                        showNotification(`Status pesanan dengan ID #ORD${id} telah diperbarui ke "${data.status}"`);
+                    }
+                });
+        });
+    }, 5000);
+
+    function updateStatusDisplay(id, status) {
+        const statusElem = document.getElementById(`order-status-${id}`);
+        if (!statusElem) return;
+
+        statusElem.textContent = status;
+
+        statusElem.className = 'badge order-badge'; 
+        switch (status.toLowerCase()) {
+            case 'completed':
+                statusElem.textContent = 'selesai';
+                statusElem.classList.add('bg-success', 'text-white');
+                break;
+            case 'processing':
+                statusElem.textContent = 'diproses';
+                statusElem.classList.add('bg-info', 'text-white');
+                break;
+            case 'pending':
+                statusElem.textContent = 'menunggu';
+                statusElem.classList.add('bg-warning', 'text-white');
+                break;
+            case 'canceled':
+                statusElem.textContent = 'dibatalkan';
+                statusElem.classList.add('bg-danger', 'text-white');
+                break;
+            default:
+                statusElem.classList.add('bg-info', 'text-white');
+        }
+    }
+
+    function showNotification(message) {
+        const notif = document.createElement('div');
+        notif.textContent = message;
+        notif.style.position = 'fixed';
+        notif.style.bottom = '20px';
+        notif.style.right = '20px';
+        notif.style.backgroundColor = '#38c172';
+        notif.style.color = 'white';
+        notif.style.padding = '10px 20px';
+        notif.style.borderRadius = '10px';
+        notif.style.boxShadow = '0 2px 5px rgba(0,0,0,0.3)';
+        notif.style.zIndex = 9999;
+        document.body.appendChild(notif);
+        setTimeout(() => notif.remove(), 5000);
+    }
+</script>
+@endpush
+@endonce

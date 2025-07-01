@@ -43,9 +43,9 @@
 
     <p><strong>Status Order: </strong>
         @if($order->status === 'pending')
-        <span class="badge bg-info">Menunggu</span>
+        <span class="badge bg-warning">Menunggu</span>
         @elseif($order->status === 'processing')
-        <span class="badge bg-warning text-dark">Diproses</span>
+        <span class="badge bg-info">Diproses</span>
         @elseif($order->status === 'completed')
         <span class="badge bg-success">Selesai</span>
         @elseif($order->status === 'canceled')
@@ -57,7 +57,7 @@
         @if($transaction->payment_status === 'paid')
         <span class="badge bg-success">Lunas</span>
         @elseif($transaction->payment_status === 'pending')
-        <span class="badge bg-warning text-dark">Menunggu Pembayaran</span>
+        <span class="badge bg-warning">Menunggu Pembayaran</span>
         @else
         <span class="badge bg-danger">Belum Dibayar</span>
         @endif

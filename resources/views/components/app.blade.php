@@ -3,13 +3,15 @@
 
 <head>
   <meta charset="UTF-8">
-  <meta name="user-id" content="{{ auth()->id() }}">
+  @auth
+  <meta name="user-id" content="{{ auth()->user()->id }}">
+  @endauth
+  @vite(['resources/js/app.js'])
   <meta name="csrf-token" content="{{ csrf_token() }}">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>DeliGreen - {{ $title ?? 'Dashboard' }}</title>
+  <title>DeliGreen - @yield('title')</title>
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
   <script src="https://js.pusher.com/7.2/pusher.min.js"></script>
-  @vite('resources/js/app.js')
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="icon" href="{{ asset('favicon.ico') }}" type="image/x-icon" sizes="64x64">
@@ -165,10 +167,5 @@
       });
     });
   </script>
-    @auth
-    <meta name="user-id" content="{{ auth()->user()->id }}">
-    <script type="module" src="{{ Vite::asset('resources/js/order-listener.js') }}"></script>
-@endauth
-  @vite(['resources/js/app.js'])
 </body>
 </html>

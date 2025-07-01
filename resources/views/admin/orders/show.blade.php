@@ -20,7 +20,7 @@
     @endif
 
     <div class="mb-4">
-        <h1 class="display-5 fw-bold text-success">Detail Pesanan #{{ $order->id }}</h1>
+        <h1 class="display-5 fw-bold text-success">Detail Pesanan #ORD{{ $order->id }}</h1>
         <p class="text-muted">Informasi lengkap pesanan pelanggan</p>
     </div>
 
@@ -39,6 +39,7 @@
             @php
             $badge = match($order->status) {
             'pending' => 'warning',
+            'processing' => 'info',
             'completed' => 'success',
             'canceled' => 'danger',
             default => 'secondary'
@@ -54,7 +55,7 @@
                 <div class="d-flex align-items-center">
                     <label for="status" class="form-label me-2 mb-0">Ubah Status:</label>
                     <select name="status" class="form-select w-auto me-2">
-                        <option value="pending" {{ $order->status == 'pending' ? 'selected' : '' }}>Pending</option>
+                        <option value="processing" {{ $order->status == 'processing' ? 'selected' : '' }}>Processing</option>
                         <option value="completed" {{ $order->status == 'completed' ? 'selected' : '' }}>Completed</option>
                         <option value="canceled" {{ $order->status == 'canceled' ? 'selected' : '' }}>Canceled</option>
                     </select>
