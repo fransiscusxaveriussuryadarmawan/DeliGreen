@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Food;
 use App\Models\Order;
 use App\Models\OrderItem;
+use App\Models\Transaction;
 
 class OrderItemController extends Controller
 {
@@ -20,13 +21,13 @@ class OrderItemController extends Controller
             ->get();
 
         // return view('user.orders.index', compact('cart', 'orders'));
-        
+
         $statusNotif = null;
 
         foreach (session()->all() as $key => $val) {
             if (Str::startsWith($key, 'status_updated_for_user_id_')) {
                 $userId = str_replace('status_updated_for_user_id_', '', $key);
-                if ((int)$userId === auth()->id()) {
+                if ((int) $userId === auth()->id()) {
                     $statusNotif = $val;
                     break;
                 }
@@ -141,6 +142,18 @@ class OrderItemController extends Controller
         }
 
         $order->update(['total_price' => $total]);
+
+        // ==== SIMPAN TRANSACTION ====
+        Transaction::create([
+            'invoice_id' => Str::uuid(),                 // UUID untuk invoice_id
+            'order_id' => $order->id,
+            'user_id' => auth()->id(),
+            'transaction_date' => now(),
+            'payment_method' => null,                    // Null dulu, update saat pembayaran
+            'amount' => $total,
+            'payment_status' => 'Pending',              // Otomatis Pending
+        ]);
+        // ============================
 
         session()->forget('cart');
 
