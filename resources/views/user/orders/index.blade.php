@@ -25,7 +25,7 @@
                     <th>Harga</th>
                     <th>Jumlah</th>
                     <th>Subtotal</th>
-                    <th>Jenis Pemesanan</th> <!-- Perbaikan kolom untuk Jenis Pemesanan -->
+                    <th>Jenis Pemesanan</th>
                     <th>Aksi</th>
                 </tr>
             </thead>
@@ -222,7 +222,6 @@
                 success: function (data) {
                     $(`.subtotal[data-id="${foodId}"]`).text(`Rp ${data.subtotal.toLocaleString('id-ID')}`);
                     $('.total').text(`Rp ${data.total.toLocaleString('id-ID')}`);
-                    // Sinkronkan quantity di semua input dengan data-food-id yang sama
                     $(`.quantity-input[data-food-id="${foodId}"]`).val(quantity);
 
                     const toast = $(`
@@ -242,82 +241,27 @@
             });
         }
 
-        // Tangkap input di mobile & desktop
         $(document).on('input change blur', '.quantity-input', function () {
             const foodId = $(this).data('food-id');
             const quantity = $(this).val();
             updateQty(foodId, quantity);
         });
 
-        // Prevent form default submit on Enter
         $('.quantity-input').closest('form').on('submit', function (e) {
             e.preventDefault();
         });
     });
 </script>
-<!-- <script>
-    function showStatusAlert(message) {
-        const alertBox = document.getElementById('status-alert');
-        const messageSpan = document.getElementById('status-message');
 
-        messageSpan.textContent = message;
-
-        alertBox.classList.remove('d-none');
-        alertBox.classList.add('show');
-
-        setTimeout(() => {
-            alertBox.classList.remove('show');
-            alertBox.classList.add('d-none');
-        }, 4000);
-    }
-
-    document.addEventListener('DOMContentLoaded', function () {
-        if (typeof Echo !== 'undefined' && Echo) {
-            Echo.private(`App.Models.User.{{ auth()->id() }}`)
-                .listen('.OrderStatusUpdated', function (e) {
-                    showStatusAlert(`Status Pesanan dengan ID #${e.order.id} telah diperbarui`);
-                });
-        } else {
-            console.warn('Echo belum tersedia.');
-        }
-    });
-</script> -->
 <script>
     const userId = {{ auth()->user()->id }};
 
     Echo.private(`user.${userId}`)
         .listen('.order.status.updated', (e) => {
-            alert(e.message); // ganti dengan toast jika mau
+            alert(e.message); 
         });
 </script>
-<!-- <script>
-    function showStatusAlert(message) {
-        const alertBox = document.getElementById('status-alert');
-        const messageSpan = document.getElementById('status-message');
 
-        messageSpan.textContent = message;
-        alertBox.style.display = 'block';
-        setTimeout(() => {
-            alertBox.style.display = 'none';
-        }, 4000);
-    }
-
-    window.Echo.private(`App.Models.User.{{ auth()->id() }}`)
-        .listen('.OrderStatusUpdated', (e) => {
-            showStatusAlert(`Status Pesanan dengan ID #${e.order.id} telah diperbarui`);
-        });
-</script> -->
-
-<!-- <script>
-    setTimeout(() => {
-        const alert = document.querySelector('.alert-success');
-        if (alert) {
-            alert.style.transition = 'opacity 0.5s ease-out';
-            alert.style.opacity = '0';
-            setTimeout(() => alert.remove(), 500);
-        }
-    }, 4000);
-</script> -->
 
 
 <script>

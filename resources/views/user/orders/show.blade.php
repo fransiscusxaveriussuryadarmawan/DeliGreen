@@ -68,7 +68,6 @@
 <div class="modal fade" id="paymentModal" tabindex="-1" aria-labelledby="paymentModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
-      <!-- FORM MULAI DI SINI -->
       <form id="paymentForm" method="POST" action="{{ route('member.orders.pay', $order->id) }}">
         @csrf
         <div class="modal-header">
@@ -78,19 +77,31 @@
         <div class="modal-body">
           <div class="form-check mb-2">
             <input class="form-check-input" type="radio" name="payment_method" id="qris" value="QRIS" required>
-            <label class="form-check-label" for="qris">QRIS</label>
+            <label class="form-check-label" for="qris">
+            <img src="{{ asset('logo/qris.png') }}" alt="QRIS" width="30" class="me-2">
+            QRIS
+            </label>
           </div>
           <div class="form-check mb-2">
             <input class="form-check-input" type="radio" name="payment_method" id="debit" value="Debit Card" required>
-            <label class="form-check-label" for="debit">Debit Card</label>
+            <label class="form-check-label" for="debit">
+                <img src="{{ asset('logo/debitcard.png') }}" alt="debit" width="30" class="me-2">
+                Debit Card
+            </label>
           </div>
           <div class="form-check mb-2">
             <input class="form-check-input" type="radio" name="payment_method" id="credit" value="Credit Card" required>
-            <label class="form-check-label" for="credit">Credit Card</label>
+            <label class="form-check-label" for="credit">
+                <img src="{{ asset('logo/creditcard.png') }}" alt="credit" width="30" class="me-2">
+                Credit Card
+            </label>
           </div>
           <div class="form-check mb-2">
             <input class="form-check-input" type="radio" name="payment_method" id="ewallet" value="e-Wallet" required>
-            <label class="form-check-label" for="ewallet">E-Wallet</label>
+            <label class="form-check-label" for="ewallet">
+                <img src="{{ asset('logo/ewallet.png') }}" alt="ewallet" width="30" class="me-2">
+            E-Wallet
+            </label>
           </div>
         </div>
         <div class="modal-footer">
@@ -98,12 +109,11 @@
           <button type="submit" class="btn btn-primary">Bayar</button>
         </div>
       </form>
-      <!-- FORM SELESAI DI SINI -->
     </div>
   </div>
 </div>
 
-<!-- SweetAlert2 -->
+
 @push('scripts')
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
