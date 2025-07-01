@@ -13,7 +13,7 @@
                 <th>Harga</th>
                 <th>Jumlah</th>
                 <th>Subtotal</th>
-                <th>Jenis Pemesanan</th> <!-- Tambahan kolom -->
+                <th>Jenis Pemesanan</th>
             </tr>
         </thead>
         <tbody>
@@ -64,7 +64,6 @@
             </div>
     @endif
 </div>
-<!-- Modal Payment -->
 <div class="modal fade" id="paymentModal" tabindex="-1" aria-labelledby="paymentModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">

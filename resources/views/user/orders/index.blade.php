@@ -16,7 +16,6 @@
         </form>
     </div>
 
-    {{-- TABEL UTAMA UNTUK DESKTOP --}}
     <div class="table-responsive d-none d-md-block">
         <table class="table table-striped align-middle">
             <thead>
@@ -70,7 +69,6 @@
         </table>
     </div>
 
-    {{-- TAMPILAN MOBILE (KARTU PER ITEM) --}}
     <div class="d-block d-md-none">
         @php $total = 0; @endphp
         @foreach($cart as $id => $item)
@@ -81,7 +79,6 @@
                 <p class="card-text mb-1">Harga: <strong>Rp {{ number_format($item['price'], 0, ',', '.') }}</strong></p>
                 <p class="card-text mb-1">Subtotal: <strong class="subtotal" data-id="{{ $id }}">Rp {{ number_format($subtotal, 0, ',', '.') }}</strong></p>
 
-                {{-- input AJAX tanpa form --}}
                 <input type="number"
                        name="quantity"
                        value="{{ $item['quantity'] }}"
@@ -118,7 +115,6 @@
         </button>
     </div>
 
-    {{-- Modal Checkout --}}
     <div class="modal fade" id="confirmCheckoutModal" tabindex="-1" aria-labelledby="confirmCheckoutModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">

@@ -84,21 +84,11 @@ Route::post('/broadcasting/auth', function () {
 
 Route::middleware('auth')->get('/order-status/{id}', function ($id) {
     $order = \App\Models\Order::where('id', $id)
-        ->where('user_id', auth()->id()) // validasi milik user tsb
+        ->where('user_id', auth()->id())
         ->firstOrFail();
 
     return response()->json(['status' => $order->status]);
 });
 
 
-// Route::get('/test-broadcast', function () {
-//     $order = \App\Models\Order::latest()->first();
-    
-//     if (!$order) {
-//         return 'Tidak ada order ditemukan';
-//     }
 
-//     event(new OrderStatusUpdated($order));
-
-//     return 'Event OrderStatusUpdated berhasil dikirim ke user ID: ' . $order->user_id;
-// });

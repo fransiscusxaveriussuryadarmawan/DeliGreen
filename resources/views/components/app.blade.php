@@ -95,7 +95,6 @@
 
   <main class="container-fluid">
     <main class="flex-fill">
-      {{-- Toast container posisi fixed di pojok kanan atas --}}
       <div class="position-fixed top-0 end-0 p-3" style="z-index: 1080;">
         @if(session('success'))
         <div id="successToast" class="toast align-items-center text-bg-success bg-gradient border-0 show" role="alert" aria-live="assertive" aria-atomic="true">

@@ -1,7 +1,6 @@
 @extends('components.app')
 
 @section('content')
-<!-- Modal for Dine In or Takeaway -->
 <div class="modal fade" id="orderTypeModal" tabindex="-1" aria-labelledby="orderTypeModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
@@ -28,7 +27,6 @@
 </div>
 
 <div class="container py-4">
-    <!-- Header with responsive adjustments -->
     <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mb-4">
         <div class="mb-3 mb-md-0">
             <h1 class="text-success fw-bold mb-2">Daftar Makanan</h1>
@@ -51,11 +49,9 @@
         </div>
     </div>
 
-    <!-- Search and Filter Section - Responsive Design -->
     <div class="card shadow-sm mb-4" id="filterCard">
         <div class="card-body">
             <div class="row g-3">
-                <!-- Search Input -->
                 <div class="col-md-6">
                     <form action="{{ route('member.foods.index') }}" method="GET">
                         <div class="input-group">
@@ -69,7 +65,6 @@
                     </form>
                 </div>
 
-                <!-- Category Filter -->
                 <div class="col-md-6">
                     <form action="{{ route('member.foods.index') }}" method="GET">
                         @if(request('search'))
@@ -97,12 +92,10 @@
         </div>
     </div>
 
-    <!-- Food Grid - Responsive Layout -->
     <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-3 g-4">
         @foreach($foods as $food)
         <div class="col">
             <div class="card h-100 shadow-sm border-0 overflow-hidden">
-                <!-- Food Image with Aspect Ratio -->
                 <div class="position-relative">
                     <img src="{{ asset('storage/' . $food->image) }}" 
                          class="card-img-top" 
@@ -144,7 +137,6 @@
         @endforeach
     </div>
 
-    <!-- Empty State -->
     @if($foods->isEmpty())
     <div class="text-center py-5">
         <div class="py-5">
@@ -158,7 +150,6 @@
     </div>
     @endif
 
-    <!-- Pagination -->
     @if ($foods->hasPages())
     <div class="mt-5">
         <nav aria-label="Food pagination">
@@ -168,24 +159,8 @@
     @endif
 </div>
 
-<!-- Modal Pilih Order Type -->
-<!--<div class="modal fade" id="orderTypeModal" tabindex="-1" aria-labelledby="orderTypeModalLabel" <!--aria-hidden="true">
-<!--  <div class="modal-dialog modal-dialog-centered">
-<!--    <div class="modal-content">
-<!--      <div class="modal-header">
-<!--        <h5 class="modal-title">Pilih Jenis Pemesanan</h5>
-<!--        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-<!--      </div>
-<!--      <div class="modal-body text-center">
-<!--        <button class="btn btn-info w-100 mb-2 select-order-type" data-type="dine_in">Dine In</button>
-<!--        <button class="btn btn-secondary w-100 select-order-type" data-type="takeaway">Takeaway</button>
-<!--      </div>
-<!--    </div>
-<!--  </div>
-<!--</div> -->
 
 <style>
-    /* Custom Styles */
     body {
         background-color: #f8f9fa;
     }
@@ -321,7 +296,6 @@
     document.addEventListener('DOMContentLoaded', function () {
         let currentForm = null;
 
-        // Saat user klik tombol "Tambah ke Keranjang"
         document.querySelectorAll('.add-to-cart-btn').forEach(btn => {
             btn.addEventListener('click', function () {
                 currentForm = this.closest('form');
@@ -330,7 +304,6 @@
             });
         });
 
-        // Saat user memilih "Dine In" atau "Takeaway"
         document.querySelectorAll('.select-order-type').forEach(button => {
             button.addEventListener('click', function () {
                 const orderType = this.getAttribute('data-type');
@@ -341,7 +314,6 @@
             });
         });
 
-        // Optional: Untuk toggle filter card di mobile
         const filterToggle = document.getElementById('filterToggle');
         const filterCard = document.getElementById('filterCard');
 
@@ -351,7 +323,6 @@
             });
         }
 
-        // Optional: Menutup filter saat klik di luar
         document.addEventListener('click', (e) => {
             if (window.innerWidth <= 576 &&
                 filterCard &&

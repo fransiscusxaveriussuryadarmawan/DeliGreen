@@ -40,7 +40,6 @@ class AuthController extends Controller
                 return redirect()->intended(route('member.dashboard'))->with('success', 'Selamat datang, ' . $user->name . '!');
             }
 
-            //Auth::logout();
             return back()->with('error', 'Akun tidak dikenali dalam sistem.');
         }
 
@@ -78,8 +77,6 @@ class AuthController extends Controller
         ]);
 
         event(new Registered($user));
-
-        //auth()->login($user);
 
         return redirect()->route('welcome')
             ->with('success', 'Registrasi berhasil, silakan masuk.');

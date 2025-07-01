@@ -112,16 +112,7 @@ class DashboardController extends Controller
     }
 
 
-    // public function indexGuest()
-    // {
-    //     $data = [
-    //         'totalOmzet' => 0,
-    //         'activeOrders' => 0,
-    //         'bestSellers' => [],
-    //     ];
 
-    //     return view('guest.welcome', $data);
-    // }
 
     public function indexGuest()
     {

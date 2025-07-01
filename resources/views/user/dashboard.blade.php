@@ -105,7 +105,6 @@
 
 @section('content')
 <div class="container-fluid py-4">
-    <!-- Header Welcome -->
     <div class="row mb-4">
         <div class="col-12">
             <div class="d-flex justify-content-between align-items-center flex-wrap">
@@ -158,7 +157,6 @@
     </div>
 
 
-    <!-- Promo Carousel -->
     <div class="row mb-5">
         <div class="col-12">
             <div class="d-flex justify-content-between align-items-center mb-3">
@@ -222,7 +220,6 @@
         </div>
     </div>
 
-    <!-- Rekomendasi Makanan -->
     <div class="row mb-5">
         <div class="col-12">
             <div class="d-flex justify-content-between align-items-center mb-3">
@@ -250,7 +247,6 @@
         </div>
     </div>
 
-    <!-- Riwayat Pesanan -->
     <div class="row mb-5">
         <div class="col-12">
             <div class="d-flex justify-content-between align-items-center mb-3">

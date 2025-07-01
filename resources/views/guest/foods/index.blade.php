@@ -4,7 +4,7 @@
 <div class="container py-4">
     <h1 class="text-center mb-4">Our Menu</h1>
 
-    <!-- Search and Filter Section -->
+    
     <div class="row mb-4">
         <div class="col-md-6">
             <form action="{{ route('guest.foods.index') }}" method="GET">
@@ -18,7 +18,6 @@
 
         <div class="col-md-6">
             <form action="{{ route('guest.foods.index') }}" method="GET">
-                <!-- Pertahankan parameter pencarian -->
                 @if(request('search'))
                 <input type="hidden" name="search" value="{{ request('search') }}">
                 @endif
@@ -40,7 +39,7 @@
         </div>
     </div>
 
-    <!-- Food List -->
+   
     <div class="row">
         @forelse($foods as $food)
         <div class="col-md-4 mb-4">
@@ -67,7 +66,7 @@
         @endforelse
     </div>
 
-    <!-- Pagination -->
+ 
     <div class="d-flex justify-content-center">
         {{ $foods->links() }}
     </div>

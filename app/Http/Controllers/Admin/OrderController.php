@@ -39,22 +39,9 @@ class OrderController extends Controller
         $order->save();
 
         
-        // event(new \App\Events\OrderStatusUpdated($order));
 
-       
-        // event(new OrderStatusUpdated('Hai, makananmu sedang diproses di restoran kami!', $order->user_id));
 
         return back()->with('success', 'Status berhasil diperbarui');
     }
-
-//     public function update(Request $request, $id)
-// {
-//     $order = Order::findOrFail($id);
-//     $order->status = $request->status;
-//     $order->save();
-
-//     session()->flash('status_updated', "Status pesanan dengan ID #{$order->id} telah diperbarui.");
-//     return redirect()->to('/user/orders')->with('status_updated', "Status pesanan dengan ID #{$order->id} telah diperbarui.");
-// }
 
 }

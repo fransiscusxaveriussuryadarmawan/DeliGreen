@@ -323,7 +323,7 @@ class DatabaseSeeder extends Seeder
                 foreach ($order->items as $item) {
                     $item->update(['user_id' => $order->user_id]);
                     $item->update([
-                        'order_type' => fake()->boolean(50) ? 0 : 1, // 0 for dine_in, 1 for takeaway
+                        'order_type' => fake()->boolean(50) ? 0 : 1,
                     ]);
                 }
 

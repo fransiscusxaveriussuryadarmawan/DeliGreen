@@ -20,7 +20,6 @@ class OrderItemController extends Controller
             ->latest()
             ->get();
 
-        // return view('user.orders.index', compact('cart', 'orders'));
 
         $statusNotif = null;
 
@@ -143,17 +142,15 @@ class OrderItemController extends Controller
 
         $order->update(['total_price' => $total]);
 
-        // ==== SIMPAN TRANSACTION ====
         Transaction::create([
-            'invoice_id' => Str::uuid(),                 // UUID untuk invoice_id
+            'invoice_id' => Str::uuid(),
             'order_id' => $order->id,
             'user_id' => auth()->id(),
             'transaction_date' => now(),
-            'payment_method' => null,                    // Null dulu, update saat pembayaran
+            'payment_method' => null,
             'amount' => $total,
-            'payment_status' => 'Pending',              // Otomatis Pending
+            'payment_status' => 'Pending',
         ]);
-        // ============================
 
         session()->forget('cart');
 
@@ -171,12 +168,10 @@ class OrderItemController extends Controller
     {
         $order = Order::findOrFail($orderId);
 
-        // Pastikan order milik user yang login
         if ($order->user_id != auth()->id()) {
             abort(403);
         }
 
-        // Simpan payment_method ke tabel transaksi
         $transaction = \App\Models\Transaction::updateOrCreate(
             ['order_id' => $order->id],
             [
@@ -188,7 +183,6 @@ class OrderItemController extends Controller
             ]
         );
 
-        // Update status order (optional)
         $order->status = 'completed';
         $order->save();
 
