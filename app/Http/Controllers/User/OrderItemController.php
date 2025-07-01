@@ -123,12 +123,10 @@ class OrderItemController extends Controller
 
         $total = 0;
 
-        // $request->validate([
-        //     'orderType' => 'required|in:dine_in,takeaway',
-        // ]);
-
         foreach ($cart as $food_id => $item) {
             $itemPrice = floatval(str_replace(',', '', $item['price']));
+
+            $orderTypeValue = $item['orderType'] === 'takeaway' ? 1 : 0;
 
             OrderItem::create([
                 'order_id' => $order->id,
@@ -136,7 +134,7 @@ class OrderItemController extends Controller
                 'user_id' => auth()->id(),
                 'quantity' => $item['quantity'],
                 'price' => $itemPrice,
-                'order_type' => $item['orderType'],
+                'order_type' => $orderTypeValue,
             ]);
 
             $total += $itemPrice * $item['quantity'];
@@ -146,7 +144,7 @@ class OrderItemController extends Controller
 
         session()->forget('cart');
 
-        return redirect()->route('member.orders.index')->with('success', 'Checkout berhasil! Pesanan Anda telah dibuat.');
+        return redirect()->route('member.orders.show', $order->id)->with('success', 'Checkout berhasil! Mohon lanjutkan pembayaran🙏');
     }
 
     public function clearCart()

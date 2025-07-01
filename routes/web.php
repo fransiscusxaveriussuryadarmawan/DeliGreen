@@ -20,7 +20,7 @@ use App\Http\Controllers\Guest\FoodController as GuestFoodController;
 
 use App\Events\OrderStatusUpdated;
 use App\Models\Order;
-
+use Illuminate\Support\Facades\Broadcast;
 
 /*
 |--------------------------------------------------------------------------

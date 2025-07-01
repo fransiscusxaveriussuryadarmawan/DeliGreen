@@ -171,7 +171,7 @@
             <tbody>
                 @foreach($orders as $order)
                 <tr>
-                    <td>#{{ $order->id }}</td>
+                    <td>#ORD{{ $order->id }}</td>
                     <td>{{ $order->created_at->format('d M Y') }}</td>
                     <td>{{ $order->items_count }} item</td>
                     <td>Rp {{ number_format($order->total_price, 0, ',', '.') }}</td>

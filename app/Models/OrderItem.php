@@ -10,7 +10,7 @@ class OrderItem extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $fillable = ['order_id', 'food_id', 'user_id', 'price', 'quantity'];
+    protected $fillable = ['order_id', 'food_id', 'user_id', 'price', 'quantity', 'order_type'];
 
     public function order()
     {

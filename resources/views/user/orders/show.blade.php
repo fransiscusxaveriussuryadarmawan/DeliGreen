@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="container py-4">
-    <h2 class="text-success mb-4">🧾 Detail Pesanan #{{ $order->id }}</h2>
+    <h2 class="text-success mb-4">🧾 Detail Pesanan #ORD{{ $order->id }}</h2>
 
     <p><strong>Tanggal Pesanan:</strong> {{ $order->created_at->format('d M Y H:i') }}</p>
 
@@ -12,7 +12,8 @@
                 <th>Nama Makanan</th>
                 <th>Harga</th>
                 <th>Jumlah</th>
-                <th>Subtotal</th>  <!-- Subtotal berada di dalam kolom yang sesuai -->
+                <th>Subtotal</th>
+                <th>Jenis Pemesanan</th> <!-- Tambahan kolom -->
             </tr>
         </thead>
         <tbody>
@@ -22,23 +23,23 @@
                 <td>Rp {{ number_format($item->price, 0, ',', '.') }}</td>
                 <td>{{ $item->quantity }}</td>
                 <td>Rp {{ number_format($item->price * $item->quantity, 0, ',', '.') }}</td>
+                <td>
+                    @if($item->order_type == 0)
+                        <span class="badge bg-info">Dine In</span>
+                    @elseif($item->order_type == 1)
+                        <span class="badge bg-secondary">Takeaway</span>
+                    @else
+                        <span class="badge bg-dark">-</span>
+                    @endif
+                </td>
             </tr>
             @endforeach
             <tr class="fw-bold">
-                <td colspan="3" class="text-end">Total</td>  <!-- Memastikan Total berada di kolom yang sama -->
+                <td colspan="4" class="text-end">Total</td>
                 <td>Rp {{ number_format($order->total_price, 0, ',', '.') }}</td>
             </tr>
         </tbody>
     </table>
-
-    <!-- Menampilkan Jenis Pemesanan (Dine In / Takeaway) setelah subtotal -->
-    <p><strong>Jenis Pemesanan:</strong> 
-        @if($order->order_type == 'dine_in')
-            <span class="badge bg-info">Dine In</span>
-        @else
-            <span class="badge bg-secondary">Takeaway</span>
-        @endif
-    </p>
 
     <p><strong>Status:</strong>
         @if($order->status === 'pending')

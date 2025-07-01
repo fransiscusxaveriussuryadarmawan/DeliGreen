@@ -318,62 +318,47 @@
 
 @push('scripts')
 <script>
-    window.onload = function() {
-        // Order type modal
-        if (!sessionStorage.getItem('orderTypeModalShown')) {
-            let modal = new bootstrap.Modal(document.getElementById('orderTypeModal'));
-            modal.show();
-            
-            document.getElementById('dineInBtn').addEventListener('click', function() {
-                sessionStorage.setItem('orderTypeModalShown', 'true');
-                bootstrap.Modal.getInstance(document.getElementById('orderTypeModal')).hide();
+    document.addEventListener('DOMContentLoaded', function () {
+        let currentForm = null;
+
+        // Saat user klik tombol "Tambah ke Keranjang"
+        document.querySelectorAll('.add-to-cart-btn').forEach(btn => {
+            btn.addEventListener('click', function () {
+                currentForm = this.closest('form');
+                const modal = new bootstrap.Modal(document.getElementById('orderTypeModal'));
+                modal.show();
             });
-            
-            document.getElementById('takeawayBtn').addEventListener('click', function() {
-                sessionStorage.setItem('orderTypeModalShown', 'true');
-                bootstrap.Modal.getInstance(document.getElementById('orderTypeModal')).hide();
+        });
+
+        // Saat user memilih "Dine In" atau "Takeaway"
+        document.querySelectorAll('.select-order-type').forEach(button => {
+            button.addEventListener('click', function () {
+                const orderType = this.getAttribute('data-type');
+                if (currentForm) {
+                    currentForm.querySelector('.order-type-input').value = orderType;
+                    currentForm.submit();
+                }
             });
-        }
-        
-        // Mobile filter toggle
+        });
+
+        // Optional: Untuk toggle filter card di mobile
         const filterToggle = document.getElementById('filterToggle');
         const filterCard = document.getElementById('filterCard');
-        
+
         if (filterToggle && filterCard) {
             filterToggle.addEventListener('click', () => {
                 filterCard.classList.toggle('active');
             });
         }
-        
-        // Close filter when clicking outside on mobile
+
+        // Optional: Menutup filter saat klik di luar
         document.addEventListener('click', (e) => {
-            if (window.innerWidth <= 576 && 
-                filterCard.classList.contains('active') && 
-                !filterCard.contains(e.target) && 
+            if (window.innerWidth <= 576 &&
+                filterCard &&
+                filterCard.classList.contains('active') &&
+                !filterCard.contains(e.target) &&
                 e.target !== filterToggle) {
                 filterCard.classList.remove('active');
-            }
-        });
-    };
-</script>
-
-<script>
-    let currentForm = null;
-
-    document.querySelectorAll('.add-to-cart-btn').forEach(btn => {
-        btn.addEventListener('click', function () {
-            currentForm = this.closest('form');
-            const modal = new bootstrap.Modal(document.getElementById('orderTypeModal'));
-            modal.show();
-        });
-    });
-
-    document.querySelectorAll('.select-order-type').forEach(button => {
-        button.addEventListener('click', function () {
-            const orderType = this.getAttribute('data-type');
-            if (currentForm) {
-                currentForm.querySelector('.order-type-input').value = orderType;
-                currentForm.submit();
             }
         });
     });
