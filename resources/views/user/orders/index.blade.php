@@ -180,6 +180,8 @@
                         <span class="badge bg-success">Selesai</span>
                         @elseif($order->status === 'processing')
                         <span class="badge bg-warning text-dark">Diproses</span>
+                        @elseif($order->status === 'canceled')
+                        <span class="badge bg-danger">Dibatalkan</span>
                         @else
                         <span class="badge bg-info">Menunggu</span>
                         @endif
