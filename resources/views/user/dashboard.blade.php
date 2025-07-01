@@ -122,12 +122,11 @@
         </div>
     </div>
 
-    <!-- Stats Summary -->
     <div class="row mb-4">
         <div class="col-md-3 col-sm-6">
             <div class="stats-card bg-primary">
                 <h5 class="fw-bold">Poin Saya</h5>
-                <h2 class="fw-bold">1,250</h2>
+                <h2 class="fw-bold">{{ number_format($userPoints) }}</h2>
                 <p>Dapat ditukar dengan promo</p>
                 <i class="fas fa-coins"></i>
             </div>
@@ -135,7 +134,7 @@
         <div class="col-md-3 col-sm-6">
             <div class="stats-card bg-success">
                 <h5 class="fw-bold">Pesanan Aktif</h5>
-                <h2 class="fw-bold">3</h2>
+                <h2 class="fw-bold">{{ $activeOrdersCount }}</h2>
                 <p>Sedang diproses</p>
                 <i class="fas fa-truck"></i>
             </div>
@@ -143,7 +142,7 @@
         <div class="col-md-3 col-sm-6">
             <div class="stats-card bg-warning">
                 <h5 class="fw-bold">Favorit Saya</h5>
-                <h2 class="fw-bold">12</h2>
+                <h2 class="fw-bold">{{ $favoritesCount }}</h2>
                 <p>Menu favorit tersimpan</p>
                 <i class="fas fa-heart"></i>
             </div>
@@ -151,12 +150,13 @@
         <div class="col-md-3 col-sm-6">
             <div class="stats-card bg-info">
                 <h5 class="fw-bold">Total Pesanan</h5>
-                <h2 class="fw-bold">24</h2>
+                <h2 class="fw-bold">{{ $totalOrdersCount }}</h2>
                 <p>Sejak bergabung</p>
                 <i class="fas fa-history"></i>
             </div>
         </div>
     </div>
+
 
     <!-- Promo Carousel -->
     <div class="row mb-5">
@@ -234,8 +234,8 @@
                 <div class="col d-flex">
                     <div class="card shadow-sm food-card flex-fill d-flex flex-column">
                         <img src="{{ asset('storage/' . $food->image) }}"
-                             class="food-card-img"
-                             alt="{{ $food->slug }}">
+                            class="food-card-img"
+                            alt="{{ $food->slug }}">
                         <div class="card-body d-flex flex-column">
                             <h5 class="card-title">{{ $food->name }}</h5>
                             <p class="card-text text-muted small flex-grow-1">{{ Str::limit($food->description, 80) }}</p>
