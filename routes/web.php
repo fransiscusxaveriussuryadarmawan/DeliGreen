@@ -74,6 +74,8 @@ Route::prefix('user')->name('member.')->middleware('auth')->group(function () {
     Route::post('/orders/update', [UserOrderItemController::class, 'updateCart'])->name('orders.update');
     Route::post('/orders/checkout', [UserOrderItemController::class, 'checkout'])->name('orders.checkout');
     Route::post('/orders/clear', [UserOrderItemController::class, 'clearCart'])->name('orders.clear');
+    Route::post('/user/orders/{order}/pay', [UserOrderItemController::class, 'pay'])->name('orders.pay');
+
 });
 Broadcast::routes(['middleware' => ['auth']]);
 Route::post('/broadcasting/auth', function () {

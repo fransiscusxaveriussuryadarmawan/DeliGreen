@@ -165,4 +165,34 @@ class OrderItemController extends Controller
         session()->forget('cart');
         return back()->with('success', 'Keranjang berhasil dikosongkan.');
     }
+
+
+    public function pay(Request $request, $orderId)
+    {
+        $order = Order::findOrFail($orderId);
+
+        // Pastikan order milik user yang login
+        if ($order->user_id != auth()->id()) {
+            abort(403);
+        }
+
+        // Simpan payment_method ke tabel transaksi
+        $transaction = \App\Models\Transaction::updateOrCreate(
+            ['order_id' => $order->id],
+            [
+                'user_id' => auth()->id(),
+                'transaction_date' => now(),
+                'payment_method' => $request->payment_method,
+                'amount' => $order->items->sum(fn($item) => $item->price * $item->quantity),
+                'payment_status' => 'paid'
+            ]
+        );
+
+        // Update status order (optional)
+        $order->status = 'completed';
+        $order->save();
+
+        return response()->json(['success' => true]);
+    }
+
 }

@@ -54,5 +54,92 @@
     <a href="{{ route('member.orders.index') }}" class="btn btn-success mt-3">
         <i class="fas fa-arrow-left me-1"></i> Kembali ke Daftar Pesanan
     </a>
+    @if($order->status === 'pending')
+    <div class="mt-3 text-end">
+                <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#paymentModal">
+                    Pay Now
+                </button>
+            </div>
+    @endif
 </div>
+<!-- Modal Payment -->
+<div class="modal fade" id="paymentModal" tabindex="-1" aria-labelledby="paymentModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <!-- FORM MULAI DI SINI -->
+      <form id="paymentForm" method="POST" action="{{ route('member.orders.pay', $order->id) }}">
+        @csrf
+        <div class="modal-header">
+          <h5 class="modal-title" id="paymentModalLabel">Pilih Metode Pembayaran</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+        </div>
+        <div class="modal-body">
+          <div class="form-check mb-2">
+            <input class="form-check-input" type="radio" name="payment_method" id="qris" value="QRIS" required>
+            <label class="form-check-label" for="qris">QRIS</label>
+          </div>
+          <div class="form-check mb-2">
+            <input class="form-check-input" type="radio" name="payment_method" id="debit" value="Debit Card" required>
+            <label class="form-check-label" for="debit">Debit Card</label>
+          </div>
+          <div class="form-check mb-2">
+            <input class="form-check-input" type="radio" name="payment_method" id="credit" value="Credit Card" required>
+            <label class="form-check-label" for="credit">Credit Card</label>
+          </div>
+          <div class="form-check mb-2">
+            <input class="form-check-input" type="radio" name="payment_method" id="ewallet" value="e-Wallet" required>
+            <label class="form-check-label" for="ewallet">E-Wallet</label>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+          <button type="submit" class="btn btn-primary">Bayar</button>
+        </div>
+      </form>
+      <!-- FORM SELESAI DI SINI -->
+    </div>
+  </div>
+</div>
+
+<!-- SweetAlert2 -->
+@push('scripts')
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+document.getElementById('paymentForm').onsubmit = function(e) {
+    e.preventDefault();
+    var form = this;
+    var data = new FormData(form);
+
+    fetch(form.action, {
+        method: 'POST',
+        headers: {
+            'X-CSRF-TOKEN': form.querySelector('[name="_token"]').value,
+            'Accept': 'application/json'
+        },
+        body: data
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.success) {
+            var paymentModal = bootstrap.Modal.getInstance(document.getElementById('paymentModal'));
+            paymentModal.hide();
+
+            setTimeout(function() {
+                Swal.fire({
+                    title: 'Transaksi Berhasil!',
+                    text: 'Pembayaran kamu telah diterima.',
+                    icon: 'success',
+                    confirmButtonText: 'Tutup'
+                }).then(() => {
+                    window.location.href = "{{ route('member.orders.show', $order->id) }}";
+                });
+            }, 400);
+        }
+    });
+};
+</script>
+@endpush
+
+
+
 @endsection
